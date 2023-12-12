@@ -1,42 +1,30 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   structs.h                                          :+:      :+:    :+:   */
+/*   get_next_line.h                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: dvandenb <dvandenb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/12/12 12:47:35 by dvandenb          #+#    #+#             */
-/*   Updated: 2023/12/12 15:58:39 by dvandenb         ###   ########.fr       */
+/*   Created: 2023/10/14 11:13:45 by marvin            #+#    #+#             */
+/*   Updated: 2023/10/18 16:25:46 by dvandenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef STRUCTS_H
-# define STRUCTS_H
+#ifndef GET_NEXT_LINE_H
+# define GET_NEXT_LINE_H
+# include <unistd.h>
+# include <fcntl.h>
+# include <stdlib.h>
 
-typedef struct s_p
+typedef struct s_buffers
 {
-	float	x;
-	float	y;
-	float	z;
-}														t_p;
-
-typedef struct s_obj
-{
-	int			type;
-	unsigned int	color;
-	t_obj		*next;
-	t_p			p;
-	t_p			v;
-	float w;
-	float h;
-}	t_obj;
-
-typedef struct s_scene
-{
-	t_obj *ambient;
-	t_obj *camera;
-	t_obj *lights;
-	t_obj *objects;
-} t_scene;
-
+	int					fd;
+	char				*buffer;
+	struct s_buffers	*next;
+	int					index;
+	int					end;
+}	t_buffers;
+char	*get_next_line(int fd);
+int		reallojoin(char **dest, int cur_size, char *src, int src_size);
+int		remove_fd(t_buffers **begin_list, int fd);
 #endif
