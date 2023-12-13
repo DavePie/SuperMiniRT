@@ -1,25 +1,39 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   utils.h                                            :+:      :+:    :+:   */
+/*   list_utils.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: dvandenb <dvandenb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/12/12 16:14:19 by dvandenb          #+#    #+#             */
-/*   Updated: 2023/12/13 14:08:37 by dvandenb         ###   ########.fr       */
+/*   Created: 2023/12/13 13:36:15 by dvandenb          #+#    #+#             */
+/*   Updated: 2023/12/13 14:08:20 by dvandenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef UTILS_H
-# define UTILS_H
-# include "structs.h"
+#include "structs.h"
+#include "minirt.h"
 
-void	ft_error(int condition, char *mess, char *val, t_scene *s);
+t_obj	*add_back(t_obj **front, t_obj *obj)
+{
+	t_obj	*cur;
 
-int		exit_scene(t_scene *s);
+	if (!*front)
+	{
+		*front = obj;
+		return (obj);
+	}
+	cur = *front;
+	while (cur->next)
+		cur = cur->next;
+	cur->next = obj;
+	return (obj);
+}
 
-void	*ft_malloc(int size, t_scene *s);
+t_obj	*new_obj(int type, t_scene *s)
+{
+	t_obj	*temp;
 
-t_obj	*add_back(t_obj **front, t_obj *obj);
-
-#endif
+	temp = ft_malloc(sizeof(t_obj), s);
+	*temp = (t_obj){.type = type};
+	return (temp);
+}

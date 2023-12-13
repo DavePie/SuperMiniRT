@@ -6,7 +6,7 @@
 /*   By: dvandenb <dvandenb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/12 12:47:35 by dvandenb          #+#    #+#             */
-/*   Updated: 2023/12/13 12:13:31 by dvandenb         ###   ########.fr       */
+/*   Updated: 2023/12/13 14:08:32 by dvandenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,6 @@
 # define CYLINDER 5
 # define INIT_WIDTH 800
 # define INIT_HEIGHT 500
-
 
 typedef struct s_p
 {
@@ -60,6 +59,5 @@ typedef struct s_scene
 	t_mlx	*mlx;
 	int		exit_code;
 }													t_scene;
-
 
 #endif
