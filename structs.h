@@ -6,7 +6,7 @@
 /*   By: dvandenb <dvandenb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/12 12:47:35 by dvandenb          #+#    #+#             */
-/*   Updated: 2023/12/12 16:56:46 by dvandenb         ###   ########.fr       */
+/*   Updated: 2023/12/13 11:56:17 by dvandenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,8 @@
 # define SPHERE 3
 # define PLANE 4
 # define CYLINDER 5
+# define INIT_WIDTH 800
+# define INIT_HEIGHT 500
 
 
 typedef struct s_p
@@ -42,6 +44,11 @@ typedef struct s_mlx
 {
 	void	*mlx;
 	void	*win;
+	void	*img;
+	char	*buffer;
+	char	*pix;
+	int		width;
+	int		height;
 }													t_mlx;
 
 typedef struct s_scene

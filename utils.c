@@ -6,7 +6,7 @@
 /*   By: dvandenb <dvandenb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/12 16:09:39 by dvandenb          #+#    #+#             */
-/*   Updated: 2023/12/12 17:12:41 by dvandenb         ###   ########.fr       */
+/*   Updated: 2023/12/13 12:02:14 by dvandenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,13 +32,13 @@ void	free_objects(t_obj *o)
 	}
 }
 
-void	free_mlx(t_mlx *m)
+void	*ft_malloc(int size, t_scene *s)
 {
-	if (!m)
-		return ;
-	if (m->mlx && m->win)
-		mlx_destroy_window(m->mlx, m->win);
-	free(m);
+	void	*temp;
+
+	temp = malloc(size);
+	ft_error(!temp, "unable to allocate space", 0, s);
+	return (temp);
 }
 
 void	free_scene(t_scene *s)
@@ -49,7 +49,11 @@ void	free_scene(t_scene *s)
 	free_objects(s->camera);
 	free_objects(s->lights);
 	free_objects(s->objects);
-	free_mlx(s->mlx);
+	if (!s->mlx)
+		return ;
+	if (s->mlx->mlx && s->mlx->win)
+		mlx_destroy_window(s->mlx->mlx, s->mlx->win);
+	free(s->mlx);
 }
 
 void	ft_error(int condition, char *mess, char *val, t_scene *s)
