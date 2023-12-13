@@ -6,7 +6,7 @@
 /*   By: dvandenb <dvandenb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/12 16:07:57 by dvandenb          #+#    #+#             */
-/*   Updated: 2023/12/13 14:29:57 by dvandenb         ###   ########.fr       */
+/*   Updated: 2023/12/13 17:23:06 by dvandenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,35 @@ int	main(int ac, char *av[])
 	init_mlx(&scene);
 	mlx_hook(scene.mlx->win, B_EXIT, 0, exit_scene, &scene);
 	mlx_loop_hook(scene.mlx->mlx, update_window, &scene);
+	
+	t_obj *c = new_obj(0, &scene);
+	c->p = new_p(0, 0, 0, &scene);
+	add_back(&scene.camera, c);
+	t_obj *s = new_obj(0, &scene);
+	s->p = new_p(5, 5, 10, &scene);
+	s->w = 3;
+	s->color = 255 << 16;
+	add_back(&scene.objects, s);
+	
+	t_obj *s2 = new_obj(0, &scene);
+	s2->p = new_p(5, 5, 9, &scene);
+	s2->w = 3;
+	s2->color = 255 << 8;
+	add_back(&scene.objects, s2);
+	
+	t_obj *s3 = new_obj(0, &scene);
+	s3->p = new_p(2, 2, 9, &scene);
+	s3->w = 3;
+	s3->color = 255 << 8;
+	add_back(&scene.objects, s3);
+	
+	t_obj *s4 = new_obj(0, &scene);
+	s4->p = new_p(2, 3, 9, &scene);
+	s4->w = 3;
+	s4->color = 255 << 16;
+	add_back(&scene.objects, s4);
+
+	trace_rays(&scene);
 	mlx_loop(scene.mlx->mlx);
 	return (0);
 }

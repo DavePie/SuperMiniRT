@@ -1,4 +1,4 @@
-CFILES	:= main.c utils.c list_utils.c colors.c events.c
+CFILES	:= main.c utils.c list_utils.c colors.c events.c operations.c trace_ray.c
 RM		:= rm -f
 NAME	:= miniRT
 CC		:= gcc
@@ -6,7 +6,7 @@ INCDIR	:= -I . -I mlx
 
 LIB	:= libmlx.a
 LIBDIR := mlx/$(LIB)
-CFLAGS	:= -Wall -Wextra -Werror $(INCDIR) #-fsanitize=address 
+CFLAGS	:= -Wall -Wextra -Werror $(INCDIR) -fsanitize=address 
 FILE ?=
 
 all: $(NAME)

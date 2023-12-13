@@ -1,32 +1,19 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   minirt.h                                           :+:      :+:    :+:   */
+/*   trace_ray.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: dvandenb <dvandenb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/12/12 16:18:09 by dvandenb          #+#    #+#             */
-/*   Updated: 2023/12/13 16:55:05 by dvandenb         ###   ########.fr       */
+/*   Created: 2023/12/13 16:29:25 by dvandenb          #+#    #+#             */
+/*   Updated: 2023/12/13 16:30:07 by dvandenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef MINIRT_H
-# define MINIRT_H
-
-# include <unistd.h>
-# include <stdlib.h>
-# include <fcntl.h>
-# include <mlx.h>
-# include <math.h>
-# include <stdio.h>
-# include <float.h>
-
+#ifndef TRACE_RAY_H
+# define TRACE_RAY_H
 # include "structs.h"
-# include "utils.h"
-# include "events.h"
-# include "colors.h"
-# include "trace_ray.h"
 
-# define B_EXIT 17
+void	trace_rays(t_scene *s);
 
 #endif
