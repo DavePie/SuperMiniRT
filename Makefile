@@ -1,4 +1,4 @@
-CFILES	:= main.c utils.c list_utils.c
+CFILES	:= main.c utils.c list_utils.c colors.c events.c
 RM		:= rm -f
 NAME	:= miniRT
 CC		:= gcc

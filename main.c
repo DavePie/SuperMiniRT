@@ -6,7 +6,7 @@
 /*   By: dvandenb <dvandenb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/12 16:07:57 by dvandenb          #+#    #+#             */
-/*   Updated: 2023/12/13 12:18:47 by dvandenb         ###   ########.fr       */
+/*   Updated: 2023/12/13 14:29:57 by dvandenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,7 @@ int	main(int ac, char *av[])
 	ft_error(fd == -1, "invalid file name: ", av[1], &scene);
 	init_mlx(&scene);
 	mlx_hook(scene.mlx->win, B_EXIT, 0, exit_scene, &scene);
+	mlx_loop_hook(scene.mlx->mlx, update_window, &scene);
 	mlx_loop(scene.mlx->mlx);
 	return (0);
 }

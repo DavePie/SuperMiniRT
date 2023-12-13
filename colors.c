@@ -1,28 +1,26 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   minirt.h                                           :+:      :+:    :+:   */
+/*   colors.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: dvandenb <dvandenb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/12/12 16:18:09 by dvandenb          #+#    #+#             */
-/*   Updated: 2023/12/13 14:25:00 by dvandenb         ###   ########.fr       */
+/*   Created: 2023/12/13 14:16:27 by dvandenb          #+#    #+#             */
+/*   Updated: 2023/12/13 14:28:50 by dvandenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef MINIRT_H
-# define MINIRT_H
+#include "structs.h"
+#include "minirt.h"
 
-# include <unistd.h>
-# include <stdlib.h>
-# include <fcntl.h>
-# include <mlx.h>
+void	put_pixel(t_scene *s, int x, int y, unsigned int color)
+{
+	char		*pix;
+	const int	w = s->mlx->width;
 
-# include "structs.h"
-# include "utils.h"
-# include "events.h"
-# include "colors.h"
-
-# define B_EXIT 17
-
-#endif
+	pix = s->mlx->pix;
+	pix[(x + y * w) * 4 + 0] = color;
+	pix[(x + y * w) * 4 + 1] = color >> 8;
+	pix[(x + y * w) * 4 + 2] = color >> 16;
+	pix[(x + y * w) * 4 + 3] = color >> 24;
+}
