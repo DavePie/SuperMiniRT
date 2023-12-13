@@ -6,7 +6,7 @@
 /*   By: dvandenb <dvandenb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/12 16:07:57 by dvandenb          #+#    #+#             */
-/*   Updated: 2023/12/13 17:23:06 by dvandenb         ###   ########.fr       */
+/*   Updated: 2023/12/13 18:31:19 by dvandenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,6 +69,16 @@ int	main(int ac, char *av[])
 	s4->w = 3;
 	s4->color = 255 << 16;
 	add_back(&scene.objects, s4);
+	
+	t_obj *s5 = new_obj(0, &scene);
+	s5->w = 0.1;
+	add_back(&scene.ambient, s5);
+	
+	t_obj *s6 = new_obj(0, &scene);
+	s6->w = 0.6;
+	s6->p = new_p (5,0,0,&scene);
+	s6->v = new_p(0, 0, 1, &scene);
+	add_back(&scene.lights, s6);
 
 	trace_rays(&scene);
 	mlx_loop(scene.mlx->mlx);

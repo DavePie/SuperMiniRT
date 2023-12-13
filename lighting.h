@@ -1,33 +1,20 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   minirt.h                                           :+:      :+:    :+:   */
+/*   lighting.h                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: dvandenb <dvandenb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/12/12 16:18:09 by dvandenb          #+#    #+#             */
-/*   Updated: 2023/12/13 18:18:47 by dvandenb         ###   ########.fr       */
+/*   Created: 2023/12/13 17:57:09 by dvandenb          #+#    #+#             */
+/*   Updated: 2023/12/13 18:15:04 by dvandenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef MINIRT_H
-# define MINIRT_H
-
-# include <unistd.h>
-# include <stdlib.h>
-# include <fcntl.h>
-# include <mlx.h>
-# include <math.h>
-# include <stdio.h>
-# include <float.h>
-
+#ifndef LIGHTING_H
+# define LIGHTING_H
 # include "structs.h"
-# include "utils.h"
-# include "events.h"
-# include "colors.h"
-# include "trace_ray.h"
-# include "lighting.h"
+# include "minirt.h"
 
-# define B_EXIT 17
+float	lighting_sphere(t_scene *s, t_obj o, t_p d, float m);
 
 #endif

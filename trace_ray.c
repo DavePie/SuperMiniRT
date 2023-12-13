@@ -6,7 +6,7 @@
 /*   By: dvandenb <dvandenb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/13 14:44:04 by dvandenb          #+#    #+#             */
-/*   Updated: 2023/12/13 17:19:26 by dvandenb         ###   ########.fr       */
+/*   Updated: 2023/12/13 18:19:02 by dvandenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,7 @@ unsigned int	trace_ray(t_scene *s, t_p r, float min, float max)
 	}
 	if (!min_o)
 		return (255);
-	return (min_o->color);
+	return (lighting_sphere(s, *min_o, r, min_l));
 }
 
 void	trace_rays(t_scene *s)
