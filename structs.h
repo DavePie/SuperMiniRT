@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   structs.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dvandenb <dvandenb@student.42.fr>          +#+  +:+       +#+        */
+/*   By: alde-oli <alde-oli@student.42lausanne.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/12 12:47:35 by dvandenb          #+#    #+#             */
-/*   Updated: 2023/12/13 14:59:50 by dvandenb         ###   ########.fr       */
+/*   Updated: 2023/12/14 17:02:47 by alde-oli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,9 +15,10 @@
 # define SPHERE 0
 # define PLANE 1
 # define CYLINDER 2
-# define AMBIENT 3
-# define CAMERA 4
-# define LIGHT 5
+# define SPECIAL 3
+# define AMBIENT 4
+# define CAMERA 5
+# define LIGHT 6
 
 # define INIT_WIDTH 800
 # define INIT_HEIGHT 500

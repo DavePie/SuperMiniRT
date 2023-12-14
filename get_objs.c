@@ -6,7 +6,7 @@
 /*   By: alde-oli <alde-oli@student.42lausanne.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/13 13:11:59 by alde-oli          #+#    #+#             */
-/*   Updated: 2023/12/14 15:08:48 by alde-oli         ###   ########.fr       */
+/*   Updated: 2023/12/14 17:59:32 by alde-oli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@
 //type[]{AMBIENT, CAMERA, LIGHT, SPHERE, PLANE, CYLINDER}
 int	match_type(char *line, int *i, t_obj *new_obj)
 {
-	static char	*type[] = {"A", "C", "L", "sp", "pl", "cy"};
+	static char	*type[] = {"sp", "pl", "cy", "zz", "A", "C", "L"};
 
 	*i = 0;
 	while (line[*i] && type[*i])
@@ -35,6 +35,7 @@ int	match_type(char *line, int *i, t_obj *new_obj)
 
 int	do_split(char *line, char ***split, int *atr)
 {
+	printf("line = %s\n", line);
 	if (count_words(line) != (atr[0] + atr[1] + atr[2] + atr[3] + atr[4] + 1))
 		return (1);
 	*split = ft_split(line, ' ');
@@ -47,6 +48,7 @@ int	do_split(char *line, char ***split, int *atr)
 //	static int	a[6][5] = {{      0,       0,      1,      0,     1},  ambient
 //						   {      1,       1,      1,      0,     0},  camera
 //						   {      1,       0,      1,      0,     1},  light
+//						   here bonus object
 //						   {      1,       0,      1,      0,     1},  sphere
 //						   {      1,       1,      0,      0,     1},  plane
 //						   {      1,       1,      1,      1,     1}}; cylinder
@@ -54,10 +56,14 @@ void	set_attributes(t_obj *new_obj, char *line, int fd, t_scene *scene)
 {
 	int			i;
 	char		**split;
-	static int	a[6][5] = {{0, 0, 1, 0, 1}, {1, 1, 1, 0, 0}, {1, 0, 1, 0, 1},
-	{1, 0, 1, 0, 1}, {1, 1, 0, 0, 1}, {1, 1, 1, 1, 1}};
+	static int	a[7][5] = {{1, 0, 1, 0, 1}, {1, 1, 0, 0, 1}, {1, 1, 1, 1, 1},
+	{1, 1, 1, 1, 1}, {0, 0, 1, 0, 1}, {1, 1, 1, 0, 0}, {1, 0, 1, 0, 1}};
 
 	split = NULL;
+	printf("\n\n\n\nline = %s\n", line);
+	printf("match = %d\n", match_type(line, &i, new_obj));
+	printf("words = %d\n", count_words(line));
+	printf("attr sum = %d\n", a[i][0] + a[i][1] + a[i][2] + a[i][3] + a[i][4]);
 	if (match_type(line, &i, new_obj) == -1 || do_split(line, &split, a[i]))
 	{
 		free(line);
@@ -65,9 +71,9 @@ void	set_attributes(t_obj *new_obj, char *line, int fd, t_scene *scene)
 		ft_error(1, "Invalid scene element\n", 0, scene);
 	}
 	if (a[i][0])
-		new_obj->p = get_coords(split[a[i][0]]);
+		new_obj->p = get_coords(split[a[i][0]], scene);
 	if (a[i][1])
-		new_obj->v = get_coords(split[a[i][0] + a[i][1]]);
+		new_obj->v = get_coords(split[a[i][0] + a[i][1]], scene);
 	if (a[i][2])
 		new_obj->w = ft_atof(split[a[i][0] + a[i][1] + a[i][2]]);
 	if (a[i][3])
@@ -99,30 +105,7 @@ int	get_one_obj(t_scene *scene, int fd, char *line, t_obj *new_obj)
 	return (1);
 }
 
-void	get_objs(t_scene *scene, int fd)
-{
-	t_obj	*new_obj;
-	char	*line;
-
-	while (1)
-	{
-		new_obj = ft_malloc(sizeof(t_obj), scene);
-		*new_obj = (t_obj){};
-		line = get_next_line(fd);
-		if (!line || *line == '\0')
-		{
-			if (line)
-				free(line);
-			return ;
-		}
-		if (*line == '\n')
-			free(line);
-		else
-			get_one_obj(scene, fd, line, new_obj);
-	}
-}
-
-// void	print_scene(t_obj *obj)
+// static void	print_scene(t_obj *obj)
 // {
 // 	if (obj->type == AMBIENT)
 // 		printf("Ambient\n");
@@ -151,6 +134,41 @@ void	get_objs(t_scene *scene, int fd)
 // 		(obj->color >> 8) & 0xFF, obj->color & 0xFF);
 // 	printf("\n\n");
 // }
+
+void	get_objs(t_scene *scene, int fd)
+{
+	t_obj	*new_obj;
+	char	*line;
+
+	while (1)
+	{
+		new_obj = ft_malloc(sizeof(t_obj), scene);
+		*new_obj = (t_obj){};
+		line = get_next_line(fd);
+		if (!line || *line == '\0')
+		{
+			if (line)
+				free(line);
+			break ;
+		}
+		if (*line == '\n')
+			free(line);
+		else
+			get_one_obj(scene, fd, line, new_obj);
+	}
+	// printf("ambient type is %d, %d\n", scene->ambient->type, AMBIENT);
+	// print_scene(scene->ambient);
+	// print_scene(scene->camera);
+	// print_scene(scene->lights);
+	// t_obj *obj = scene->objects;
+	// while (obj)
+	// {
+	// 	print_scene(obj);
+	// 	obj = obj->next;
+	// }
+}
+
+
 
 // void	get_objs(t_scene *scene, int fd)
 // {
