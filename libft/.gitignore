@@ -1,0 +1,4 @@
+libftTester
+*.o
+*.a
+*.out
