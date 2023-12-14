@@ -6,7 +6,7 @@
 /*   By: dvandenb <dvandenb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/13 14:16:27 by dvandenb          #+#    #+#             */
-/*   Updated: 2023/12/13 18:29:18 by dvandenb         ###   ########.fr       */
+/*   Updated: 2023/12/14 12:10:19 by dvandenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,4 +35,9 @@ unsigned int	color_mult(unsigned int color, float x)
 	g = (color >> 8) % 256 * x;
 	b = (color) % 256 * x;
 	return ((r << 16) + (g << 8) + (b));
+}
+
+unsigned int	cl(unsigned int r, unsigned int g, unsigned int b)
+{
+	return (r << 16 | g << 8 | b);
 }
