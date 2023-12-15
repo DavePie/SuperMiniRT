@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minirt.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alde-oli <alde-oli@student.42lausanne.c    +#+  +:+       +#+        */
+/*   By: dvandenb <dvandenb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/12 16:18:09 by dvandenb          #+#    #+#             */
-/*   Updated: 2023/12/14 16:25:10 by alde-oli         ###   ########.fr       */
+/*   Updated: 2023/12/14 17:37:47 by dvandenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@
 # include <math.h>
 # include <stdio.h>
 # include <float.h>
+# include <pthread.h>
 
 # include "structs.h"
 # include "utils.h"

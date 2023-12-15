@@ -6,7 +6,7 @@
 /*   By: dvandenb <dvandenb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/12 16:14:19 by dvandenb          #+#    #+#             */
-/*   Updated: 2023/12/13 16:59:49 by dvandenb         ###   ########.fr       */
+/*   Updated: 2023/12/14 16:25:03 by dvandenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,5 +29,7 @@ t_p		*new_p(float x, float y, float z, t_scene *s);
 float	mag(t_p a);
 
 float	dot(t_p a, t_p b);
+
+void	norm(t_p *a);
 
 #endif
