@@ -6,7 +6,7 @@
 /*   By: dvandenb <dvandenb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/12 16:07:57 by dvandenb          #+#    #+#             */
-/*   Updated: 2023/12/15 12:09:11 by dvandenb         ###   ########.fr       */
+/*   Updated: 2023/12/15 13:29:24 by dvandenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,11 +72,11 @@ int	main(int ac, char *av[])
 	s3->color = 255 << 8;
 	add_back(&scene.objects, s3);
 	
-	// t_obj *s4 = new_obj(0, &scene);
-	// s4->p = new_p(5, 3, 11, &scene);
-	// s4->w = 3;
-	// s4->color = cl(255, 255, 255);//==================
-	// add_back(&scene.objects, s4);
+	t_obj *s4 = new_obj(0, &scene);
+	s4->p = new_p(12, 3, 14, &scene);
+	s4->w = 3;
+	s4->color = cl(255, 255, 255);//==================
+	add_back(&scene.objects, s4);
 	// t_obj *s10 = new_obj(0, &scene);
 	// s10->p = new_p(7, 3, 9, &scene);
 	// s10->w = 3;
@@ -104,7 +104,7 @@ int	main(int ac, char *av[])
 	s7->p = new_p (10,-20,14,&scene);
 	add_back(&scene.lights, s7);
 	
-	for (int i = 0; i < 30; i++)
+	for (int i = 0; i < 800; i++)
 	{
 		t_obj *temp = new_obj(0, &scene);
 		temp->w = (float)(r(10) + 1)/5;

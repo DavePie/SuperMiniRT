@@ -6,7 +6,7 @@
 /*   By: dvandenb <dvandenb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/13 14:44:04 by dvandenb          #+#    #+#             */
-/*   Updated: 2023/12/15 11:42:06 by dvandenb         ###   ########.fr       */
+/*   Updated: 2023/12/15 14:13:33 by dvandenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,37 +74,41 @@ unsigned int	trace_ray(t_scene *s, t_p r, t_p range)
 }
 
 
-typedef struct s_test
+
+void	loop_line(t_scene *s, float x)
 {
-	t_scene *s;
-	int		start_x;
-	int		num;
-} t_test;
+	float		y;
+	t_p			v;
+	t_p			range;
+
+	y = 0;
+	range = (t_p){.x = 1, .y = FLT_MAX};
+	while (++y < s->mlx->height && x != -1)
+	{
+		if (*s->multi_t->do_exit)
+			pthread_exit(0);
+		v = (t_p){.x = x / s->mlx->width - 0.5f, .y = y
+			/ s->mlx->width - ((0.5f) * s->mlx->height
+				/ s->mlx->width), .z = Z_OFFSET};
+		norm(&v);
+		put_pixel(s, x, y, trace_ray(s, v, range));
+	}
+}
 
 void	*thread_rays(void *ss)
 {
 	float		x;
-	float		y;
-	t_p			v;
-	t_p			range;
 	t_scene		*s;
-	t_test		*t;
 
-	t = (t_test *)ss;
-	s = t->s;
-	range = (t_p){.x = 1, .y = FLT_MAX};
-	x = t->start_x;
-	while (x < s->mlx->width / t->num + t->start_x)
+	s = (t_scene *)ss;
+	x = -1;
+	while (x < s->mlx->width)
 	{
-		y = 0;
-		while (++y < s->mlx->height)
-		{
-			v = (t_p){.x = x / s->mlx->width - 0.5f, .y = y / s->mlx->width
-				- ((0.5f) * s->mlx->height / s->mlx->width), .z = Z_OFFSET};
-			norm(&v);
-			put_pixel(s, x, y, trace_ray(s, v, range));
-		}
-		x++;
+		loop_line(s, x);
+		pthread_mutex_lock(s->multi_t->l);
+		x = *s->multi_t->cur_x;
+		(*s->multi_t->cur_x)++;
+		pthread_mutex_unlock(s->multi_t->l);
 	}
 	return (0);
 }
@@ -112,17 +116,18 @@ void	*thread_rays(void *ss)
 
 void	trace_rays(t_scene *s)
 {
-	pthread_t	pid[NUM_THREADS];
 	int			i;
 
+	s->multi_t = ft_malloc(sizeof(t_threads), s);
+	s->multi_t->cur_x = ft_malloc(sizeof(int), s);
+	s->multi_t->do_exit = ft_malloc(sizeof(int), s);
+	*s->multi_t->cur_x = 0;
+	*s->multi_t->do_exit = 0;
+	s->multi_t->l = ft_malloc(sizeof(pthread_mutex_t), s);
+	pthread_mutex_init(s->multi_t->l, NULL);
 	i = -1;
-	while(++i < NUM_THREADS)
-	{
-		pid[i] = malloc(sizeof(pthread_t));
-		t_test *temp = malloc(sizeof(t_test));
-		*temp = (t_test){.s = s, .start_x =  i * s->mlx->width / NUM_THREADS, .num = NUM_THREADS};
-		pthread_create(&(pid[i]), NULL, &thread_rays, temp);
-	}
+	while (++i < NUM_THREADS)
+		pthread_create(&(s->multi_t->pids[i]), NULL, &thread_rays, s);
 }
 
 

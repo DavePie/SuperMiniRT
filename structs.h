@@ -6,7 +6,7 @@
 /*   By: dvandenb <dvandenb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/12 12:47:35 by dvandenb          #+#    #+#             */
-/*   Updated: 2023/12/15 12:09:26 by dvandenb         ###   ########.fr       */
+/*   Updated: 2023/12/15 14:08:36 by dvandenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,9 +25,11 @@
 
 # define Z_OFFSET 1
 
-# define NUM_THREADS 50
+# define NUM_THREADS 12
 
 # define K_ESC 53
+
+# include <pthread.h>
 
 typedef struct s_p
 {
@@ -58,6 +60,8 @@ typedef struct s_mlx
 	int		height;
 }													t_mlx;
 
+typedef struct s_threads t_threads;
+
 typedef struct s_scene
 {
 	t_obj	*ambient;
@@ -66,7 +70,14 @@ typedef struct s_scene
 	t_obj	*objects;
 	t_mlx	*mlx;
 	int		exit_code;
-	int		start_x;
+	t_threads	*multi_t;
 }													t_scene;
 
+struct s_threads
+{
+	pthread_t	pids[NUM_THREADS];
+	int			*cur_x;
+	pthread_mutex_t	*l;
+	int			*do_exit;
+};
 #endif

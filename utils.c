@@ -6,7 +6,7 @@
 /*   By: dvandenb <dvandenb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/12 16:09:39 by dvandenb          #+#    #+#             */
-/*   Updated: 2023/12/13 12:25:31 by dvandenb         ###   ########.fr       */
+/*   Updated: 2023/12/15 14:10:48 by dvandenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,10 +41,25 @@ void	*ft_malloc(int size, t_scene *s)
 	return (temp);
 }
 
+void	stop_threads(t_scene *s)
+{
+	int	i;
+
+	i = -1;
+	if (s->multi_t)
+	{
+		*s->multi_t->do_exit = 1;
+		i = -1;
+		while (++i < NUM_THREADS)
+			pthread_join(s->multi_t->pids[i], NULL);
+	}
+}
+
 int	exit_scene(t_scene *s)
 {
 	if (!s)
 		exit(s->exit_code);
+	stop_threads(s);
 	free_objects(s->ambient);
 	free_objects(s->camera);
 	free_objects(s->lights);
