@@ -6,7 +6,7 @@
 /*   By: alde-oli <alde-oli@student.42lausanne.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/14 15:05:22 by alde-oli          #+#    #+#             */
-/*   Updated: 2023/12/14 16:15:28 by alde-oli         ###   ########.fr       */
+/*   Updated: 2023/12/14 18:09:22 by alde-oli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,25 +15,22 @@
 #include "libft.h"
 #include "get_objs.h"
 
-int	count_words(char *line)
+int	count_words(char *str)
 {
-	int	i;
-	int	words;
+	int	prev_char;
+	int	cur_char;
+	int	total;
 
-	i = 0;
-	words = 0;
-	while (line[i])
+	total = 0;
+	prev_char = 1;
+	while (*str)
 	{
-		if (line[i] != ' ')
-		{
-			words++;
-			while (line[i] && line[i] != ' ')
-				i++;
-		}
-		else
-			i++;
+		cur_char = *str++ == ' ';
+		if (!cur_char && prev_char)
+			total++;
+		prev_char = cur_char;
 	}
-	return (words);
+	return (total);
 }
 
 unsigned int	get_color(char *line)
@@ -51,15 +48,22 @@ unsigned int	get_color(char *line)
 	return (cl(red, green, blue));
 }
 
-t_p	*get_coords(char *line)
+t_p	*get_coords(char *line, t_scene *s)
 {
 	char	**split;
 	t_p		*coords;
 
 	split = ft_split(line, ',');
+	ft_error(!split, "malloc error", 0, s);
 	coords = (t_p *) malloc(sizeof(t_p) * 1);
+	if (!coords)
+	{
+		ft_free_str_tab(split);
+		ft_error(1, "malloc error", 0, s);
+	}
 	coords->x = ft_atof(split[0]);
 	coords->y = ft_atof(split[1]);
+	coords->z = ft_atof(split[2]);
 	free(split);
 	return (coords);
 }

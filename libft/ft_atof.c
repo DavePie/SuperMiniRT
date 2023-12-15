@@ -6,32 +6,68 @@
 /*   By: alde-oli <alde-oli@student.42lausanne.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/14 14:52:17 by alde-oli          #+#    #+#             */
-/*   Updated: 2023/12/14 14:52:56 by alde-oli         ###   ########.fr       */
+/*   Updated: 2023/12/14 17:18:50 by alde-oli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
-#include <math.h>
+
+static float	convert_integer_part(char **str)
+{
+	float	result;
+
+	result = 0;
+	while (**str >= '0' && **str <= '9')
+	{
+		result = result * 10 + (**str - '0');
+		(*str)++;
+	}
+	return (result);
+}
+
+static float	convert_fractional_part(char **str)
+{
+	float	fraction;
+	float	result;
+
+	fraction = 0.1f;
+	result = 0;
+	while (**str >= '0' && **str <= '9')
+	{
+		result += (**str - '0') * fraction;
+		fraction *= 0.1f;
+		(*str)++;
+	}
+	return (result);
+}
+
+static int	skip_spaces(char **str)
+{
+	int	sign;
+
+	sign = 1;
+	while (**str == ' ' || (**str >= 9 && **str <= 13))
+		(*str)++;
+	if (**str == '-')
+	{
+		sign = -1;
+		(*str)++;
+	}
+	else if (**str == '+')
+		(*str)++;
+	return (sign);
+}
 
 float	ft_atof(char *str)
 {
-	float	nb;
-	int		i;
 	int		sign;
+	float	integer_part;
+	float	fractional_part;
 
-	nb = 0;
-	i = 0;
-	sign = 1;
-	if (str[i] == '-')
-		sign = -1;
-	if (str[i] == '-' || str[i] == '+')
-		i++;
-	while (str[i] && str[i] != '.')
-	{
-		nb = nb * 10 + str[i] - '0';
-		i++;
-	}
-	if (str[i] == '.')
-		nb += (float)ft_atoi(&str[i + 1]) / pow(10, ft_strlen(&str[i + 1]));
-	return (nb * sign);
+	sign = skip_spaces(&str);
+	integer_part = convert_integer_part(&str);
+	if (*str == '.')
+		str++;
+	fractional_part = convert_fractional_part(&str);
+	return (sign * (integer_part + fractional_part));
 }

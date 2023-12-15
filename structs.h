@@ -6,7 +6,7 @@
 /*   By: dvandenb <dvandenb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/12 12:47:35 by dvandenb          #+#    #+#             */
-/*   Updated: 2023/12/15 11:40:57 by dvandenb         ###   ########.fr       */
+/*   Updated: 2023/12/15 12:09:26 by dvandenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,9 +15,10 @@
 # define SPHERE 0
 # define PLANE 1
 # define CYLINDER 2
-# define AMBIENT 3
-# define CAMERA 4
-# define LIGHT 5
+# define SPECIAL 3
+# define AMBIENT 4
+# define CAMERA 5
+# define LIGHT 6
 
 # define INIT_WIDTH 1600
 # define INIT_HEIGHT 1000
