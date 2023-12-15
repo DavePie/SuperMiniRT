@@ -6,7 +6,7 @@
 /*   By: dvandenb <dvandenb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/12 12:47:35 by dvandenb          #+#    #+#             */
-/*   Updated: 2023/12/15 14:08:36 by dvandenb         ###   ########.fr       */
+/*   Updated: 2023/12/15 14:22:29 by dvandenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,24 +60,22 @@ typedef struct s_mlx
 	int		height;
 }													t_mlx;
 
-typedef struct s_threads t_threads;
+typedef struct s_threads
+{
+	pthread_t		pids[NUM_THREADS];
+	int				*cur_x;
+	pthread_mutex_t	*l;
+	int				*do_exit;
+}													t_threads;
 
 typedef struct s_scene
 {
-	t_obj	*ambient;
-	t_obj	*camera;
-	t_obj	*lights;
-	t_obj	*objects;
-	t_mlx	*mlx;
-	int		exit_code;
+	t_obj		*ambient;
+	t_obj		*camera;
+	t_obj		*lights;
+	t_obj		*objects;
+	t_mlx		*mlx;
+	int			exit_code;
 	t_threads	*multi_t;
 }													t_scene;
-
-struct s_threads
-{
-	pthread_t	pids[NUM_THREADS];
-	int			*cur_x;
-	pthread_mutex_t	*l;
-	int			*do_exit;
-};
 #endif
