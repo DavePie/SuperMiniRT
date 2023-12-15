@@ -6,7 +6,7 @@
 /*   By: dvandenb <dvandenb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/13 17:35:08 by dvandenb          #+#    #+#             */
-/*   Updated: 2023/12/14 16:58:03 by dvandenb         ###   ########.fr       */
+/*   Updated: 2023/12/15 14:29:20 by dvandenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,12 +46,8 @@ float	lighting_sphere(t_scene *s, t_obj o, t_p d, float m)
 	const t_p	p = (t_p){.x = c.x + (m * d.x), .y = c.y + (m * d.y),
 		.z = c.z + (m * d.z)};
 	t_p			n;
-	float		len;
 
 	n = (t_p){.x = p.x - o.p->x, .y = p.y - o.p->y, .z = p.z - o.p->z};
-	len = mag(n);
-	n.x /= len;
-	n.y /= len;
-	n.z /= len;
+	norm(&n);
 	return (color_mult(o.color, diffuse_light(s, p, n)));
 }

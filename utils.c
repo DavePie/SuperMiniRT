@@ -6,7 +6,7 @@
 /*   By: dvandenb <dvandenb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/12 16:09:39 by dvandenb          #+#    #+#             */
-/*   Updated: 2023/12/15 14:25:37 by dvandenb         ###   ########.fr       */
+/*   Updated: 2023/12/15 14:32:01 by dvandenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,9 +53,9 @@ void	stop_threads(t_scene *s)
 			pthread_join(s->multi_t->pids[i], NULL);
 		ft_free(s->multi_t->cur_x);
 		ft_free(s->multi_t->do_exit);
-		ft_free(s->multi_t);
 		pthread_mutex_destroy(s->multi_t->l);
 		ft_free(s->multi_t->l);
+		ft_free(s->multi_t);
 	}
 }
 
