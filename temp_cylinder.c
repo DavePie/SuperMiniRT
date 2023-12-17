@@ -14,33 +14,33 @@
 
 void inter_ray_cylinder(t_p p, t_p r, t_obj *cylinder, t_p *ans)
 {
-	t_p		co;
-	t_p		t;
-	float	a;
-	float	b;
-	float	c;
+	const t_point	t = (t_point){.x = (-b + sqrt(discriminant)) / (2 * a), .y = (-b - sqrt(discriminant)) / (2 * a)}
+	const t_point	co = (t_p){.x = p.x - cylinder->p->x, .y = p.y - cylinder->p->y, .z = p.z - cylinder->p->z};
+	float 			a;
+	float 			b;
+	float 			c;
 
-	co = (t_p){.x = p.x - cylinder->p->x, .y = p.y - cylinder->p->y, .z = p.z - cylinder->p->z};
-	a = dot(r, r) - pow(dot(r, (cylinder->v), 2);
-	b = 2 * (dot(r, co) - dot(r, (cylinder->v) * dot(co, (cylinder->v));
-	c = dot(co, co) - pow(dot(co, (cylinder->v), 2) - pow(cylinder->w / 2, 2);
+	a = dot(r, r) - pow(dot(r, v), 2);
+	b = 2 * (dot(r, co) - dot(r, v) * dot(co, v));
+	c = dot(co, co) - pow(dot(co, v), 2) - pow(cylinder->w / 2, 2);
 	*ans = (t_p){.x = FLT_MAX, .y = FLT_MAX, .z = FLT_MAX};
-	if (( b * b - 4 * a * c) < 0)
-		return;
-	t = (t_p){.x = (-b + sqrt( b * b - 4 * a * c)) / (2 * a), .y = (-b - sqrt( b * b - 4 * a * c)) / (2 * a)};
-	if (is_point_inside_cylinder_height(t.x, r, co, (cylinder->v, cylinder->h))
+	if (b * b - 4 * a * c < 0)
+		return ;
+	if (is_point_inside_cylinder_height(t.x, r, co, cylinder->v, cylinder->h))
 		ans->x = t.x;
-	if(is_point_inside_cylinder_height(t.y, r, co, (cylinder->v, cylinder->h))
+	if (is_point_inside_cylinder_height(t.y, r, co, cylinder->v, cylinder->h))
 		ans->y = t.y;
-	check_cylinder_caps(p, r, cylinder, ans);
+	check_cylinder_caps(p, r, cylinder, ans, t0, t1);
+
+	return;
 }
 
-int	is_point_inside_cylinder_height(float t, t_p r, t_p co, t_p v, float h)
+int	is_point_inside_cylinder_height(float t, t_p r, t_p co, t_obj *cylinder)
 {
 	const t_p point = (t_p){.x = co.x + t * r.x, .y = co.y + t * r.y, .z = co.z + t * r.z};
-	const float proj = dot(point, v);
+	const float proj = dot(point, cylinder->v);
 
-	return (proj >= 0 && proj <= h);
+	return (proj >= 0 && proj <= cylinder->h);
 }
 
 void check_cylinder_caps(t_p p, t_p r, t_obj *cylinder, t_p *ans)
