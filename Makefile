@@ -1,5 +1,4 @@
-CFILES	:= main.c utils.c list_utils.c colors.c events.c operations.c \
-	trace_ray.c lighting.c get_objs.c get_objs2.c
+CFILES	:= *.c
 RM		:= rm -f
 NAME	:= miniRT
 CC		:= gcc
@@ -17,6 +16,9 @@ all: $(NAME)
 
 $(NAME): $(CFILES) $(LIBDIR) $(LIBFTPATH)
 	$(CC) $(CFLAGS) $(CFILES) -o $(NAME) -L mlx -lmlx -L $(LIBFTDIR) -lft -framework OpenGL -framework Appkit
+
+linux: $(CFILES) $(LIBFTPATH)
+	$(CC) $(CFLAGS) $(CFILES) -o $(NAME) -L mlx -lmlx -L $(LIBFTDIR) -lft -lXext -lX11 -lm
 
 $(LIBDIR):
 	make -C mlx
