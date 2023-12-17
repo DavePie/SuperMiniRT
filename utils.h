@@ -32,4 +32,12 @@ float	dot(t_p a, t_p b);
 
 void	norm(t_p *a);
 
+void	add(t_p *a, t_p b);
+
+void	sub(t_p *a, t_p b);
+
+void	mult(t_p *a, float b);
+
+float	distance_squared(t_p a, t_p b);
+
 #endif

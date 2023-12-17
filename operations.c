@@ -23,11 +23,25 @@ float	dot(t_p a, t_p b)
 	return (a.x * b.x + a.y * b.y + a.z * b.z);
 }
 
+void	add(t_p *a, t_p b)
+{
+	a->x = a->x + b.x;
+	a->y = a->y + b.y;
+	a->z = a->z + b.z;
+}
+
 void	sub(t_p *a, t_p b)
 {
 	a->x = a->x - b.x;
 	a->y = a->y - b.y;
 	a->z = a->z - b.z;
+}
+
+void	mult(t_p *a, float b)
+{
+	a->x = a->x * b;
+	a->y = a->y * b;
+	a->z = a->z * b;
 }
 
 void	norm(t_p *a)
@@ -38,4 +52,9 @@ void	norm(t_p *a)
 	a->x /= magi;
 	a->y /= magi;
 	a->z /= magi;
+}
+
+float	distance_squared(t_p a, t_p b)
+{
+	return (powf(a.x - b.x, 2) + powf(a.y - b.y, 2) + powf(a.z - b.z, 2));
 }
