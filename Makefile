@@ -10,7 +10,7 @@ LIBFT	:= libft.a
 LIBDIR	:= mlx/$(LIB)
 LIBFTDIR	:= libft
 LIBFTPATH	:= $(LIBFTDIR)/$(LIBFT)
-CFLAGS	:= -Wall -Wextra -Werror $(INCDIR) -fsanitize=address 
+CFLAGS	:= -Wall -Wextra -Werror $(INCDIR) #-fsanitize=address 
 FILE ?=
 
 all: $(NAME)

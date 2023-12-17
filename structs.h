@@ -6,7 +6,7 @@
 /*   By: dvandenb <dvandenb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/12 12:47:35 by dvandenb          #+#    #+#             */
-/*   Updated: 2023/12/15 14:22:29 by dvandenb         ###   ########.fr       */
+/*   Updated: 2023/12/17 14:46:24 by dvandenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,7 @@ typedef struct s_threads
 	pthread_t		pids[NUM_THREADS];
 	int				*cur_x;
 	pthread_mutex_t	*l;
-	int				*do_exit;
+	int				do_exit;
 }													t_threads;
 
 typedef struct s_scene
@@ -77,5 +77,7 @@ typedef struct s_scene
 	t_mlx		*mlx;
 	int			exit_code;
 	t_threads	*multi_t;
+	t_p			o_x;
+	t_p			o_y;
 }													t_scene;
 #endif

@@ -6,7 +6,7 @@
 /*   By: dvandenb <dvandenb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/12 16:07:57 by dvandenb          #+#    #+#             */
-/*   Updated: 2023/12/15 13:29:24 by dvandenb         ###   ########.fr       */
+/*   Updated: 2023/12/17 14:34:07 by dvandenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,9 @@ int	main(int ac, char *av[])
 	mlx_loop_hook(scene.mlx->mlx, update_window, &scene);
 	
 	t_obj *c = new_obj(0, &scene);
-	c->p = new_p(5, 0, 0, &scene);
+	c->p = new_p(10, 5, -10, &scene);
+	c->v = new_p(-0.2, 0.1,  0.5, &scene);
+	norm(c->v);
 	add_back(&scene.camera, c);
 	t_obj *s = new_obj(0, &scene);
 	s->p = new_p(0, 0, 14, &scene);
@@ -61,8 +63,8 @@ int	main(int ac, char *av[])
 	add_back(&scene.objects, s);
 	
 	t_obj *s2 = new_obj(0, &scene);
-	s2->p = new_p(5, 0, 14, &scene);
-	s2->w = 2;
+	s2->p = new_p(0, 0, 0, &scene);
+	s2->w = 5;
 	s2->color = cl(0, 0, 255);
 	add_back(&scene.objects, s2);
 	
@@ -109,7 +111,7 @@ int	main(int ac, char *av[])
 		t_obj *temp = new_obj(0, &scene);
 		temp->w = (float)(r(10) + 1)/5;
 		printf("w: %f\n", temp->w);
-		temp->p = new_p((float)((rand()) / (RAND_MAX / 20)) / 2, (float)((rand()) / (RAND_MAX / 20)) / 2, 13 + (float)((rand()) / (RAND_MAX / 20)) / 10, &scene);
+		temp->p = new_p((float)(r(40) - 20) / 2, (float)(r(40) - 20) / 2, 13 + (float)(r(40) - 20) / 2, &scene);
 		temp->color = cl(r(255), r(255), r(255));
 		add_back(&scene.objects, temp);
 	}

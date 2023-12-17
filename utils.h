@@ -6,7 +6,7 @@
 /*   By: dvandenb <dvandenb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/12 16:14:19 by dvandenb          #+#    #+#             */
-/*   Updated: 2023/12/14 16:25:03 by dvandenb         ###   ########.fr       */
+/*   Updated: 2023/12/17 14:18:38 by dvandenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,5 +31,7 @@ float	mag(t_p a);
 float	dot(t_p a, t_p b);
 
 void	norm(t_p *a);
+
+void	cross(t_p a, t_p b, t_p *ans);
 
 #endif
