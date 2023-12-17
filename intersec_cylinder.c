@@ -6,12 +6,13 @@
 /*   By: alde-oli <alde-oli@student.42lausanne.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/16 12:53:46 by alde-oli          #+#    #+#             */
-/*   Updated: 2023/12/17 18:29:59 by alde-oli         ###   ########.fr       */
+/*   Updated: 2023/12/17 22:57:38 by alde-oli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minirt.h"
 #include "structs.h"
+#include "utils.h"
 
 static int		is_point_inside_cyl_height(float t, t_p r, t_p co, t_obj *cyl);
 static void		check_cylinder_caps(t_p p, t_p r, t_obj *cyl, t_p *ans);

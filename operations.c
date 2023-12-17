@@ -6,7 +6,7 @@
 /*   By: alde-oli <alde-oli@student.42lausanne.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/13 15:41:46 by dvandenb          #+#    #+#             */
-/*   Updated: 2023/12/17 22:54:56 by alde-oli         ###   ########.fr       */
+/*   Updated: 2023/12/17 23:00:04 by alde-oli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,13 @@ void	cross(t_p a, t_p b, t_p *ans)
 	ans->x = a.y * b.z - (a.z * b.y);
 	ans->y = a.z * b.x - (a.x * b.z);
 	ans->z = a.x * b.y - (a.y * b.x);
+}
+
+void	add(t_p *a, t_p b)
+{
+	a->x = a->x + b.x;
+	a->y = a->y + b.y;
+	a->z = a->z + b.z;
 }
 
 void	sub(t_p *a, t_p b)
