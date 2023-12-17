@@ -156,16 +156,6 @@ void	get_objs(t_scene *scene, int fd)
 		else
 			get_one_obj(scene, fd, line, new_obj);
 	}
-	// printf("ambient type is %d, %d\n", scene->ambient->type, AMBIENT);
-	// print_scene(scene->ambient);
-	// print_scene(scene->camera);
-	// print_scene(scene->lights);
-	// t_obj *obj = scene->objects;
-	// while (obj)
-	// {
-	// 	print_scene(obj);
-	// 	obj = obj->next;
-	// }
 }
 
 

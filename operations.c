@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   operations.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dvandenb <dvandenb@student.42.fr>          +#+  +:+       +#+        */
+/*   By: alde-oli <alde-oli@student.42lausanne.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/13 15:41:46 by dvandenb          #+#    #+#             */
-/*   Updated: 2023/12/17 14:18:02 by dvandenb         ###   ########.fr       */
+/*   Updated: 2023/12/17 22:54:56 by alde-oli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,13 @@ void	sub(t_p *a, t_p b)
 	a->z = a->z - b.z;
 }
 
+void	mult(t_p *a, float b)
+{
+	a->x = a->x * b;
+	a->y = a->y * b;
+	a->z = a->z * b;
+}
+
 void	norm(t_p *a)
 {
 	float	magi;
@@ -47,4 +54,9 @@ void	norm(t_p *a)
 	a->x /= magi;
 	a->y /= magi;
 	a->z /= magi;
+}
+
+float	distance_squared(t_p a, t_p b)
+{
+	return (powf(a.x - b.x, 2) + powf(a.y - b.y, 2) + powf(a.z - b.z, 2));
 }
