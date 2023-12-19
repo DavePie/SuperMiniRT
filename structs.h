@@ -6,7 +6,7 @@
 /*   By: dvandenb <dvandenb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/12 12:47:35 by dvandenb          #+#    #+#             */
-/*   Updated: 2023/12/17 14:46:24 by dvandenb         ###   ########.fr       */
+/*   Updated: 2023/12/19 12:29:19 by dvandenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,7 @@
 
 # define NUM_THREADS 12
 
+# define K_UP 126
 # define K_ESC 53
 
 # include <pthread.h>
@@ -38,6 +39,21 @@ typedef struct s_p
 	float	z;
 }													t_p;
 
+typedef struct s_c
+{
+	int	x;
+	int	y;
+	int z;
+}													t_c;
+
+typedef struct s_img
+{
+	void	*img;
+	char	*pix;
+	int		w;
+	int		h;
+}													t_img;
+
 typedef struct s_obj
 {
 	int				type;
@@ -47,6 +63,9 @@ typedef struct s_obj
 	t_p				*v;
 	float			w;
 	float			h;
+	float			specular;
+	t_img			*i;
+	t_img			*b;
 }													t_obj;
 
 typedef struct s_mlx

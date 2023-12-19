@@ -6,7 +6,7 @@
 /*   By: dvandenb <dvandenb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/12 16:09:39 by dvandenb          #+#    #+#             */
-/*   Updated: 2023/12/17 14:47:19 by dvandenb         ###   ########.fr       */
+/*   Updated: 2023/12/18 17:10:23 by dvandenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ void	ft_free(void *ptr)
 		free(ptr);
 }
 
-void	free_objects(t_obj *o)
+void	free_objects(t_obj *o, t_scene *s)
 {
 	t_obj	*cur;
 
@@ -28,6 +28,12 @@ void	free_objects(t_obj *o)
 		o = o->next;
 		ft_free(cur->p);
 		ft_free(cur->v);
+		if (cur->i)
+			mlx_destroy_image(s->mlx->mlx, cur->i->img);
+		ft_free(cur->i);
+		if (cur->b)
+			mlx_destroy_image(s->mlx->mlx, cur->b->img);
+		ft_free(cur->b);
 		ft_free(cur);
 	}
 }
@@ -63,10 +69,10 @@ int	exit_scene(t_scene *s)
 	if (!s)
 		exit(s->exit_code);
 	stop_threads(s);
-	free_objects(s->ambient);
-	free_objects(s->camera);
-	free_objects(s->lights);
-	free_objects(s->objects);
+	free_objects(s->ambient, s);
+	free_objects(s->camera, s);
+	free_objects(s->lights, s);
+	free_objects(s->objects, s);
 	if (!s->mlx)
 		exit(s->exit_code);
 	if (s->mlx->img)
