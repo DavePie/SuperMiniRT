@@ -6,7 +6,7 @@
 /*   By: alde-oli <alde-oli@student.42lausanne.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/13 14:44:04 by dvandenb          #+#    #+#             */
-/*   Updated: 2023/12/17 23:43:29 by alde-oli         ###   ########.fr       */
+/*   Updated: 2023/12/18 13:03:21 by alde-oli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,10 +36,14 @@ void	inter_ray_sphere(t_p p, t_p r, t_obj *sphere, t_p *ans)
 
 void	inter_ray_plane(t_p p, t_p r, t_obj *plane, t_p *ans)
 {
-	(void)p;
-	(void)r;
-	(void)plane;
-	(void)ans;
+	const float	denom = dot(*plane->v, r);
+	t_p			plane_p;
+
+	*ans = (t_p){.x = FLT_MAX, .y = FLT_MAX, .z = FLT_MAX};
+	plane_p = (t_p){.x = plane->p->x, .y = plane->p->y, .z = plane->p->z};
+	sub(&plane_p, p);
+	if (fabs(denom) > 1e-6)
+		ans->x = dot(plane_p, *plane->v) / denom;
 }
 
 t_obj	*calculate_ray(t_scene *s, t_p p, t_p r, t_p *range)
@@ -81,7 +85,7 @@ unsigned int	trace_ray(t_scene *s, t_p r, t_p range)
 	if (min_o->type == SPHERE)
 		return (lighting_sphere(s, *min_o, r, min_l));
 	else if (min_o->type == PLANE)
-		return (0);
+		return (lighting_plane(s, *min_o, r, min_l));
 	else if (min_o->type == CYLINDER)
 		return (lighting_cylinder(s, *min_o, r, min_l));
 	else

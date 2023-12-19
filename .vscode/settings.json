@@ -6,6 +6,7 @@
 		"limits": "c",
 		"ratio": "c",
 		"random": "c",
-		"trace_ray.h": "c"
+		"trace_ray.h": "c",
+		"complex": "c"
 	}
 }

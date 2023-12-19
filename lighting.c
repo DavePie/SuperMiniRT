@@ -6,7 +6,7 @@
 /*   By: alde-oli <alde-oli@student.42lausanne.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/13 17:35:08 by dvandenb          #+#    #+#             */
-/*   Updated: 2023/12/18 00:14:53 by alde-oli         ###   ########.fr       */
+/*   Updated: 2023/12/18 13:36:17 by alde-oli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,4 +84,13 @@ float	lighting_cylinder(t_scene *s, t_obj o, t_p d, float m)
 	n = calculate_cylinder_normal(o, p);
 	norm(&n);
 	return (color_mult(o.color, diffuse_light(s, p, n)));
+}
+
+float	lighting_plane(t_scene *s, t_obj o, t_p d, float m)
+{
+	const t_p	c = *s->camera->p;
+	const t_p	p = (t_p){.x = c.x + (m * d.x), .y = c.y + (m * d.y),
+		.z = c.z + (m * d.z)};
+
+	return (color_mult(o.color, diffuse_light(s, p, *o.v)));
 }
