@@ -6,7 +6,7 @@
 /*   By: dvandenb <dvandenb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/13 15:41:46 by dvandenb          #+#    #+#             */
-/*   Updated: 2023/12/19 11:16:31 by dvandenb         ###   ########.fr       */
+/*   Updated: 2023/12/19 15:05:14 by dvandenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,6 +62,7 @@ t_p	*eq(t_p *a, t_p b)
 	return (a);
 }
 
+
 void	norm(t_p *a)
 {
 	float	magi;
@@ -72,4 +73,9 @@ void	norm(t_p *a)
 	a->x /= magi;
 	a->y /= magi;
 	a->z /= magi;
+}
+
+float	distance_squared(t_p a, t_p b)
+{
+	return (powf(a.x - b.x, 2) + powf(a.y - b.y, 2) + powf(a.z - b.z, 2));
 }

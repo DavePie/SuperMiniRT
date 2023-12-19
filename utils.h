@@ -6,7 +6,7 @@
 /*   By: dvandenb <dvandenb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/12 16:14:19 by dvandenb          #+#    #+#             */
-/*   Updated: 2023/12/19 11:16:42 by dvandenb         ###   ########.fr       */
+/*   Updated: 2023/12/19 15:03:49 by dvandenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,4 +44,5 @@ t_p		*eq(t_p *a, t_p b);
 
 t_p		*mult(t_p a, float b, t_p *ans);
 
+float	distance_squared(t_p a, t_p b);
 #endif

@@ -4,6 +4,9 @@
 		"algorithm": "c",
 		"chrono": "c",
 		"limits": "c",
-		"ratio": "c"
+		"ratio": "c",
+		"random": "c",
+		"trace_ray.h": "c",
+		"complex": "c"
 	}
 }

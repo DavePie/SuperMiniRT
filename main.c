@@ -6,7 +6,7 @@
 /*   By: dvandenb <dvandenb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/12 16:07:57 by dvandenb          #+#    #+#             */
-/*   Updated: 2023/12/17 14:34:07 by dvandenb         ###   ########.fr       */
+/*   Updated: 2023/12/19 15:07:03 by dvandenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,16 +105,30 @@ int	main(int ac, char *av[])
 	s7->w = 0.4;
 	s7->p = new_p (10,-20,14,&scene);
 	add_back(&scene.lights, s7);
+
+
+	// for (int i = 0; i < 500; i++)
+	// {
+	// 	t_obj *temp = new_obj(2, &scene);
+	// 	temp->w = (float)(r(10) + 1)/5;
+	// 	temp->h = (float)(r(10) + 1)/5;
+	// 	printf("w: %f\n", temp->w);
+	// 	temp->p = new_p((float)(r(40) - 20) / 2, (float)(r(40) - 20) / 2, 13 + (float)(r(40) - 20) / 2, &scene);
+	// 	temp->v = new_p((float)(r(40) - 20) / 2, (float)(r(40) - 20) / 2, 13 + (float)(r(40) - 20) / 2, &scene);
+	// 	norm(temp->v);
+	// 	temp->color = cl(r(255), r(255), r(255));
+	// 	add_back(&scene.objects, temp);
+	// }
 	
-	for (int i = 0; i < 800; i++)
-	{
-		t_obj *temp = new_obj(0, &scene);
-		temp->w = (float)(r(10) + 1)/5;
-		printf("w: %f\n", temp->w);
-		temp->p = new_p((float)(r(40) - 20) / 2, (float)(r(40) - 20) / 2, 13 + (float)(r(40) - 20) / 2, &scene);
-		temp->color = cl(r(255), r(255), r(255));
-		add_back(&scene.objects, temp);
-	}
+	// for (int i = 0; i < 800; i++)
+	// {
+	// 	t_obj *temp = new_obj(0, &scene);
+	// 	temp->w = (float)(r(10) + 1)/5;
+	// 	printf("w: %f\n", temp->w);
+	// 	temp->p = new_p((float)(r(40) - 20) / 2, (float)(r(40) - 20) / 2, 13 + (float)(r(40) - 20) / 2, &scene);
+	// 	temp->color = cl(r(255), r(255), r(255));
+	// 	add_back(&scene.objects, temp);
+	// }
 
 	trace_rays(&scene);
 	mlx_loop(scene.mlx->mlx);

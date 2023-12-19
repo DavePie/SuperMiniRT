@@ -6,7 +6,7 @@
 /*   By: dvandenb <dvandenb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/13 14:44:04 by dvandenb          #+#    #+#             */
-/*   Updated: 2023/12/17 14:47:24 by dvandenb         ###   ########.fr       */
+/*   Updated: 2023/12/19 15:00:25 by dvandenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,13 +34,26 @@ void	inter_ray_sphere(t_p p, t_p r, t_obj *sphere, t_p *ans)
 	ans->y = (-b - sqrt(dis)) / (2 * a);
 }
 
+void	inter_ray_plane(t_p p, t_p r, t_obj *plane, t_p *ans)
+{
+	const float	denom = dot(*plane->v, r);
+	t_p			plane_p;
+
+	*ans = (t_p){.x = FLT_MAX, .y = FLT_MAX, .z = FLT_MAX};
+	plane_p = (t_p){.x = plane->p->x, .y = plane->p->y, .z = plane->p->z};
+	sub(plane_p, p, &plane_p);
+	if (fabs(denom) > 1e-6)
+		ans->x = dot(plane_p, *plane->v) / denom;
+}
+
 t_obj	*calculate_ray(t_scene *s, t_p p, t_p r, t_p *range)
 {
 	float			min_l;
 	t_obj			*min_o;
 	t_obj			*cur;
 	t_p				t;
-	const t_INTER	intersect[2] = {&inter_ray_sphere};
+	const t_INTER	intersect[3] = {&inter_ray_sphere, &inter_ray_plane,
+		&inter_ray_cylinder};
 
 	min_l = FLT_MAX;
 	min_o = 0;
@@ -69,7 +82,14 @@ unsigned int	trace_ray(t_scene *s, t_p r, t_p range)
 	min_l = range.z;
 	if (!min_o)
 		return (0);
-	return (lighting_sphere(s, *min_o, r, min_l));
+	if (min_o->type == SPHERE)
+		return (lighting_sphere(s, *min_o, r, min_l));
+	else if (min_o->type == PLANE)
+		return (lighting_plane(s, *min_o, r, min_l));
+	else if (min_o->type == CYLINDER)
+		return (lighting_cylinder(s, *min_o, r, min_l));
+	else
+		return (0);
 }
 
 void	loop_line(t_scene *s, float x_w)
