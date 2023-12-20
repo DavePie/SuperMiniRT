@@ -6,7 +6,7 @@
 /*   By: dvandenb <dvandenb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/12 12:47:35 by dvandenb          #+#    #+#             */
-/*   Updated: 2023/12/20 12:21:50 by dvandenb         ###   ########.fr       */
+/*   Updated: 2023/12/20 12:59:46 by dvandenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,9 @@
 # define K_UP 126
 # define K_ESC 53
 # define K_W 13
+# define K_A 0
 # define K_S 1
+# define K_D 2
 
 # include <pthread.h>
 

@@ -6,7 +6,7 @@
 /*   By: dvandenb <dvandenb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/13 14:21:28 by dvandenb          #+#    #+#             */
-/*   Updated: 2023/12/19 16:50:42 by dvandenb         ###   ########.fr       */
+/*   Updated: 2023/12/20 13:29:11 by dvandenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,16 +20,32 @@ int	update_window(t_scene *s)
 
 int	key_event(int key, t_scene *s)
 {
-	t_p	temp;
-	float rot = 0.05;
-	t_p	*cv = s->camera->v;
+	t_p		temp;
+	t_p		temp2;
+	float	rot = 0.05;
+	t_p		*cv = s->camera->v;
 
-	printf("%d\n", key);
 	if (key == K_ESC)
 		exit_scene(s);
 	if (key == K_W)
 	{
 		add(*s->camera->p, *s->camera->v, s->camera->p);
+		stop_threads(s);
+		trace_rays(s);
+	}
+	if (key == K_A)
+	{
+		temp2 = (t_p){.x = 0, .y = 1, .z = 0};
+		cross(*s->camera->v, temp2, &temp);
+		add(*s->camera->p, temp, s->camera->p);
+		stop_threads(s);
+		trace_rays(s);
+	}
+	if (key == K_D)
+	{
+		temp2 = (t_p){.x = 0, .y = -1, .z = 0};
+		cross(*s->camera->v, temp2, &temp);
+		add(*s->camera->p, temp, s->camera->p);
 		stop_threads(s);
 		trace_rays(s);
 	}
