@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   structs.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dvandenb <dvandenb@student.42.fr>          +#+  +:+       +#+        */
+/*   By: alde-oli <alde-oli@student.42lausanne.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/12 12:47:35 by dvandenb          #+#    #+#             */
-/*   Updated: 2023/12/20 14:17:56 by dvandenb         ###   ########.fr       */
+/*   Updated: 2023/12/20 23:25:55 by alde-oli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,15 +27,48 @@
 
 # define NUM_THREADS 12
 
-# define K_LEFT 123
-# define K_RIGHT 124
-# define K_DOWN 125
-# define K_UP 126
-# define K_ESC 53
-# define K_W 13
-# define K_A 0
-# define K_S 1
-# define K_D 2
+# ifdef LINUX
+#  define LJ_UP 111
+#  define LJ_DOWN 112
+#  define LJ_LEFT 232
+#  define LJ_RIGHT 65111
+#  define RJ_UP 65293
+#  define RJ_DOWN 65507
+#  define RJ_LEFT 97
+#  define RJ_RIGHT 115
+#  define LS 100
+#  define RS 102
+#  define K_LEFT 65361
+#  define K_RIGHT 65363
+#  define K_DOWN 65364
+#  define K_UP 65362
+#  define K_ESC 65307
+#  define K_W 119
+#  define K_A 97
+#  define K_S 115
+#  define K_D 100
+# else
+#  define LINUX 0
+#  define LJ_UP 0
+#  define LJ_DOWN 0
+#  define LJ_LEFT 0
+#  define LJ_RIGHT 0
+#  define RJ_UP 65293
+#  define RJ_DOWN 65507
+#  define RJ_LEFT 97
+#  define RJ_RIGHT 115
+#  define LS 0
+#  define RS 0
+#  define K_LEFT 123
+#  define K_RIGHT 124
+#  define K_DOWN 125
+#  define K_UP 126
+#  define K_ESC 53
+#  define K_W 13
+#  define K_A 0
+#  define K_S 1
+#  define K_D 2
+# endif
 
 # define CHECKERBOARD 1
 

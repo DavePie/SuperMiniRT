@@ -15,10 +15,10 @@ FILE ?=
 all: $(NAME)
 
 $(NAME): $(CFILES) $(LIBDIR) $(LIBFTPATH)
-	$(CC) $(CFLAGS) $(CFILES) -o $(NAME) -L mlx -lmlx -L $(LIBFTDIR) -lft -framework OpenGL -framework Appkit
+	$(CC) $(CFLAGS) $(CFILES) -o $(NAME) -L mlx -lmlx -L $(LIBFTDIR) -lft -framework OpenGL -framework Appkit -D MACOS=1
 
 linux: $(CFILES) $(LIBFTPATH)
-	$(CC) $(CFLAGS) $(CFILES) -o $(NAME) -L mlx -lmlx -L $(LIBFTDIR) -lft -lXext -lX11 -lm
+	$(CC) $(CFLAGS) $(CFILES) -o $(NAME) -L mlx -lmlx -L $(LIBFTDIR) -lft -lXext -lX11 -lm -D LINUX=1
 
 $(LIBDIR):
 	make -C mlx

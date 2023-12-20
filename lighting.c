@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lighting.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dvandenb <dvandenb@student.42.fr>          +#+  +:+       +#+        */
+/*   By: alde-oli <alde-oli@student.42lausanne.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/13 17:35:08 by dvandenb          #+#    #+#             */
-/*   Updated: 2023/12/20 19:07:46 by dvandenb         ###   ########.fr       */
+/*   Updated: 2023/12/20 20:48:00 by alde-oli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -162,15 +162,13 @@ float	get_reflect(t_scene *s, t_p n, t_p d, int depth)
 
 float	lighting_sphere(t_scene *s, t_obj o, t_p d, int depth, float m)
 {
-	const t_p		p = (t_p){.x = s->camera->p->x + (m*d.x),
-		.y = s->camera->p->y + (m*d.y),
-		.z = s->camera->p->z + (m*d.z)};
+	const t_p		p = (t_p){.x = s->camera->p->x + (m * d.x),
+		.y = s->camera->p->y + (m * d.y), .z = s->camera->p->z + (m * d.z)};
 	t_p				n;
 	t_p				vec;
 	unsigned int	color;
 	unsigned int	reflected;
 
-	printf("%f %f %f\n", n.x, n.y, n.z);
 	norm(&d);
 	sub(p, *o.p, &vec);
 	color = o.color;
@@ -214,9 +212,9 @@ static t_p	calculate_cylinder_normal(t_obj o, t_p p)
 
 float	lighting_cylinder(t_scene *s, t_obj o, t_p d, int depth, float m)
 {
-	const t_p		p = (t_p){.x = s->camera->p->x + (m*d.x),
-		.y =  s->camera->p->y + (d.y),
-		.z =  s->camera->p->z + (d.z)};
+	const t_p		p = (t_p){.x = s->camera->p->x + (m * d.x),
+		.y = s->camera->p->y + (d.y),
+		.z = s->camera->p->z + (d.z)};
 	t_p				n;
 	unsigned int	reflected;
 	unsigned int	color;
@@ -233,12 +231,14 @@ float	lighting_cylinder(t_scene *s, t_obj o, t_p d, int depth, float m)
 float	lighting_plane(t_scene *s, t_obj o, t_p d, int depth, float m)
 {
 	const t_p		c = *s->camera->p;
-	const t_p		p = (t_p){.x = c.x + (m*d.x), .y = c.y + (m*d.y),
-		.z = c.z + (m*d.z)};
+	const t_p		p = (t_p){.x = c.x + (m * d.x), .y = c.y + (m * d.y),
+		.z = c.z + (m * d.z)};
 	unsigned int	reflected;
 	unsigned int	color;
 
 	norm(&d);
+	if (dot(*o.v, d) > 0)
+		norm(mult(*o.v, -1, o.v));
 	color = (color_mult(o.color, diffuse_light(s, p, *o.v, &o)));
 	if (o.distrupt == CHECKERBOARD)
 		apply_checker_board_plane(*o.v, *o.p, p, &color);

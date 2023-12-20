@@ -7,6 +7,9 @@
 		"ratio": "c",
 		"random": "c",
 		"trace_ray.h": "c",
-		"complex": "c"
+		"complex": "c",
+		"events.h": "c",
+		"minirt.h": "c",
+		"iterator": "c"
 	}
 }

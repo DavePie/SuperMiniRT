@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dvandenb <dvandenb@student.42.fr>          +#+  +:+       +#+        */
+/*   By: alde-oli <alde-oli@student.42lausanne.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/12 16:07:57 by dvandenb          #+#    #+#             */
-/*   Updated: 2023/12/19 15:07:03 by dvandenb         ###   ########.fr       */
+/*   Updated: 2023/12/20 22:16:59 by alde-oli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,63 +48,45 @@ int	main(int ac, char *av[])
 	// get_objs(&scene, fd);
 	init_mlx(&scene);
 	mlx_hook(scene.mlx->win, B_EXIT, 0, exit_scene, &scene);
-	mlx_key_hook(scene.mlx->win, key_event, &scene);
+	if (LINUX)
+		mlx_hook(scene.mlx->win, 2, 1L << 0, key_l_event, &scene);
+	else
+		mlx_key_hook(scene.mlx->win, key_event, &scene);
 	mlx_loop_hook(scene.mlx->mlx, update_window, &scene);
-	
-	t_obj *c = new_obj(0, &scene);
-	c->p = new_p(10, 5, -10, &scene);
-	c->v = new_p(-0.2, 0.1,  0.5, &scene);
-	norm(c->v);
-	add_back(&scene.camera, c);
-	t_obj *s = new_obj(0, &scene);
-	s->p = new_p(0, 0, 14, &scene);
-	s->w = 7;
-	s->color = 255 << 16;
-	add_back(&scene.objects, s);
-	
-	t_obj *s2 = new_obj(0, &scene);
-	s2->p = new_p(0, 0, 0, &scene);
-	s2->w = 5;
-	s2->color = cl(0, 0, 255);
-	add_back(&scene.objects, s2);
-	
-	t_obj *s3 = new_obj(0, &scene);
-	s3->p = new_p(5, 0, 12, &scene);
-	s3->w = 1.5;
-	s3->color = 255 << 8;
-	add_back(&scene.objects, s3);
-	
-	t_obj *s4 = new_obj(0, &scene);
-	s4->p = new_p(12, 3, 14, &scene);
-	s4->w = 3;
-	s4->color = cl(255, 255, 255);//==================
-	add_back(&scene.objects, s4);
-	// t_obj *s10 = new_obj(0, &scene);
-	// s10->p = new_p(7, 3, 9, &scene);
-	// s10->w = 3;
-	// s10->color = 255 << 16;
-	// add_back(&scene.objects, s10);
-	
-	// t_obj *s9 = new_obj(0, &scene);
-	// s9->p = new_p(5, 5, 15, &scene);
-	// s9->w = 12;
-	// s9->color = cl(255, 255, 0);
-	// add_back(&scene.objects, s9);
-	
-	t_obj *s5 = new_obj(0, &scene);
-	s5->w = 0.1;
-	add_back(&scene.ambient, s5);
-	
-	t_obj *s6 = new_obj(0, &scene);
-	s6->w = 0.4;
-	s6->p = new_p (100,0,14,&scene);
-	add_back(&scene.lights, s6);
-	
 
-	t_obj *s7 = new_obj(0, &scene);
-	s7->w = 0.4;
-	s7->p = new_p (10,-20,14,&scene);
-	add_back(&scene.lights, s7);
+t_obj *c = new_obj(0, &scene);
+    c->p = new_p(-20, -20, -50, &scene);
+    c->v = new_p(1, 1, 2, &scene);
+    norm(c->v);
+    add_back(&scene.camera, c);
+
+    t_obj *s5 = new_obj(0, &scene);
+    s5->w = 0.2;
+    add_back(&scene.ambient, s5);
+
+    t_obj *s6 = new_obj(0, &scene);
+    s6->w = 0.4;
+    s6->p = new_p (50, 0, -50, &scene);
+    add_back(&scene.lights, s6);
+
+    t_obj *s7 = new_obj(0, &scene);
+    s7->w = 0.4;
+    s7->p = new_p (10, -40, 0, &scene);
+    add_back(&scene.lights, s7);
+
+    t_obj *sphere = new_obj(0, &scene);
+    sphere->p = new_p(8, 0, 0, &scene);
+    sphere->w = 5;
+    sphere->color = cl(255, 0, 0);
+    add_back(&scene.objects, sphere);
+
+    t_obj *plane = new_obj(1, &scene);
+    plane->p = new_p(0, 0, 30, &scene);
+    plane->v = new_p(0, 0, -1, &scene);
+    norm(plane->v);
+    plane->color = cl(255, 255, 255);
+    plane->reflect = 1;
+    add_back(&scene.objects, plane);
 
 
 	// for (int i = 0; i < 500; i++)
