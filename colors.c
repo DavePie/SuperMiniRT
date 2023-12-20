@@ -6,7 +6,7 @@
 /*   By: dvandenb <dvandenb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/13 14:16:27 by dvandenb          #+#    #+#             */
-/*   Updated: 2023/12/19 14:52:20 by dvandenb         ###   ########.fr       */
+/*   Updated: 2023/12/20 14:36:55 by dvandenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ void	put_pixel(t_scene *s, int x, int y, unsigned int color)
 	const int	w = s->mlx->width;
 
 	pix = s->mlx->pix;
-	pix[(x + y * w) * 4 + 0] = color  & 0xFF;
+	pix[(x + y * w) * 4 + 0] = color & 0xFF;
 	pix[(x + y * w) * 4 + 1] = color >> 8 & 0xFF;
 	pix[(x + y * w) * 4 + 2] = color >> 16 & 0xFF;
 	pix[(x + y * w) * 4 + 3] = color >> 24 & 0xFF;
@@ -62,5 +62,5 @@ unsigned int	cl(int r, int g, int b)
 		g += 255;
 	if (b < 0)
 		b += 255;
-	return ((r << 16 ) | (g << 8 ) | (b ));
+	return ((r << 16) | (g << 8) | (b));
 }

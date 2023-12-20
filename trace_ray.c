@@ -6,7 +6,7 @@
 /*   By: dvandenb <dvandenb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/13 14:44:04 by dvandenb          #+#    #+#             */
-/*   Updated: 2023/12/20 12:30:51 by dvandenb         ###   ########.fr       */
+/*   Updated: 2023/12/20 17:04:10 by dvandenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 #include "minirt.h"
 
 typedef void	(*t_INTER)(t_p, t_p, t_obj *, t_p *);
+typedef float	(*t_LIGHT)(t_scene *, t_obj, t_p, int, float);
 
 void	inter_ray_sphere(t_p p, t_p r, t_obj *sphere, t_p *ans)
 {
@@ -76,20 +77,16 @@ t_obj	*calculate_ray(t_scene *s, t_p p, t_p r, t_p *range)
 
 unsigned int	trace_ray(t_scene *s, t_p r, t_p range, int depth)
 {
-	float		min_l;
-	const t_obj	*min_o = calculate_ray(s, *s->camera->p, r, &range);
+	float			min_l;
+	const t_obj		*min_o = calculate_ray(s, *s->camera->p, r, &range);
+	const t_LIGHT	light[3] = {lighting_sphere, lighting_plane,
+		lighting_cylinder};
 
 	min_l = range.z;
+	//mult(r, min_l, &r);
 	if (!min_o)
 		return (0);
-	if (min_o->type == SPHERE)
-		return (lighting_sphere(s, *min_o, r, min_l, depth));
-	else if (min_o->type == PLANE)
-		return (lighting_plane(s, *min_o, r, min_l, depth));
-	else if (min_o->type == CYLINDER)
-		return (lighting_cylinder(s, *min_o, r, min_l, depth));
-	else
-		return (0);
+	return (light[min_o->type](s, *min_o, r, depth, min_l));
 }
 
 void	loop_line(t_scene *s, float x_w)

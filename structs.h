@@ -6,7 +6,7 @@
 /*   By: dvandenb <dvandenb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/12 12:47:35 by dvandenb          #+#    #+#             */
-/*   Updated: 2023/12/20 12:59:46 by dvandenb         ###   ########.fr       */
+/*   Updated: 2023/12/20 14:17:56 by dvandenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,8 @@
 # define K_A 0
 # define K_S 1
 # define K_D 2
+
+# define CHECKERBOARD 1
 
 # include <pthread.h>
 
@@ -74,6 +76,7 @@ typedef struct s_obj
 	float			reflect;
 	t_img			*i;
 	t_img			*b;
+	int				distrupt;
 }													t_obj;
 
 typedef struct s_mlx
