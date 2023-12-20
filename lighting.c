@@ -6,7 +6,7 @@
 /*   By: dvandenb <dvandenb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/13 17:35:08 by dvandenb          #+#    #+#             */
-/*   Updated: 2023/12/20 17:08:38 by dvandenb         ###   ########.fr       */
+/*   Updated: 2023/12/20 19:07:46 by dvandenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,12 +20,13 @@ float	diffuse_light(t_scene *s, t_p p, t_p n, t_obj *o)
 	t_obj		*l;
 	t_p			vs[4];
 
-	vs[3] = (t_p){.x = 0.01, .y = FLT_MAX};
 	i = s->ambient->w;
 	l = s->lights;
 	while (l)
 	{
-		norm(sub(*l->p, p, &vs[0]));
+		sub(*l->p, p, &vs[0]);
+		vs[3] = (t_p){.x = 0.01, .y = mag(vs[0])};
+		norm(&vs[0]);
 		if (calculate_ray(s, p, vs[0], &(vs[3])))
 		{
 			l = l->next;
