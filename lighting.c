@@ -6,7 +6,7 @@
 /*   By: dvandenb <dvandenb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/13 17:35:08 by dvandenb          #+#    #+#             */
-/*   Updated: 2023/12/19 15:05:05 by dvandenb         ###   ########.fr       */
+/*   Updated: 2023/12/20 12:29:42 by dvandenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,14 +104,30 @@ void	map_sphere_bmp(t_obj o, t_p vec, t_p *n)
 	norm(n);
 }
 
-float	lighting_sphere(t_scene *s, t_obj o, t_p d, float m)
+void	reflect_ray(t_p r, t_p n, t_p *ans)
 {
-	const t_p		c = *s->camera->p;
-	const t_p		p = (t_p){.x = c.x + (m * d.x), .y = c.y + (m * d.y),
-		.z = c.z + (m * d.z)};
+	sub(*mult(*mult(n, 2, ans), dot(n, r), ans), r, ans);
+}
+
+float	get_reflect(t_scene *s, t_p n, t_p d, int depth)
+{
+	t_p			r;
+	const t_p	range = (t_p){.x = 0.001, .y = FLT_MAX};
+
+	mult(d, -1, &d);
+	reflect_ray(d, n, &r);
+	return (trace_ray(s, r, range, depth - 1));
+}
+
+float	lighting_sphere(t_scene *s, t_obj o, t_p d, float m, int depth)
+{
+	const t_p		p = (t_p){.x = s->camera->p->x + (m * d.x),
+		.y = s->camera->p->y + (m * d.y),
+		.z = s->camera->p->z + (m * d.z)};
 	t_p				n;
 	t_p				vec;
 	unsigned int	color;
+	unsigned int	reflected;
 
 	sub(p, *o.p, &vec);
 	color = o.color;
@@ -120,7 +136,12 @@ float	lighting_sphere(t_scene *s, t_obj o, t_p d, float m)
 		color = map_sphere_img(o, vec);
 	if (o.b)
 		map_sphere_bmp(o, vec, &n);
-	return (color_mult(color, diffuse_light(s, p, n, &o)));
+	color = color_mult(color, diffuse_light(s, p, n, &o));
+	if (!depth || !o.reflect)
+		return (color);
+	reflected = get_reflect(s, n, d, depth - 1);
+	return (color_mult(color, (1 - o.reflect))
+		+ color_mult(reflected, o.reflect));
 }
 
 static t_p	calculate_cylinder_normal(t_obj o, t_p p)
@@ -145,23 +166,35 @@ static t_p	calculate_cylinder_normal(t_obj o, t_p p)
 	}
 }
 
-float	lighting_cylinder(t_scene *s, t_obj o, t_p d, float m)
+float	lighting_cylinder(t_scene *s, t_obj o, t_p d, float m, int depth)
 {
-	const t_p	c = *s->camera->p;
-	const t_p	p = (t_p){.x = c.x + (m * d.x), .y = c.y + (m * d.y),
+	const t_p		c = *s->camera->p;
+	const t_p		p = (t_p){.x = c.x + (m * d.x), .y = c.y + (m * d.y),
 		.z = c.z + (m * d.z)};
-	t_p			n;
+	t_p				n;
+	unsigned int	reflected;
+	unsigned int	color;
 
 	n = calculate_cylinder_normal(o, p);
 	norm(&n);
-	return (color_mult(o.color, diffuse_light(s, p, n, &o)));
+	color = (color_mult(o.color, diffuse_light(s, p, n, &o)));
+	reflected = get_reflect(s, n, d, depth - 1);
+	return (color_mult(color, (1 - o.reflect))
+		+ color_mult(reflected, o.reflect));
 }
 
-float	lighting_plane(t_scene *s, t_obj o, t_p d, float m)
+float	lighting_plane(t_scene *s, t_obj o, t_p d, float m, int depth)
 {
-	const t_p	c = *s->camera->p;
-	const t_p	p = (t_p){.x = c.x + (m * d.x), .y = c.y + (m * d.y),
+	const t_p		c = *s->camera->p;
+	const t_p		p = (t_p){.x = c.x + (m * d.x), .y = c.y + (m * d.y),
 		.z = c.z + (m * d.z)};
+	unsigned int	reflected;
+	unsigned int	color;
 
-	return (color_mult(o.color, diffuse_light(s, p, *o.v, &o)));
+	color = (color_mult(o.color, diffuse_light(s, p, *o.v, &o)));
+	if (!depth || !o.reflect)
+		return (color);
+	reflected = get_reflect(s, *o.v, d, depth - 1);
+	return (color_mult(color, (1 - o.reflect))
+		+ color_mult(reflected, o.reflect));
 }

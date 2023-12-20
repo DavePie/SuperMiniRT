@@ -6,7 +6,7 @@
 /*   By: dvandenb <dvandenb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/13 14:44:04 by dvandenb          #+#    #+#             */
-/*   Updated: 2023/12/19 15:00:25 by dvandenb         ###   ########.fr       */
+/*   Updated: 2023/12/20 12:30:51 by dvandenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,7 +74,7 @@ t_obj	*calculate_ray(t_scene *s, t_p p, t_p r, t_p *range)
 	return (min_o);
 }
 
-unsigned int	trace_ray(t_scene *s, t_p r, t_p range)
+unsigned int	trace_ray(t_scene *s, t_p r, t_p range, int depth)
 {
 	float		min_l;
 	const t_obj	*min_o = calculate_ray(s, *s->camera->p, r, &range);
@@ -83,11 +83,11 @@ unsigned int	trace_ray(t_scene *s, t_p r, t_p range)
 	if (!min_o)
 		return (0);
 	if (min_o->type == SPHERE)
-		return (lighting_sphere(s, *min_o, r, min_l));
+		return (lighting_sphere(s, *min_o, r, min_l, depth));
 	else if (min_o->type == PLANE)
-		return (lighting_plane(s, *min_o, r, min_l));
+		return (lighting_plane(s, *min_o, r, min_l, depth));
 	else if (min_o->type == CYLINDER)
-		return (lighting_cylinder(s, *min_o, r, min_l));
+		return (lighting_cylinder(s, *min_o, r, min_l, depth));
 	else
 		return (0);
 }
@@ -112,7 +112,7 @@ void	loop_line(t_scene *s, float x_w)
 			.y = s->camera->v->y + (y * s->o_y.y),
 			.z = s->camera->v->z + (x * s->o_x.z) + (y * s->o_y.z)};
 		norm(&v);
-		put_pixel(s, x_w, y_w, trace_ray(s, v, range));
+		put_pixel(s, x_w, y_w, trace_ray(s, v, range, 100));
 	}
 }
 

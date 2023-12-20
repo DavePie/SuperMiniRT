@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_objs.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alde-oli <alde-oli@student.42lausanne.c    +#+  +:+       +#+        */
+/*   By: dvandenb <dvandenb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/13 13:11:59 by alde-oli          #+#    #+#             */
-/*   Updated: 2023/12/14 17:59:32 by alde-oli         ###   ########.fr       */
+/*   Updated: 2023/12/20 12:44:01 by dvandenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ int	match_type(char *line, int *i, t_obj *new_obj)
 	return (-1);
 }
 
-int	do_split(char *line, char ***split, int *atr)
+int	do_split(char *line, char ***split, const int *atr)
 {
 	printf("line = %s\n", line);
 	if (count_words(line) != (atr[0] + atr[1] + atr[2] + atr[3] + atr[4] + 1))
@@ -56,7 +56,7 @@ void	set_attributes(t_obj *new_obj, char *line, int fd, t_scene *scene)
 {
 	int			i;
 	char		**split;
-	static int	a[7][5] = {{1, 0, 1, 0, 1}, {1, 1, 0, 0, 1}, {1, 1, 1, 1, 1},
+	const int	a[7][5] = {{1, 0, 1, 0, 1}, {1, 1, 0, 0, 1}, {1, 1, 1, 1, 1},
 	{1, 1, 1, 1, 1}, {0, 0, 1, 0, 1}, {1, 1, 1, 0, 0}, {1, 0, 1, 0, 1}};
 
 	split = NULL;

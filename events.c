@@ -6,7 +6,7 @@
 /*   By: dvandenb <dvandenb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/13 14:21:28 by dvandenb          #+#    #+#             */
-/*   Updated: 2023/12/19 14:51:44 by dvandenb         ###   ########.fr       */
+/*   Updated: 2023/12/19 16:50:42 by dvandenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,11 +20,58 @@ int	update_window(t_scene *s)
 
 int	key_event(int key, t_scene *s)
 {
+	t_p	temp;
+	float rot = 0.05;
+	t_p	*cv = s->camera->v;
+
+	printf("%d\n", key);
 	if (key == K_ESC)
 		exit_scene(s);
-	if (key == K_UP)
+	if (key == K_W)
 	{
 		add(*s->camera->p, *s->camera->v, s->camera->p);
+		stop_threads(s);
+		trace_rays(s);
+	}
+	if (key == K_S)
+	{
+		sub(*s->camera->p, *s->camera->v, s->camera->p);
+		stop_threads(s);
+		trace_rays(s);
+	}
+	if (key == K_LEFT)
+	{
+		temp = (t_p){.x = cosf(rot) * cv->x - (sinf(rot) * cv->z),
+			.z = sinf(rot) * cv->x + (cosf(rot) * cv->z), .y = cv->y};
+		norm(&temp);
+		*cv = temp;
+		stop_threads(s);
+		trace_rays(s);
+	}
+	if (key == K_RIGHT)
+	{
+		temp = (t_p){.x = cosf(-rot) * cv->x - (sinf(-rot) * cv->z),
+			.z = sinf(-rot) * cv->x + (cosf(-rot) * cv->z), .y = cv->y};
+		norm(&temp);
+		*cv = temp;
+		stop_threads(s);
+		trace_rays(s);
+	}
+	if (key == K_DOWN)
+	{
+		temp = (t_p){.x = cosf(-rot) * cv->x - (sinf(-rot) * cv->y),
+			.y = sinf(-rot) * cv->x + (cosf(-rot) * cv->y), .z = cv->z};
+		norm(&temp);
+		*cv = temp;
+		stop_threads(s);
+		trace_rays(s);
+	}
+	if (key == K_UP)
+	{
+		temp = (t_p){.x = cosf(rot) * cv->x - (sinf(rot) * cv->y),
+			.y = sinf(rot) * cv->x + (cosf(rot) * cv->y), .z = cv->z};
+		norm(&temp);
+		*cv = temp;
 		stop_threads(s);
 		trace_rays(s);
 	}

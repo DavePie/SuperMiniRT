@@ -6,7 +6,7 @@
 /*   By: dvandenb <dvandenb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/12 12:47:35 by dvandenb          #+#    #+#             */
-/*   Updated: 2023/12/19 12:29:19 by dvandenb         ###   ########.fr       */
+/*   Updated: 2023/12/20 12:21:50 by dvandenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,8 +27,13 @@
 
 # define NUM_THREADS 12
 
+# define K_LEFT 123
+# define K_RIGHT 124
+# define K_DOWN 125
 # define K_UP 126
 # define K_ESC 53
+# define K_W 13
+# define K_S 1
 
 # include <pthread.h>
 
@@ -64,6 +69,7 @@ typedef struct s_obj
 	float			w;
 	float			h;
 	float			specular;
+	float			reflect;
 	t_img			*i;
 	t_img			*b;
 }													t_obj;

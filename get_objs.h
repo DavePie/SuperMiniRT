@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_objs.h                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alde-oli <alde-oli@student.42lausanne.c    +#+  +:+       +#+        */
+/*   By: dvandenb <dvandenb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/14 12:55:10 by alde-oli          #+#    #+#             */
-/*   Updated: 2023/12/14 16:38:41 by alde-oli         ###   ########.fr       */
+/*   Updated: 2023/12/19 15:39:04 by dvandenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 # include "minirt.h"
 
 int				count_words(char *line);
-int				do_split(char *line, char ***split, int *atr);
+int				do_split(char *line, char ***split, const int *atr);
 unsigned int	get_color(char *line);
 t_p				*get_coords(char *line, t_scene *scene);
 int				match_type(char *line, int *i, t_obj *new_obj);

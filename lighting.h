@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lighting.h                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alde-oli <alde-oli@student.42lausanne.c    +#+  +:+       +#+        */
+/*   By: dvandenb <dvandenb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/13 17:57:09 by dvandenb          #+#    #+#             */
-/*   Updated: 2023/12/18 13:04:55 by alde-oli         ###   ########.fr       */
+/*   Updated: 2023/12/20 12:31:04 by dvandenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,8 +15,8 @@
 # include "structs.h"
 # include "minirt.h"
 
-float	lighting_sphere(t_scene *s, t_obj o, t_p d, float m);
-float	lighting_cylinder(t_scene *s, t_obj o, t_p d, float m);
-float	lighting_plane(t_scene *s, t_obj o, t_p d, float m);
+float	lighting_sphere(t_scene *s, t_obj o, t_p d, float m, int depth);
+float	lighting_cylinder(t_scene *s, t_obj o, t_p d, float m, int depth);
+float	lighting_plane(t_scene *s, t_obj o, t_p d, float m, int depth);
 
 #endif
