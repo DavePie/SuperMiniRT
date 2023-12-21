@@ -1,27 +1,30 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strncmp.c                                       :+:      :+:    :+:   */
+/*   ft_is_number.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: alde-oli <alde-oli@student.42lausanne.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/10/09 13:22:39 by dvandenb          #+#    #+#             */
-/*   Updated: 2023/12/21 09:23:20 by alde-oli         ###   ########.fr       */
+/*   Created: 2023/12/21 08:59:33 by alde-oli          #+#    #+#             */
+/*   Updated: 2023/12/21 11:29:11 by alde-oli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stdlib.h>
-#include <stdio.h>
+#include "libft.h"
 
-int	ft_strncmp(const char *s1, const char *s2, size_t a)
+int	ft_is_number(char *s, int dotted)
 {
-	while (*s1 != '\0' && *s1 == *s2 && a > 0)
+	if (*s == '-')
 	{
-		s1++;
-		s2++;
-		a--;
+		s++;
+		if (!*s)
+			return (0);
 	}
-	if (a == 0)
-		return (0);
-	return ((unsigned char)*s1 - (unsigned char)*s2);
+	while (*s && *s != '\n')
+	{
+		if (!ft_isdigit(*s) && !(dotted && *s == '.'))
+			return (0);
+		s++;
+	}
+	return (1);
 }

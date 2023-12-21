@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_objs.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dvandenb <dvandenb@student.42.fr>          +#+  +:+       +#+        */
+/*   By: alde-oli <alde-oli@student.42lausanne.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/13 13:11:59 by alde-oli          #+#    #+#             */
-/*   Updated: 2023/12/20 12:44:01 by dvandenb         ###   ########.fr       */
+/*   Updated: 2023/12/21 11:50:54 by alde-oli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,10 +20,12 @@ int	match_type(char *line, int *i, t_obj *new_obj)
 {
 	static char	*type[] = {"sp", "pl", "cy", "zz", "A", "C", "L"};
 
+	printf("line: %s\n", line);
 	*i = 0;
 	while (line[*i] && type[*i])
 	{
-		if (!ft_strncmp(line, type[*i], ft_strlen(type[*i])))
+		if (*line == *type[*i] && line[ft_strlen(type[*i]) - 1]
+			== type[*i][ft_strlen(type[*i]) - 1])
 		{
 			new_obj->type = *i;
 			return (*i);
@@ -35,7 +37,6 @@ int	match_type(char *line, int *i, t_obj *new_obj)
 
 int	do_split(char *line, char ***split, const int *atr)
 {
-	printf("line = %s\n", line);
 	if (count_words(line) != (atr[0] + atr[1] + atr[2] + atr[3] + atr[4] + 1))
 		return (1);
 	*split = ft_split(line, ' ');
@@ -60,10 +61,6 @@ void	set_attributes(t_obj *new_obj, char *line, int fd, t_scene *scene)
 	{1, 1, 1, 1, 1}, {0, 0, 1, 0, 1}, {1, 1, 1, 0, 0}, {1, 0, 1, 0, 1}};
 
 	split = NULL;
-	printf("\n\n\n\nline = %s\n", line);
-	printf("match = %d\n", match_type(line, &i, new_obj));
-	printf("words = %d\n", count_words(line));
-	printf("attr sum = %d\n", a[i][0] + a[i][1] + a[i][2] + a[i][3] + a[i][4]);
 	if (match_type(line, &i, new_obj) == -1 || do_split(line, &split, a[i]))
 	{
 		free(line);

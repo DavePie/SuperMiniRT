@@ -6,11 +6,12 @@
 /*   By: alde-oli <alde-oli@student.42lausanne.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/14 14:52:17 by alde-oli          #+#    #+#             */
-/*   Updated: 2023/12/14 17:18:50 by alde-oli         ###   ########.fr       */
+/*   Updated: 2023/12/21 09:07:20 by alde-oli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
+#include "stdio.h"
 
 static float	convert_integer_part(char **str)
 {
@@ -64,6 +65,11 @@ float	ft_atof(char *str)
 	float	integer_part;
 	float	fractional_part;
 
+	if (!ft_is_number(str, 1))
+	{
+		printf("%s: value not valid: set to 0\n", str);
+		return (0);
+	}
 	sign = skip_spaces(&str);
 	integer_part = convert_integer_part(&str);
 	if (*str == '.')

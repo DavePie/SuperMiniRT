@@ -6,7 +6,7 @@
 /*   By: alde-oli <alde-oli@student.42lausanne.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/09 12:36:17 by dvandenb          #+#    #+#             */
-/*   Updated: 2023/12/14 15:57:40 by alde-oli         ###   ########.fr       */
+/*   Updated: 2023/12/21 09:02:53 by alde-oli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,7 @@ int				ft_isalpha(int c);
 int				ft_isascii(int c);
 int				ft_isdigit(int c);
 int				ft_isprint(int c);
+int				ft_is_number(char *s, int dotted);
 void			*ft_memccpy(void *dst, const void *src, int c,
 					size_t n);
 void			*ft_memchr(const void *s, int c, size_t n);
