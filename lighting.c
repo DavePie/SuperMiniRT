@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lighting.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alde-oli <alde-oli@student.42lausanne.c    +#+  +:+       +#+        */
+/*   By: dvandenb <dvandenb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/13 17:35:08 by dvandenb          #+#    #+#             */
-/*   Updated: 2023/12/20 20:48:00 by alde-oli         ###   ########.fr       */
+/*   Updated: 2023/12/21 16:16:52 by dvandenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -160,10 +160,10 @@ float	get_reflect(t_scene *s, t_p n, t_p d, int depth)
 	return (trace_ray(s, r, range, depth - 1));
 }
 
-float	lighting_sphere(t_scene *s, t_obj o, t_p d, int depth, float m)
+float	lighting_sphere(t_scene *s, t_obj o, t_p d, int depth)
 {
-	const t_p		p = (t_p){.x = s->camera->p->x + (m * d.x),
-		.y = s->camera->p->y + (m * d.y), .z = s->camera->p->z + (m * d.z)};
+	const t_p		p = (t_p){.x = s->camera->p->x + ( d.x),
+		.y = s->camera->p->y + (d.y), .z = s->camera->p->z + ( d.z)};
 	t_p				n;
 	t_p				vec;
 	unsigned int	color;
@@ -188,7 +188,7 @@ float	lighting_sphere(t_scene *s, t_obj o, t_p d, int depth, float m)
 		+ color_mult(reflected, o.reflect));
 }
 
-static t_p	calculate_cylinder_normal(t_obj o, t_p p)
+void	calculate_cylinder_normal(t_obj o, t_p p, t_p *n)
 {
 	const t_p	cp = {p.x - o.p->x, p.y - o.p->y, p.z - o.p->z};
 	const float	proj_l = dot(cp, *o.v);
@@ -197,42 +197,44 @@ static t_p	calculate_cylinder_normal(t_obj o, t_p p)
 	t_p			normal;
 
 	if (fabs(proj_l) < ep)
-		return ((t_p){-o.v->x, -o.v->y, -o.v->z});
+		*n = ((t_p){-o.v->x, -o.v->y, -o.v->z});
 	else if (fabs(proj_l - o.h) < ep)
-		return ((t_p){o.v->x, o.v->y, o.v->z});
+		*n = ((t_p){o.v->x, o.v->y, o.v->z});
 	else
 	{
 		proj = (t_p){proj_l * o.v->x,
 			proj_l * o.v->y, proj_l * o.v->z};
 		normal = (t_p){cp.x - proj.x, cp.y - proj.y, cp.z - proj.z};
 		norm(&normal);
-		return (normal);
+		*n = normal;
 	}
 }
 
-float	lighting_cylinder(t_scene *s, t_obj o, t_p d, int depth, float m)
+float	lighting_cylinder(t_scene *s, t_obj o, t_p d, int depth)
 {
-	const t_p		p = (t_p){.x = s->camera->p->x + (m * d.x),
-		.y = s->camera->p->y + (d.y),
+	const t_p		p = (t_p){.x = s->camera->p->x + (d.x),
+		.y = s->camera->p->y + ( d.y),
 		.z = s->camera->p->z + (d.z)};
 	t_p				n;
 	unsigned int	reflected;
 	unsigned int	color;
 
 	norm(&d);
-	n = calculate_cylinder_normal(o, p);
+	calculate_cylinder_normal(o, p, &n);
 	norm(&n);
 	color = (color_mult(o.color, diffuse_light(s, p, n, &o)));
+	if (!depth || !o.reflect)
+		return (color);
 	reflected = get_reflect(s, n, d, depth - 1);
 	return (color_mult(color, (1 - o.reflect))
 		+ color_mult(reflected, o.reflect));
 }
 
-float	lighting_plane(t_scene *s, t_obj o, t_p d, int depth, float m)
+float	lighting_plane(t_scene *s, t_obj o, t_p d, int depth)
 {
 	const t_p		c = *s->camera->p;
-	const t_p		p = (t_p){.x = c.x + (m * d.x), .y = c.y + (m * d.y),
-		.z = c.z + (m * d.z)};
+	const t_p		p = (t_p){.x = c.x + (d.x), .y = c.y + (d.y),
+		.z = c.z + d.z};
 	unsigned int	reflected;
 	unsigned int	color;
 

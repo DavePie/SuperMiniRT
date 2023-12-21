@@ -6,7 +6,7 @@
 /*   By: dvandenb <dvandenb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/13 14:44:04 by dvandenb          #+#    #+#             */
-/*   Updated: 2023/12/20 17:04:10 by dvandenb         ###   ########.fr       */
+/*   Updated: 2023/12/21 16:16:29 by dvandenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 #include "minirt.h"
 
 typedef void	(*t_INTER)(t_p, t_p, t_obj *, t_p *);
-typedef float	(*t_LIGHT)(t_scene *, t_obj, t_p, int, float);
+typedef float	(*t_LIGHT)(t_scene *, t_obj, t_p, int);
 
 void	inter_ray_sphere(t_p p, t_p r, t_obj *sphere, t_p *ans)
 {
@@ -83,10 +83,10 @@ unsigned int	trace_ray(t_scene *s, t_p r, t_p range, int depth)
 		lighting_cylinder};
 
 	min_l = range.z;
-	//mult(r, min_l, &r);
+	mult(r, min_l, &r);
 	if (!min_o)
 		return (0);
-	return (light[min_o->type](s, *min_o, r, depth, min_l));
+	return (light[min_o->type](s, *min_o, r, depth));
 }
 
 void	loop_line(t_scene *s, float x_w)
