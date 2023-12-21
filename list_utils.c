@@ -6,7 +6,7 @@
 /*   By: dvandenb <dvandenb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/13 13:36:15 by dvandenb          #+#    #+#             */
-/*   Updated: 2023/12/13 17:24:58 by dvandenb         ###   ########.fr       */
+/*   Updated: 2023/12/21 17:32:38 by dvandenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,9 +32,15 @@ t_obj	*add_back(t_obj **front, t_obj *obj)
 t_obj	*new_obj(int type, t_scene *s)
 {
 	t_obj	*temp;
+	int		*type_p;
 
 	temp = ft_malloc(sizeof(t_obj), s);
-	*temp = (t_obj){.type = type};
+	type_p = malloc(sizeof(int));
+	if (!type)
+		free(temp);
+	ft_error(!type, "Unable to allocate space\n", 0, s);
+	*type_p = type;
+	*temp = (t_obj){.type = type_p};
 	return (temp);
 }
 

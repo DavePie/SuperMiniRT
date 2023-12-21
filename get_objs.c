@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_objs.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alde-oli <alde-oli@student.42lausanne.c    +#+  +:+       +#+        */
+/*   By: dvandenb <dvandenb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/13 13:11:59 by alde-oli          #+#    #+#             */
-/*   Updated: 2023/12/21 11:50:54 by alde-oli         ###   ########.fr       */
+/*   Updated: 2023/12/21 17:47:24 by dvandenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,10 @@ int	match_type(char *line, int *i, t_obj *new_obj)
 		if (*line == *type[*i] && line[ft_strlen(type[*i]) - 1]
 			== type[*i][ft_strlen(type[*i]) - 1])
 		{
-			new_obj->type = *i;
+			new_obj->type = malloc(sizeof(int));
+			if (!new_obj->type)
+				return (-1);
+			*new_obj->type = *i;
 			return (*i);
 		}
 		(*i)++;
@@ -43,6 +46,16 @@ int	do_split(char *line, char ***split, const int *atr)
 	if (*split)
 		return (0);
 	return (1);
+}
+
+float	*float_ptr(float a, t_scene *s)
+{
+	float	*ans;
+
+	ans = malloc(sizeof(float));
+	ft_error(!ans, "Unable to allocate memory", 0, s);
+	*ans = a;
+	return (ans);
 }
 
 //attr[i][]                {coords1, coords2, float1, float2, color}
@@ -72,9 +85,9 @@ void	set_attributes(t_obj *new_obj, char *line, int fd, t_scene *scene)
 	if (a[i][1])
 		new_obj->v = get_coords(split[a[i][0] + a[i][1]], scene);
 	if (a[i][2])
-		new_obj->w = ft_atof(split[a[i][0] + a[i][1] + a[i][2]]);
+		new_obj->w = float_ptr(ft_atof(split[a[i][0] + a[i][1] + a[i][2]]), scene);
 	if (a[i][3])
-		new_obj->h = ft_atof(split[a[i][0] + a[i][1] + a[i][2] + a[i][3]]);
+		new_obj->h = float_ptr(ft_atof(split[a[i][0] + a[i][1] + a[i][2] + a[i][3]]), scene);
 	if (a[i][4])
 		new_obj->color = get_color(split[a[i][0] + a[i][1] + a[i][2]
 				+ a[i][3] + a[i][4]]);

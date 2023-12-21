@@ -6,7 +6,7 @@
 /*   By: dvandenb <dvandenb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/13 17:35:08 by dvandenb          #+#    #+#             */
-/*   Updated: 2023/12/21 16:16:52 by dvandenb         ###   ########.fr       */
+/*   Updated: 2023/12/21 17:52:19 by dvandenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ float	diffuse_light(t_scene *s, t_p p, t_p n, t_obj *o)
 	t_obj		*l;
 	t_p			vs[4];
 
-	i = s->ambient->w;
+	i = *s->ambient->w;
 	l = s->lights;
 	while (l)
 	{
@@ -32,13 +32,13 @@ float	diffuse_light(t_scene *s, t_p p, t_p n, t_obj *o)
 			l = l->next;
 			continue ;
 		}
-		i += (dot(n, vs[0]) > 0) * (l->w * dot(n, vs[0])
+		i += (dot(n, vs[0]) > 0) * (*l->w * dot(n, vs[0])
 				/ (mag(n) * mag(vs[0])));
-		if (o->specular)
+		if (o->specular && *o->specular)
 			i += (dot(*sub(*mult(*mult(n, 2, &(vs[1])), dot(n, vs[0]),
 								&(vs[1])), vs[0], &(vs[1])), *sub(*s->camera->p,
-							p, &(vs[2]))) > 0) * l->w * powf(dot(vs[1], vs[2])
-					/ mag(vs[1]) / mag(vs[2]), o->specular);
+							p, &(vs[2]))) > 0) * *l->w * powf(dot(vs[1], vs[2])
+					/ mag(vs[1]) / mag(vs[2]), *o->specular);
 		l = l->next;
 	}
 	return (i);
@@ -62,7 +62,7 @@ t_c	*map_sphere_img_(t_obj o, t_img *i, t_p vec, t_c *col)
 	if (angle > M_PI * 2)
 		angle -= M_PI * 2;
 	x = (int)(angle / M_PI / 2 * i->w);
-	y = (vec.y + (o.w / 2)) / o.w * i->h;
+	y = (vec.y + (*o.w / 2)) / *o.w * i->h;
 	*col = (t_c){.x = i->pix[(x + y * i->w) * 4 + 2],
 		.y = i->pix[(x + y * i->w) * 4 + 1],
 		.z = i->pix[(x + y * i->w) * 4]};
@@ -171,21 +171,21 @@ float	lighting_sphere(t_scene *s, t_obj o, t_p d, int depth)
 
 	norm(&d);
 	sub(p, *o.p, &vec);
-	color = o.color;
+	color = *o.color;
 	norm(sub(p, *o.p, &n));
 	if (o.i)
 		color = map_sphere_img(o, vec);
 	if (o.b)
 		map_sphere_bmp(o, vec, &n);
-	if (o.distrupt == CHECKERBOARD)
+	if (o.distrupt && *o.distrupt == CHECKERBOARD)
 		apply_checker_board_sphere(vec, &color);
 	color = color_mult(color, diffuse_light(s, p, n, &o));
 
 	if (!depth || !o.reflect)
 		return (color);
 	reflected = get_reflect(s, n, d, depth - 1);
-	return (color_mult(color, (1 - o.reflect))
-		+ color_mult(reflected, o.reflect));
+	return (color_mult(color, (1 - *o.reflect))
+		+ color_mult(reflected, *o.reflect));
 }
 
 void	calculate_cylinder_normal(t_obj o, t_p p, t_p *n)
@@ -198,7 +198,7 @@ void	calculate_cylinder_normal(t_obj o, t_p p, t_p *n)
 
 	if (fabs(proj_l) < ep)
 		*n = ((t_p){-o.v->x, -o.v->y, -o.v->z});
-	else if (fabs(proj_l - o.h) < ep)
+	else if (fabs(proj_l - *o.h) < ep)
 		*n = ((t_p){o.v->x, o.v->y, o.v->z});
 	else
 	{
@@ -222,12 +222,12 @@ float	lighting_cylinder(t_scene *s, t_obj o, t_p d, int depth)
 	norm(&d);
 	calculate_cylinder_normal(o, p, &n);
 	norm(&n);
-	color = (color_mult(o.color, diffuse_light(s, p, n, &o)));
+	color = (color_mult(*o.color, diffuse_light(s, p, n, &o)));
 	if (!depth || !o.reflect)
 		return (color);
 	reflected = get_reflect(s, n, d, depth - 1);
-	return (color_mult(color, (1 - o.reflect))
-		+ color_mult(reflected, o.reflect));
+	return (color_mult(color, (1 - *o.reflect))
+		+ color_mult(reflected, *o.reflect));
 }
 
 float	lighting_plane(t_scene *s, t_obj o, t_p d, int depth)
@@ -241,12 +241,12 @@ float	lighting_plane(t_scene *s, t_obj o, t_p d, int depth)
 	norm(&d);
 	if (dot(*o.v, d) > 0)
 		norm(mult(*o.v, -1, o.v));
-	color = (color_mult(o.color, diffuse_light(s, p, *o.v, &o)));
-	if (o.distrupt == CHECKERBOARD)
+	color = (color_mult(*o.color, diffuse_light(s, p, *o.v, &o)));
+	if (o.distrupt && *o.distrupt == CHECKERBOARD)
 		apply_checker_board_plane(*o.v, *o.p, p, &color);
-	if (!depth || !o.reflect)
+	if (!depth || !o.reflect || !*o.reflect)
 		return (color);
 	reflected = get_reflect(s, *o.v, d, depth - 1);
-	return (color_mult(color, (1 - o.reflect))
-		+ color_mult(reflected, o.reflect));
+	return (color_mult(color, (1 - *o.reflect))
+		+ color_mult(reflected, *o.reflect));
 }

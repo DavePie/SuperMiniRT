@@ -6,7 +6,7 @@
 /*   By: dvandenb <dvandenb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/13 14:44:04 by dvandenb          #+#    #+#             */
-/*   Updated: 2023/12/21 16:16:29 by dvandenb         ###   ########.fr       */
+/*   Updated: 2023/12/21 17:39:05 by dvandenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ void	inter_ray_sphere(t_p p, t_p r, t_obj *sphere, t_p *ans)
 		.z = p.z - sphere->p->z};
 	const float	a = dot(r, r);
 	const float	b = 2 * dot(n, r);
-	const float	dis = (b * b) - (4 * a * (dot(n, n)) - (sphere->w * sphere->w));
+	const float	dis = (b * b) - (4 * a * (dot(n, n)) - (*sphere->w * *sphere->w));
 
 	ans->z = FLT_MAX;
 	if (dis < 0)
@@ -61,7 +61,7 @@ t_obj	*calculate_ray(t_scene *s, t_p p, t_p r, t_p *range)
 	cur = s->objects;
 	while (cur)
 	{
-		intersect[cur->type](p, r, cur, &t);
+		intersect[*(cur->type)](p, r, cur, &t);
 		if ((t.x >= range->x && t.x <= range->y && t.x < min_l)
 			|| (t.y >= range->x && t.y <= range->y && t.y < min_l))
 			min_o = cur;
@@ -86,7 +86,7 @@ unsigned int	trace_ray(t_scene *s, t_p r, t_p range, int depth)
 	mult(r, min_l, &r);
 	if (!min_o)
 		return (0);
-	return (light[min_o->type](s, *min_o, r, depth));
+	return (light[*(min_o->type)](s, *min_o, r, depth));
 }
 
 void	loop_line(t_scene *s, float x_w)

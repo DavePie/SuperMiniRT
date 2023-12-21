@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   structs.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alde-oli <alde-oli@student.42lausanne.c    +#+  +:+       +#+        */
+/*   By: dvandenb <dvandenb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/12 12:47:35 by dvandenb          #+#    #+#             */
-/*   Updated: 2023/12/20 23:25:55 by alde-oli         ###   ########.fr       */
+/*   Updated: 2023/12/21 17:51:38 by dvandenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,18 +98,18 @@ typedef struct s_img
 
 typedef struct s_obj
 {
-	int				type;
-	unsigned int	color;
+	int				*type;
+	unsigned int	*color;
 	struct s_obj	*next;
 	t_p				*p;
 	t_p				*v;
-	float			w;
-	float			h;
-	float			specular;
-	float			reflect;
+	float			*w;
+	float			*h;
+	float			*specular;
+	float			*reflect;
 	t_img			*i;
 	t_img			*b;
-	int				distrupt;
+	int				*distrupt;
 }													t_obj;
 
 typedef struct s_mlx

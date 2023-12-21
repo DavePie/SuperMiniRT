@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_objs2.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alde-oli <alde-oli@student.42lausanne.c    +#+  +:+       +#+        */
+/*   By: dvandenb <dvandenb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/14 15:05:22 by alde-oli          #+#    #+#             */
-/*   Updated: 2023/12/21 11:53:19 by alde-oli         ###   ########.fr       */
+/*   Updated: 2023/12/21 17:51:04 by dvandenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,33 +35,33 @@ int	count_words(char *str)
 	return (words);
 }
 
-unsigned int	get_color(char *line)
+unsigned int	*get_color(char *line)
 {
 	char			**split;
 	int				color[3];
 	int				i;
+	unsigned int	*ans;
 
 	split = ft_split(line, ',');
-	if (!split)
-	{
-		printf("error while getting color: value set to 0\n");
+	if (!split && printf("error while getting color: value set to 0\n"))
 		return (0);
-	}
-	i = 0;
-	while (i < 3)
+	i = -1;
+	while (++i < 3)
 	{
 		color[i] = ft_atoi(split[i]);
 		if (!ft_is_number(split[i], 0) || color[i] < 0 || color[i] > 255)
 		{
-			printf("comp %c of color invalid or out of 0-255 range",
+			printf("comp %c of color invalid or not 0-255 range: set to 255\n",
 				('r' * i == 0) + ('g' * i == 1) + ('b' * i == 2));
-			printf(": value set to 255\n");
 			color[i] = 255;
 		}
-		i++;
 	}
 	ft_free_str_tab(split);
-	return (cl(color[0], color[1], color[2]));
+	ans = malloc(sizeof(unsigned int));
+	if (!ans)
+		return (0);
+	*ans = cl(color[0], color[1], color[2]);
+	return (ans);
 }
 
 t_p	*get_coords(char *line, t_scene *s)

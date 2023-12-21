@@ -6,7 +6,7 @@
 /*   By: dvandenb <dvandenb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/14 12:55:10 by alde-oli          #+#    #+#             */
-/*   Updated: 2023/12/19 15:39:04 by dvandenb         ###   ########.fr       */
+/*   Updated: 2023/12/21 17:51:15 by dvandenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@
 
 int				count_words(char *line);
 int				do_split(char *line, char ***split, const int *atr);
-unsigned int	get_color(char *line);
+unsigned int	*get_color(char *line);
 t_p				*get_coords(char *line, t_scene *scene);
 int				match_type(char *line, int *i, t_obj *new_obj);
 float			ft_atof(char *str);

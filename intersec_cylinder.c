@@ -6,7 +6,7 @@
 /*   By: dvandenb <dvandenb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/16 12:53:46 by alde-oli          #+#    #+#             */
-/*   Updated: 2023/12/19 15:03:07 by dvandenb         ###   ########.fr       */
+/*   Updated: 2023/12/21 17:43:58 by dvandenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ void	inter_ray_cylinder(t_p p, t_p r, t_obj *cyl, t_p *ans)
 		.y = p.y - cyl->p->y, .z = p.z - cyl->p->z};
 	const float	a = dot(r, r) - pow(dot(r, *cyl->v), 2);
 	const float	b = 2 * (dot(r, co) - dot(r, *cyl->v) * dot(co, *cyl->v));
-	const float	c = dot(co, co) - pow(dot(co, *cyl->v), 2) - pow(cyl->w / 2, 2);
+	const float	c = dot(co, co) - pow(dot(co, *cyl->v), 2) - pow(*cyl->w / 2, 2);
 	const t_p	t = (t_p){.x = (-b + sqrt(b * b - 4 * a * c)) / (2 * a),
 		.y = (-b - sqrt(b * b - 4 * a * c)) / (2 * a)};
 
@@ -52,7 +52,7 @@ static int	is_point_inside_cyl_height(float t, t_p r, t_p co, t_obj *cyl)
 		.y = co.y + t * r.y, .z = co.z + t * r.z};
 	const float	proj = dot(point, *cyl->v);
 
-	return (proj >= 0 && proj <= cyl->h);
+	return (proj >= 0 && proj <= *cyl->h);
 }
 
 //cap_center_top is cyl->p at the top
@@ -60,9 +60,9 @@ static int	is_point_inside_cyl_height(float t, t_p r, t_p co, t_obj *cyl)
 //t_cap.y is distance from  ray origin tothe intersection point with top cap
 static void	check_cylinder_caps(t_p p, t_p r, t_obj *cyl, t_p *ans)
 {
-	const t_p	cap_center_top = (t_p){.x = cyl->p->x + cyl->v->x * cyl->h,
-		.y = cyl->p->y + cyl->v->y * cyl->h,
-		.z = cyl->p->z + cyl->v->z * cyl->h};
+	const t_p	cap_center_top = (t_p){.x = cyl->p->x + cyl->v->x * *cyl->h,
+		.y = cyl->p->y + cyl->v->y * *cyl->h,
+		.z = cyl->p->z + cyl->v->z * *cyl->h};
 	const t_p	t_cap = (t_p){.x = intersect_plane(p, r, *(cyl->p), *cyl->v),
 		.y = intersect_plane(p, r, cap_center_top, *cyl->v)};
 	t_p			p_copy;
@@ -73,13 +73,13 @@ static void	check_cylinder_caps(t_p p, t_p r, t_obj *cyl, t_p *ans)
 	mult(r_copy, t_cap.x, &r_copy);
 	add(p_copy, r_copy, &p_copy);
 	if (t_cap.x >= 0 && distance_squared(p_copy,
-			*(cyl->p)) <= (cyl->w / 2) * (cyl->w / 2))
+			*(cyl->p)) <= (*cyl->w / 2) * (*cyl->w / 2))
 		if (t_cap.x < ans->x)
 			ans->x = t_cap.x;
 	mult(r, t_cap.y, &r);
 	add(p, r, &p);
 	if (t_cap.y >= 0 && distance_squared(p,
-			cap_center_top) <= (cyl->w / 2) * (cyl->w / 2))
+			cap_center_top) <= (*cyl->w / 2) * (*cyl->w / 2))
 		if (t_cap.y < ans->x)
 			ans->x = t_cap.y;
 }
