@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dvandenb <dvandenb@student.42.fr>          +#+  +:+       +#+        */
+/*   By: alde-oli <alde-oli@student.42lausanne.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/12 16:07:57 by dvandenb          #+#    #+#             */
-/*   Updated: 2023/12/21 16:18:35 by dvandenb         ###   ########.fr       */
+/*   Updated: 2023/12/22 15:48:05 by alde-oli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,8 +50,6 @@ int	main(int ac, char *av[])
 	mlx_hook(scene.mlx->win, B_EXIT, 0, exit_scene, &scene);
 	mlx_hook(scene.mlx->win, 2, 1L << 0, key_event, &scene);
 	mlx_loop_hook(scene.mlx->mlx, update_window, &scene);
-	
-	
 	trace_rays(&scene);
 	mlx_loop(scene.mlx->mlx);
 	return (0);
