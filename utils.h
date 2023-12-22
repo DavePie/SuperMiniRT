@@ -6,7 +6,7 @@
 /*   By: dvandenb <dvandenb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/12 16:14:19 by dvandenb          #+#    #+#             */
-/*   Updated: 2023/12/19 15:03:49 by dvandenb         ###   ########.fr       */
+/*   Updated: 2023/12/22 15:08:28 by dvandenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ float	dot(t_p a, t_p b);
 
 void	norm(t_p *a);
 
-void	cross(t_p a, t_p b, t_p *ans);
+t_p		*cross(t_p a, t_p b, t_p *ans);
 
 t_p		*add(t_p a, t_p b, t_p *ans);
 

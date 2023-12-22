@@ -6,7 +6,7 @@
 /*   By: dvandenb <dvandenb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/13 17:35:08 by dvandenb          #+#    #+#             */
-/*   Updated: 2023/12/21 17:52:19 by dvandenb         ###   ########.fr       */
+/*   Updated: 2023/12/22 15:52:49 by dvandenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,21 +71,61 @@ t_c	*map_sphere_img_(t_obj o, t_img *i, t_p vec, t_c *col)
 
 void	apply_checker_board_plane(t_p v, t_p p_o, t_p p, unsigned int *color)
 {
-	(void)v;
 	t_p		vec;
+	t_p		vec_x;
+	t_p		vec_y;
+	int		set_col;
+	int		set_row;
 
 	sub(p, p_o, &vec);
-	int		set_col = vec.y * 1000;
-	vec.y = 0;
-	int		set_row = mag(vec) * 1000;
-	if (set_col < 0)
-		set_col = -set_col + 500;
-	if (set_row < 0)
-		set_row = -set_row + 500;
+	vec_x = (t_p){.x = v.z, .z = -v.x};
+	if (!v.z && !v.x)
+		vec_x = (t_p){.x = 1, .z = 0};
+	norm(cross(v, vec_x, &vec_y));
+	norm(&vec_x);
+	set_col = (vec.y / vec_y.y) * 1000;
+	if (!vec_y.y)
+		set_col = (vec.z / vec_y.z) * 1000;
+	set_row = ((vec.x - ((float)(set_col) * vec_y.x)) / vec_x.x) * 1000;
+	if (!vec_x.x)
+		set_row = ((vec.z - ((float)(set_col) * vec_y.z)) / vec_x.z) * 1000;
+	set_col = (set_col >= 0) * set_col + ((set_col < 0) * (-set_col + 500));
+	set_row = (set_row >= 0) * set_row + ((set_row < 0) * (-set_row + 500));
 	if ((set_col % 1000 > 500 && set_row % 1000 > 500)
-		|| (set_col % 1000 < 500 && set_row % 1000 < 500)){
-		*color = color_mult(*color, 0.5);
+		|| (set_col % 1000 < 500 && set_row % 1000 < 500))
+		*color = color_mult(*color, 0.8);
+	else
+		*color = color_mult(*color, 1.2);
+}
+
+void	apply_checker_board_cyl(t_obj o, t_p p, t_p n, unsigned int *color)
+{
+	t_p		temp;
+	t_p		vec;
+	float	angle;
+	int		x;
+	int		y;
+
+	if (dot(n, *o.v))
+	{
+		apply_checker_board_plane(*o.v, *o.p, p, color);
+		return ;
 	}
+	temp = (t_p){.x = o.v->z, .z = -o.v->x};
+	if (!o.v->z && !o.v->x)
+		temp = (t_p){.x = o.v->y, .y = -o.v->x};
+	norm(sub(p, *o.p, &vec));
+	norm(&temp);
+	angle = acosf(dot(n, temp));
+	if (angle < 0)
+		angle += M_PI * 2;
+	x = (int)(angle / M_PI / 2 * 1000);
+	y = 0;
+	if ((x % 100 > 50 && y % 100 > 50) || (x % 100 < 50 && y % 100 < 50))
+		*color = color_mult(*color, 1.2);
+	else
+		*color = color_mult(*color, 0.8);
+	
 }
 
 void	apply_checker_board_sphere(t_p vec, unsigned int *color)
@@ -223,6 +263,8 @@ float	lighting_cylinder(t_scene *s, t_obj o, t_p d, int depth)
 	calculate_cylinder_normal(o, p, &n);
 	norm(&n);
 	color = (color_mult(*o.color, diffuse_light(s, p, n, &o)));
+	if (o.distrupt && *o.distrupt)
+		apply_checker_board_cyl(o, p, n, &color);
 	if (!depth || !o.reflect)
 		return (color);
 	reflected = get_reflect(s, n, d, depth - 1);
