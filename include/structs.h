@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   structs.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dvandenb <dvandenb@student.42.fr>          +#+  +:+       +#+        */
+/*   By: alde-oli <alde-oli@student.42lausanne.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/12 12:47:35 by dvandenb          #+#    #+#             */
-/*   Updated: 2023/12/21 17:51:38 by dvandenb         ###   ########.fr       */
+/*   Updated: 2023/12/22 22:05:38 by alde-oli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,9 +25,8 @@
 
 # define Z_OFFSET 1
 
-# define NUM_THREADS 12
-
 # ifdef LINUX
+#  define NUM_THREADS 50
 #  define LJ_UP 111
 #  define LJ_DOWN 112
 #  define LJ_LEFT 232
@@ -48,6 +47,7 @@
 #  define K_S 115
 #  define K_D 100
 # else
+#  define NUM_THREADS 12
 #  define LINUX 0
 #  define LJ_UP 0
 #  define LJ_DOWN 0

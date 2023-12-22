@@ -1,8 +1,8 @@
-CFILES	:= *.c
+CFILES	:= src/*.c src/*/*.c
 RM		:= rm -f
 NAME	:= miniRT
 CC		:= gcc
-INCDIR	:= -I . -I mlx -I libft
+INCDIR	:= -I ./include -I mlx -I libft
 
 LIB		:= libmlx.a
 LIBFT	:= libft.a

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_objs.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dvandenb <dvandenb@student.42.fr>          +#+  +:+       +#+        */
+/*   By: alde-oli <alde-oli@student.42lausanne.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/13 13:11:59 by alde-oli          #+#    #+#             */
-/*   Updated: 2023/12/22 11:59:29 by dvandenb         ###   ########.fr       */
+/*   Updated: 2023/12/22 23:20:43 by alde-oli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -168,6 +168,8 @@ void	get_objs(t_scene *scene, int fd)
 		else
 			get_one_obj(scene, fd, line, new_obj);
 	}
+	if (!scene->camera || !scene->ambient || !scene->lights)
+		ft_error(1, "Missing scene element\n", 0, scene);
 }
 
 

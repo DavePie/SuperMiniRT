@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dvandenb <dvandenb@student.42.fr>          +#+  +:+       +#+        */
+/*   By: alde-oli <alde-oli@student.42lausanne.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/12 16:14:19 by dvandenb          #+#    #+#             */
-/*   Updated: 2023/12/22 15:08:28 by dvandenb         ###   ########.fr       */
+/*   Updated: 2023/12/22 23:58:56 by alde-oli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,4 +45,6 @@ t_p		*eq(t_p *a, t_p b);
 t_p		*mult(t_p a, float b, t_p *ans);
 
 float	distance_squared(t_p a, t_p b);
+
+t_p		rotate_vector(t_p *v, t_p *axis, float angle);
 #endif
