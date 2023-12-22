@@ -6,7 +6,7 @@
 /*   By: dvandenb <dvandenb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/13 13:11:59 by alde-oli          #+#    #+#             */
-/*   Updated: 2023/12/21 17:47:24 by dvandenb         ###   ########.fr       */
+/*   Updated: 2023/12/22 11:59:29 by dvandenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 #include "get_objs.h"
 
 //type[]{AMBIENT, CAMERA, LIGHT, SPHERE, PLANE, CYLINDER}
-int	match_type(char *line, int *i, t_obj *new_obj)
+int	match_t(char *line, int *i, t_obj *new_obj)
 {
 	static char	*type[] = {"sp", "pl", "cy", "zz", "A", "C", "L"};
 
@@ -48,9 +48,10 @@ int	do_split(char *line, char ***split, const int *atr)
 	return (1);
 }
 
-float	*float_ptr(float a, t_scene *s)
+void	*float_ptr(char *str, t_scene *s)
 {
-	float	*ans;
+	float		*ans;
+	const float	a = ft_atof(str);
 
 	ans = malloc(sizeof(float));
 	ft_error(!ans, "Unable to allocate memory", 0, s);
@@ -66,31 +67,32 @@ float	*float_ptr(float a, t_scene *s)
 //						   {      1,       0,      1,      0,     1},  sphere
 //						   {      1,       1,      0,      0,     1},  plane
 //						   {      1,       1,      1,      1,     1}}; cylinder
+
+typedef void	*(*t_g)(char *input, t_scene *scene);
+
 void	set_attributes(t_obj *new_obj, char *line, int fd, t_scene *scene)
 {
-	int			i;
+	int			t[3];
 	char		**split;
 	const int	a[7][5] = {{1, 0, 1, 0, 1}, {1, 1, 0, 0, 1}, {1, 1, 1, 1, 1},
 	{1, 1, 1, 1, 1}, {0, 0, 1, 0, 1}, {1, 1, 1, 0, 0}, {1, 0, 1, 0, 1}};
+	const t_g	get_val[5] = {get_coords, get_coords, float_ptr, float_ptr,
+		get_color};
+	const void	*ptrs[5] = {&new_obj->p, &new_obj->v, &new_obj->w, &new_obj->h,
+		&new_obj->color};
 
 	split = NULL;
-	if (match_type(line, &i, new_obj) == -1 || do_split(line, &split, a[i]))
+	if (match_t(line, &t[0], new_obj) == -1 || do_split(line, &split, a[t[0]]))
 	{
 		free(line);
 		close(fd);
 		ft_error(1, "Invalid scene element\n", 0, scene);
 	}
-	if (a[i][0])
-		new_obj->p = get_coords(split[a[i][0]], scene);
-	if (a[i][1])
-		new_obj->v = get_coords(split[a[i][0] + a[i][1]], scene);
-	if (a[i][2])
-		new_obj->w = float_ptr(ft_atof(split[a[i][0] + a[i][1] + a[i][2]]), scene);
-	if (a[i][3])
-		new_obj->h = float_ptr(ft_atof(split[a[i][0] + a[i][1] + a[i][2] + a[i][3]]), scene);
-	if (a[i][4])
-		new_obj->color = get_color(split[a[i][0] + a[i][1] + a[i][2]
-				+ a[i][3] + a[i][4]]);
+	t[1] = -1;
+	t[2] = 0;
+	while (++(t[1]) < 5)
+		if (a[t[0]][t[1]])
+			*(void **)ptrs[t[1]] = get_val[t[1]](split[++(t[2])], scene);
 	free(line);
 	ft_free_str_tab(split);
 }

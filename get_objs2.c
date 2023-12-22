@@ -6,7 +6,7 @@
 /*   By: dvandenb <dvandenb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/14 15:05:22 by alde-oli          #+#    #+#             */
-/*   Updated: 2023/12/21 17:51:04 by dvandenb         ###   ########.fr       */
+/*   Updated: 2023/12/21 18:05:32 by dvandenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ int	count_words(char *str)
 	return (words);
 }
 
-unsigned int	*get_color(char *line)
+void	*get_color(char *line, t_scene *s)
 {
 	char			**split;
 	int				color[3];
@@ -58,13 +58,12 @@ unsigned int	*get_color(char *line)
 	}
 	ft_free_str_tab(split);
 	ans = malloc(sizeof(unsigned int));
-	if (!ans)
-		return (0);
+	ft_error(!ans, "unable to allocate space\n", 0, s);
 	*ans = cl(color[0], color[1], color[2]);
 	return (ans);
 }
 
-t_p	*get_coords(char *line, t_scene *s)
+void	*get_coords(char *line, t_scene *s)
 {
 	char	**split;
 	t_p		*coords;
