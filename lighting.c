@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lighting.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dvandenb <dvandenb@student.42.fr>          +#+  +:+       +#+        */
+/*   By: alde-oli <alde-oli@student.42lausanne.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/13 17:35:08 by dvandenb          #+#    #+#             */
-/*   Updated: 2023/12/21 17:52:19 by dvandenb         ###   ########.fr       */
+/*   Updated: 2023/12/22 15:51:06 by alde-oli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,13 +14,15 @@
 
 //               0              1           2                 3
 // vs{point_light vector (vs[0]), r, point_camera vector (v), range}
-float	diffuse_light(t_scene *s, t_p p, t_p n, t_obj *o)
+t_p	diffuse_light(t_scene *s, t_p p, t_p n, t_obj *o)
 {
 	float		i;
+	t_p			intensity;
 	t_obj		*l;
 	t_p			vs[4];
 
-	i = *s->ambient->w;
+	i = 1;
+	intensity = cls_intensity(cl_split(*s->ambient->color), *s->ambient->w);
 	l = s->lights;
 	while (l)
 	{
@@ -32,16 +34,12 @@ float	diffuse_light(t_scene *s, t_p p, t_p n, t_obj *o)
 			l = l->next;
 			continue ;
 		}
-		i += (dot(n, vs[0]) > 0) * (*l->w * dot(n, vs[0])
-				/ (mag(n) * mag(vs[0])));
+		intensity = cls_add(intensity, cls_intensity(cl_split(*l->color), (dot(n, vs[0]) > 0) * (*l->w * dot(n, vs[0]))));
 		if (o->specular && *o->specular)
-			i += (dot(*sub(*mult(*mult(n, 2, &(vs[1])), dot(n, vs[0]),
-								&(vs[1])), vs[0], &(vs[1])), *sub(*s->camera->p,
-							p, &(vs[2]))) > 0) * *l->w * powf(dot(vs[1], vs[2])
-					/ mag(vs[1]) / mag(vs[2]), *o->specular);
+			i += (dot(*sub(*mult(*mult(n, 2, &(vs[1])), dot(n, vs[0]), &(vs[1])), vs[0], &(vs[1])), *sub(*s->camera->p, p, &(vs[2]))) > 0) * *l->w * powf(dot(vs[1], vs[2]) / mag(vs[1]) / mag(vs[2]), *o->specular);
 		l = l->next;
 	}
-	return (i);
+	return (intensity);
 }
 
 int	create_trgb(unsigned char t, unsigned char r,
@@ -179,7 +177,7 @@ float	lighting_sphere(t_scene *s, t_obj o, t_p d, int depth)
 		map_sphere_bmp(o, vec, &n);
 	if (o.distrupt && *o.distrupt == CHECKERBOARD)
 		apply_checker_board_sphere(vec, &color);
-	color = color_mult(color, diffuse_light(s, p, n, &o));
+	color = cl_mix(color, diffuse_light(s, p, n, &o));
 
 	if (!depth || !o.reflect)
 		return (color);
@@ -222,7 +220,7 @@ float	lighting_cylinder(t_scene *s, t_obj o, t_p d, int depth)
 	norm(&d);
 	calculate_cylinder_normal(o, p, &n);
 	norm(&n);
-	color = (color_mult(*o.color, diffuse_light(s, p, n, &o)));
+	color = (cl_mix(*o.color, diffuse_light(s, p, n, &o)));
 	if (!depth || !o.reflect)
 		return (color);
 	reflected = get_reflect(s, n, d, depth - 1);
@@ -241,7 +239,7 @@ float	lighting_plane(t_scene *s, t_obj o, t_p d, int depth)
 	norm(&d);
 	if (dot(*o.v, d) > 0)
 		norm(mult(*o.v, -1, o.v));
-	color = (color_mult(*o.color, diffuse_light(s, p, *o.v, &o)));
+	color = (cl_mix(*o.color, diffuse_light(s, p, *o.v, &o)));
 	if (o.distrupt && *o.distrupt == CHECKERBOARD)
 		apply_checker_board_plane(*o.v, *o.p, p, &color);
 	if (!depth || !o.reflect || !*o.reflect)

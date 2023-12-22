@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   trace_ray.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dvandenb <dvandenb@student.42.fr>          +#+  +:+       +#+        */
+/*   By: alde-oli <alde-oli@student.42lausanne.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/13 14:44:04 by dvandenb          #+#    #+#             */
-/*   Updated: 2023/12/21 17:39:05 by dvandenb         ###   ########.fr       */
+/*   Updated: 2023/12/22 14:20:41 by alde-oli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,28 @@ void	inter_ray_plane(t_p p, t_p r, t_obj *plane, t_p *ans)
 	sub(plane_p, p, &plane_p);
 	if (fabs(denom) > 1e-6)
 		ans->x = dot(plane_p, *plane->v) / denom;
+}
+
+int	calculate_shadow(t_scene *s, t_p p, t_p r, t_p *range)
+{
+	float			min_l;
+	t_obj			*cur;
+	t_p				t;
+	const t_INTER	intersect[3] = {&inter_ray_sphere, &inter_ray_plane,
+		&inter_ray_cylinder};
+
+	min_l = FLT_MAX;
+	cur = s->objects;
+	while (cur)
+	{
+		intersect[*(cur->type)](p, r, cur, &t);
+		if ((t.x >= range->x && t.x <= range->y && t.x < min_l)
+			|| (t.y >= range->x && t.y <= range->y && t.y < min_l))
+			return (1);
+		cur = cur->next;
+	}
+	range->z = min_l;
+	return (0);
 }
 
 t_obj	*calculate_ray(t_scene *s, t_p p, t_p r, t_p *range)
