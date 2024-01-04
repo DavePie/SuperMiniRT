@@ -6,7 +6,7 @@
 /*   By: dvandenb <dvandenb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/13 17:35:08 by dvandenb          #+#    #+#             */
-/*   Updated: 2023/12/22 16:05:32 by dvandenb         ###   ########.fr       */
+/*   Updated: 2024/01/04 13:29:37 by dvandenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -123,7 +123,6 @@ void	apply_checker_board_cyl(t_obj o, t_p p, t_p n, unsigned int *color)
 		*color = color_mult(*color, 1.2);
 	else
 		*color = color_mult(*color, 0.8);
-	
 }
 
 void	apply_checker_board_sphere(t_p vec, unsigned int *color)
@@ -251,7 +250,7 @@ void	calculate_cylinder_normal(t_obj o, t_p p, t_p *n)
 float	lighting_cylinder(t_scene *s, t_obj o, t_p d, int depth)
 {
 	const t_p		p = (t_p){.x = s->camera->p->x + (d.x),
-		.y = s->camera->p->y + ( d.y),
+		.y = s->camera->p->y + (d.y),
 		.z = s->camera->p->z + (d.z)};
 	t_p				n;
 	unsigned int	reflected;
@@ -287,6 +286,70 @@ float	lighting_plane(t_scene *s, t_obj o, t_p d, int depth)
 	if (!depth || !o.reflect || !*o.reflect)
 		return (color);
 	reflected = get_reflect(s, *o.v, d, depth - 1);
+	return (color_mult(color, (1 - *o.reflect))
+		+ color_mult(reflected, *o.reflect));
+}
+
+// o_p, o_p2, per, n
+// 0      1     2   3
+
+typedef void	(*t_NORM)(t_obj, t_p, t_p*);
+typedef void	(*t_M_IMG)(t_obj, t_p, t_c*);
+typedef void	(*t_BMP)(t_obj, t_p, t_p*);
+
+// p, n
+// color, reflected
+// float	lighting(t_scene *s, t_obj o, t_p d, int depth)
+// {
+// 	t_p				v[2];
+// 	t_p				col[2];
+// 	const t_NORM	norms[4] = {&sp_norm, &pl_norm, &cy_norm, &co_norm,
+// 		&sp_bmp, &pl_bmp, &cy_bmp, &co_bmp};
+// 	const t_M_IMG	m_imgs[8] = {&sp_img, &pl_img, &cy_img, &co_img,
+// 		&sp_check, &pl_check, &cy_check, &co_check};
+
+// 	add(*s->camera->p, d, &v[0]);
+// 	norm(&d);
+// 	norms[*o.type](o, v[0], &v[1]);
+// 	if (o.b)
+// 		norms[*o.type + 4](o, v[0], &v[1]);
+// 	if (o.i)
+// 		m_imgs[*o.type](o, v[0], &col[0]);
+// 	if (o.distrupt && *o.distrupt == CHECKERBOARD)
+// 		m_imgs[*o.type + 4](o, v[0], &col[0]);
+// 	col[0] = (cl_mix(*o.color, diffuse_light(s, v[0], v[1], &o)));
+// 	if (!depth || !o.reflect)
+// 		return (col[0]);
+// 	col[1] = get_reflect(s, v[1], d, depth - 1);
+// 	return (color_mult(col[0], (1 - *o.reflect))
+// 		+ color_mult(col[1], *o.reflect));
+// }
+
+float	lighting_cone(t_scene *s, t_obj o, t_p d, int depth)
+{
+	const t_p		p = (t_p){.x = s->camera->p->x + (d.x),
+		.y = s->camera->p->y + (d.y),
+		.z = s->camera->p->z + (d.z)};
+	t_p				n;
+	t_p				v[4];
+	unsigned int		reflected;
+	unsigned int		color;
+
+	sub(p, *o.p, &v[0]);
+	eq(&v[1], v[0]);
+	norm(&d);
+	norm(&v[0]);
+	cross(v[0], *norm(o.v), &v[2]);
+	cross(v[0], v[2], &n);
+	norm(&n);
+	if (mag(v[1]) >= *o.h && fabs(acosf(dot(v[0], *o.v)) - atanf(*o.w / *o.h / 2)) > 0.001)
+		eq(&n, *o.v);
+	color = (cl_mix(*o.color, diffuse_light(s, p, n, &o)));
+	// if (o.distrupt && *o.distrupt)
+	// 	apply_checker_board_cyl(o, p, n, &color);
+	if (!depth || !o.reflect)
+		return (color);
+	reflected = get_reflect(s, n, d, depth - 1);
 	return (color_mult(color, (1 - *o.reflect))
 		+ color_mult(reflected, *o.reflect));
 }

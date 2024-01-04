@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alde-oli <alde-oli@student.42lausanne.c    +#+  +:+       +#+        */
+/*   By: dvandenb <dvandenb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/12 16:14:19 by dvandenb          #+#    #+#             */
-/*   Updated: 2023/12/22 23:58:56 by alde-oli         ###   ########.fr       */
+/*   Updated: 2024/01/03 15:33:49 by dvandenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ float	mag(t_p a);
 
 float	dot(t_p a, t_p b);
 
-void	norm(t_p *a);
+t_p		*norm(t_p *a);
 
 t_p		*cross(t_p a, t_p b, t_p *ans);
 

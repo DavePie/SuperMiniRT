@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_objs.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alde-oli <alde-oli@student.42lausanne.c    +#+  +:+       +#+        */
+/*   By: dvandenb <dvandenb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/13 13:11:59 by alde-oli          #+#    #+#             */
-/*   Updated: 2023/12/22 23:20:43 by alde-oli         ###   ########.fr       */
+/*   Updated: 2024/01/04 13:18:02 by dvandenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@
 //type[]{AMBIENT, CAMERA, LIGHT, SPHERE, PLANE, CYLINDER}
 int	match_t(char *line, int *i, t_obj *new_obj)
 {
-	static char	*type[] = {"sp", "pl", "cy", "zz", "A", "C", "L"};
+	static char	*type[] = {"sp", "pl", "cy", "co", "A", "C", "L"};
 
 	printf("line: %s\n", line);
 	*i = 0;

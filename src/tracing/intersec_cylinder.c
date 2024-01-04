@@ -6,7 +6,7 @@
 /*   By: dvandenb <dvandenb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/16 12:53:46 by alde-oli          #+#    #+#             */
-/*   Updated: 2023/12/21 17:43:58 by dvandenb         ###   ########.fr       */
+/*   Updated: 2024/01/03 15:25:20 by dvandenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,8 +15,7 @@
 #include "utils.h"
 
 static int		is_point_inside_cyl_height(float t, t_p r, t_p co, t_obj *cyl);
-static void		check_cylinder_caps(t_p p, t_p r, t_obj *cyl, t_p *ans);
-static float	intersect_plane(t_p p, t_p r, t_p plane_p, t_p plane_normal);
+ float	intersect_plane(t_p p, t_p r, t_p plane_p, t_p plane_normal);
 
 //a,b,c are the coefficients of the quadratic equation
 //co is the distance from the ray origin to the intersection point
@@ -58,7 +57,7 @@ static int	is_point_inside_cyl_height(float t, t_p r, t_p co, t_obj *cyl)
 //cap_center_top is cyl->p at the top
 //t_cap.x is distance from ray origin to intersection point with bottom cap
 //t_cap.y is distance from  ray origin tothe intersection point with top cap
-static void	check_cylinder_caps(t_p p, t_p r, t_obj *cyl, t_p *ans)
+void	check_cylinder_caps(t_p p, t_p r, t_obj *cyl, t_p *ans)
 {
 	const t_p	cap_center_top = (t_p){.x = cyl->p->x + cyl->v->x * *cyl->h,
 		.y = cyl->p->y + cyl->v->y * *cyl->h,
@@ -84,7 +83,7 @@ static void	check_cylinder_caps(t_p p, t_p r, t_obj *cyl, t_p *ans)
 			ans->x = t_cap.y;
 }
 
-static float	intersect_plane(t_p p, t_p r, t_p plane_p, t_p plane_normal)
+float	intersect_plane(t_p p, t_p r, t_p plane_p, t_p plane_normal)
 {
 	const float	denom = dot(plane_normal, r);
 

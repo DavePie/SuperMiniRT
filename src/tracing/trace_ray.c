@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   trace_ray.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alde-oli <alde-oli@student.42lausanne.c    +#+  +:+       +#+        */
+/*   By: dvandenb <dvandenb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/13 14:44:04 by dvandenb          #+#    #+#             */
-/*   Updated: 2023/12/22 14:20:41 by alde-oli         ###   ########.fr       */
+/*   Updated: 2024/01/04 13:12:39 by dvandenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,58 @@
 
 typedef void	(*t_INTER)(t_p, t_p, t_obj *, t_p *);
 typedef float	(*t_LIGHT)(t_scene *, t_obj, t_p, int);
+
+
+void	check_cone_cap(t_p p, t_p r, t_obj *cyl, t_p *ans)
+{
+
+	const t_p	cap_center_top = (t_p){.x = cyl->p->x + cyl->v->x * *cyl->h,
+		.y = cyl->p->y + cyl->v->y * *cyl->h,
+		.z = cyl->p->z + cyl->v->z * *cyl->h};
+	const float	t_cap = intersect_plane(p, r, cap_center_top, *cyl->v);
+
+	mult(r, t_cap, &r);
+	add(p, r, &p);
+	if (t_cap >= 0 && distance_squared(p,
+			cap_center_top) <= (*cyl->w / 2) * (*cyl->w / 2))
+		if (t_cap < ans->x)
+			ans->x = t_cap;
+}
+
+// [theta, cos2(theta)]
+// v -> r
+// h -> norm(cone->vec)
+// m -> (radius) ^2 / (height) ^ 2
+// w -> p - cone->p
+void	inter_ray_cone(t_p p, t_p r, t_obj *cone, t_p *ans)
+{
+	const float	m = (*cone->w * *cone->w / 4) / *cone->h / *cone->h;
+	const t_p	w = (t_p){.x = p.x - cone->p->x, .y = p.y - cone->p->y,
+		.z = p.z - cone->p->z};
+	float		a[3];
+	t_p			check;
+
+	a[0] = dot(r, r) - ((m + 1) * powf(dot(r, *cone->v), 2));
+	a[1] = 2 * (dot(r, w) - ((m + 1) * dot(r, *cone->v) * dot(w, *cone->v)));
+	a[2] = a[1] * a[1] - (4 * a[0] * (dot(w, w) - ((m + 1)
+					* powf(dot(w, *cone->v), 2))));
+	ans->z = FLT_MAX;
+	if (a[2] < 0)
+	{
+		ans->x = FLT_MAX;
+		ans->y = FLT_MAX;
+		return ;
+	}
+	ans->x = (-a[1] + sqrt(a[2])) / (2 * a[0]);
+	sub(*add(*mult(r, ans->x, &check), p, &check), *cone->p, &check);
+	if (dot(check, *cone->v) < 0 || dot(check, *cone->v) > *cone->h)
+		ans->x = FLT_MAX;
+	ans->y = (-a[1] - sqrt(a[2])) / (2 * a[0]);
+	sub(*add(*mult(r, ans->y, &check), p, &check), *cone->p, &check);
+	if (dot(check, *cone->v) < 0 || dot(check, *cone->v) > *cone->h)
+		ans->y = FLT_MAX;
+	check_cone_cap(p, r, cone, ans);
+}
 
 void	inter_ray_sphere(t_p p, t_p r, t_obj *sphere, t_p *ans)
 {
@@ -52,8 +104,8 @@ int	calculate_shadow(t_scene *s, t_p p, t_p r, t_p *range)
 	float			min_l;
 	t_obj			*cur;
 	t_p				t;
-	const t_INTER	intersect[3] = {&inter_ray_sphere, &inter_ray_plane,
-		&inter_ray_cylinder};
+	const t_INTER	intersect[4] = {&inter_ray_sphere, &inter_ray_plane,
+		&inter_ray_cylinder, &inter_ray_cone};
 
 	min_l = FLT_MAX;
 	cur = s->objects;
@@ -75,8 +127,8 @@ t_obj	*calculate_ray(t_scene *s, t_p p, t_p r, t_p *range)
 	t_obj			*min_o;
 	t_obj			*cur;
 	t_p				t;
-	const t_INTER	intersect[3] = {&inter_ray_sphere, &inter_ray_plane,
-		&inter_ray_cylinder};
+	const t_INTER	intersect[4] = {&inter_ray_sphere, &inter_ray_plane,
+		&inter_ray_cylinder, &inter_ray_cone};
 
 	min_l = FLT_MAX;
 	min_o = 0;
@@ -101,8 +153,8 @@ unsigned int	trace_ray(t_scene *s, t_p r, t_p range, int depth)
 {
 	float			min_l;
 	const t_obj		*min_o = calculate_ray(s, *s->camera->p, r, &range);
-	const t_LIGHT	light[3] = {lighting_sphere, lighting_plane,
-		lighting_cylinder};
+	const t_LIGHT	light[4] = {lighting_sphere, lighting_plane,
+		lighting_cylinder, lighting_cone};
 
 	min_l = range.z;
 	mult(r, min_l, &r);

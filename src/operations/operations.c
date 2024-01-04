@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   operations.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alde-oli <alde-oli@student.42lausanne.c    +#+  +:+       +#+        */
+/*   By: dvandenb <dvandenb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/13 15:41:46 by dvandenb          #+#    #+#             */
-/*   Updated: 2023/12/22 23:58:32 by alde-oli         ###   ########.fr       */
+/*   Updated: 2024/01/03 15:34:22 by dvandenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,16 +63,17 @@ t_p	*eq(t_p *a, t_p b)
 	return (a);
 }
 
-void	norm(t_p *a)
+t_p	*norm(t_p *a)
 {
 	float	magi;
 
 	magi = mag(*a);
 	if (!magi)
-		return ;
+		return (0);
 	a->x /= magi;
 	a->y /= magi;
 	a->z /= magi;
+	return (a);
 }
 
 float	distance_squared(t_p a, t_p b)
