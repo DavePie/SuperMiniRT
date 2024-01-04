@@ -6,7 +6,7 @@
 /*   By: dvandenb <dvandenb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/04 15:56:01 by dvandenb          #+#    #+#             */
-/*   Updated: 2024/01/04 16:57:34 by dvandenb         ###   ########.fr       */
+/*   Updated: 2024/01/04 17:54:43 by dvandenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,9 +37,32 @@ void	cy_img(t_obj o, t_img *i, t_p p, t_p *c)
 	(void)o, (void)i, (void)p, (void)c;
 }
 
-void	cy_check(t_obj o, t_p p, t_p *color)
+void	cy_check(t_obj o, t_p p, t_p n, t_p *color)
 {
-	(void)o, (void)p, (void)color;
+	t_p		vec_x;
+	float	angle;
+	int		x;
+	int		y;
+
+	y = 0;
+	vec_x = (t_p){.x = o.v->z, .z = -o.v->x};
+	if (!o.v->z && !o.v->x)
+		vec_x = (t_p){.x = 1};
+	if (dot(n, *o.v))
+	{
+		pl_check(o, p, n, color);
+		return ;
+	}
+	angle = acosf(dot(*norm(&vec_x), n));
+	if (angle < 0)
+		angle += 2 * M_PI;
+	if (dot(n, vec_x) < 0)
+		angle += M_PI / 4;
+	x = (int)(angle / M_PI / 2 * 1000);
+	if ((x % 100 > 50 && y % 1000 > 500) || (x % 100 < 50 && y % 1000 < 500))
+		*color = (color_mult((*color), 1.2));
+	else
+		*color = (color_mult((*color), 0.8));
 }
 
 // void	apply_checker_board_cyl(t_obj o, t_p p, t_p n, unsigned int *color)

@@ -6,7 +6,7 @@
 /*   By: dvandenb <dvandenb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/04 16:10:39 by dvandenb          #+#    #+#             */
-/*   Updated: 2024/01/04 16:13:32 by dvandenb         ###   ########.fr       */
+/*   Updated: 2024/01/04 17:13:10 by dvandenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ void	co_img(t_obj o, t_img *i, t_p p, t_p *c)
 	(void)o, (void)i, (void)p, (void)c;
 }
 
-void	co_check(t_obj o, t_p p, t_p *color)
+void	co_check(t_obj o, t_p p, t_p n, t_p *color)
 {
-	(void)o, (void)p, (void)color;
+	(void)o, (void)p, (void)color, (void)n;
 }

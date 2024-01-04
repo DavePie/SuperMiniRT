@@ -6,7 +6,7 @@
 /*   By: dvandenb <dvandenb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/04 15:03:42 by dvandenb          #+#    #+#             */
-/*   Updated: 2024/01/04 16:50:46 by dvandenb         ###   ########.fr       */
+/*   Updated: 2024/01/04 17:14:13 by dvandenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ void	pl_img(t_obj o, t_img *i, t_p p, t_p *c)
 	(void)o, (void)i, (void)p, (void)c;
 }
 
-void	pl_check(t_obj o, t_p p, t_p *color)
+void	pl_check(t_obj o, t_p p, t_p n, t_p *color)
 {
 	t_p		vec;
 	t_p		vec_x;
@@ -31,6 +31,7 @@ void	pl_check(t_obj o, t_p p, t_p *color)
 	int		set_col;
 	int		set_row;
 
+	(void)n;
 	sub(p, *o.p, &vec);
 	vec_x = (t_p){.x = o.v->z, .z = -o.v->x};
 	if (!o.v->z && !o.v->x)

@@ -6,7 +6,7 @@
 /*   By: dvandenb <dvandenb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/13 17:35:08 by dvandenb          #+#    #+#             */
-/*   Updated: 2024/01/04 16:55:47 by dvandenb         ###   ########.fr       */
+/*   Updated: 2024/01/04 17:11:30 by dvandenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,6 +61,7 @@ t_p	get_reflect(t_scene *s, t_p n, t_p d, int depth)
 // 0      1     2   3
 
 typedef void	(*t_NORM)(t_obj, t_p, t_p*);
+typedef void	(*t_CHECK)(t_obj, t_p, t_p, t_p*);
 typedef void	(*t_M_IMG)(t_obj, t_img*, t_p, t_p*);
 
 void	bump(t_obj o, t_p p, t_p *n, t_M_IMG get_c)
@@ -91,9 +92,9 @@ t_p	lighting(t_scene *s, t_obj o, t_p d, int depth)
 {
 	t_p				v[2];
 	t_p				col[2];
-	const t_NORM	norms[8] = {&sp_norm, &pl_norm, &cy_norm, &co_norm,
-		&sp_check, &pl_check, &cy_check, &co_check};
-	const t_M_IMG	m_imgs[8] = {&sp_img, &pl_img, &cy_img, &co_img};
+	const t_NORM	norms[4] = {&sp_norm, &pl_norm, &cy_norm, &co_norm};
+	const t_CHECK	checks[4]= {&sp_check, &pl_check, &cy_check, &co_check};
+	const t_M_IMG	m_imgs[4] = {&sp_img, &pl_img, &cy_img, &co_img};
 
 	add(*s->camera->p, d, &v[0]);
 	norm(&d);
@@ -106,7 +107,7 @@ t_p	lighting(t_scene *s, t_obj o, t_p d, int depth)
 	if (o.i)
 		m_imgs[*o.type](o, o.i, v[0], &col[0]);
 	if (o.distrupt && *o.distrupt == CHECKERBOARD)
-		norms[*o.type + 4](o, v[0], &col[0]);
+		checks[*o.type](o, v[0], v[1], &col[0]);
 	col[0] = (cl_mix((col[0]), diffuse_light(s, v[0], v[1], &o)));
 	if (!depth || !o.reflect)
 		return ((col[0]));

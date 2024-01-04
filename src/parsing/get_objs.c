@@ -6,7 +6,7 @@
 /*   By: dvandenb <dvandenb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/13 13:11:59 by alde-oli          #+#    #+#             */
-/*   Updated: 2024/01/04 13:18:02 by dvandenb         ###   ########.fr       */
+/*   Updated: 2024/01/04 17:58:40 by dvandenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,6 +88,11 @@ void	set_attributes(t_obj *new_obj, char *line, int fd, t_scene *scene)
 		close(fd);
 		ft_error(1, "Invalid scene element\n", 0, scene);
 	}
+	// if (*new_obj->type < 3)
+	// {
+	// 	new_obj->distrupt = malloc(sizeof(int));
+	// 	*new_obj->distrupt = CHECKERBOARD;
+	// }
 	t[1] = -1;
 	t[2] = 0;
 	while (++(t[1]) < 5)
