@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   structs.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alde-oli <alde-oli@student.42lausanne.c    +#+  +:+       +#+        */
+/*   By: dvandenb <dvandenb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/12 12:47:35 by dvandenb          #+#    #+#             */
-/*   Updated: 2023/12/22 22:05:38 by alde-oli         ###   ########.fr       */
+/*   Updated: 2024/01/04 16:54:14 by dvandenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,13 +81,6 @@ typedef struct s_p
 	float	z;
 }													t_p;
 
-typedef struct s_c
-{
-	int	x;
-	int	y;
-	int z;
-}													t_c;
-
 typedef struct s_img
 {
 	void	*img;
@@ -99,7 +92,7 @@ typedef struct s_img
 typedef struct s_obj
 {
 	int				*type;
-	unsigned int	*color;
+	t_p				*color;
 	struct s_obj	*next;
 	t_p				*p;
 	t_p				*v;

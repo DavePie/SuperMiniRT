@@ -6,7 +6,7 @@
 /*   By: dvandenb <dvandenb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/14 15:05:22 by alde-oli          #+#    #+#             */
-/*   Updated: 2023/12/21 18:05:32 by dvandenb         ###   ########.fr       */
+/*   Updated: 2024/01/04 16:55:17 by dvandenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,10 +37,10 @@ int	count_words(char *str)
 
 void	*get_color(char *line, t_scene *s)
 {
-	char			**split;
-	int				color[3];
-	int				i;
-	unsigned int	*ans;
+	char	**split;
+	int		color[3];
+	int		i;
+	t_p		*ans;
 
 	split = ft_split(line, ',');
 	if (!split && printf("error while getting color: value set to 0\n"))
@@ -57,9 +57,9 @@ void	*get_color(char *line, t_scene *s)
 		}
 	}
 	ft_free_str_tab(split);
-	ans = malloc(sizeof(unsigned int));
+	ans = malloc(sizeof(t_p));
 	ft_error(!ans, "unable to allocate space\n", 0, s);
-	*ans = cl(color[0], color[1], color[2]);
+	*ans = (t_p){.x = color[0], .y = color[1], .z = color[2]};
 	return (ans);
 }
 
