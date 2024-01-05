@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_objs.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dvandenb <dvandenb@student.42.fr>          +#+  +:+       +#+        */
+/*   By: alde-oli <alde-oli@student.42lausanne.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/13 13:11:59 by alde-oli          #+#    #+#             */
-/*   Updated: 2024/01/04 13:18:02 by dvandenb         ###   ########.fr       */
+/*   Updated: 2024/01/05 13:34:21 by alde-oli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ int	match_t(char *line, int *i, t_obj *new_obj)
 {
 	static char	*type[] = {"sp", "pl", "cy", "co", "A", "C", "L"};
 
-	printf("line: %s\n", line);
+	//printf("line: %s\n", line);
 	*i = 0;
 	while (line[*i] && type[*i])
 	{
@@ -40,7 +40,7 @@ int	match_t(char *line, int *i, t_obj *new_obj)
 
 int	do_split(char *line, char ***split, const int *atr)
 {
-	if (count_words(line) != (atr[0] + atr[1] + atr[2] + atr[3] + atr[4] + 1))
+	if (count_words(line) != (atr[0] + atr[1] + atr[2] + atr[3] + atr[4] + atr[5] + atr[6] + atr[7] + atr[8] + atr[9] + 1))
 		return (1);
 	*split = ft_split(line, ' ');
 	if (*split)
@@ -48,53 +48,58 @@ int	do_split(char *line, char ***split, const int *atr)
 	return (1);
 }
 
-void	*float_ptr(char *str, t_scene *s)
+void	*float_ptr(char *str, t_scene *scene, int *error)
 {
 	float		*ans;
 	const float	a = ft_atof(str);
 
+	(void)scene;
 	ans = malloc(sizeof(float));
-	ft_error(!ans, "Unable to allocate memory", 0, s);
+	if (!ans)
+	{
+		*error = 1;
+		return (NULL);
+	}
 	*ans = a;
 	return (ans);
 }
 
-//attr[i][]                {coords1, coords2, float1, float2, color}
-//	static int	a[6][5] = {{      0,       0,      1,      0,     1},  ambient
-//						   {      1,       1,      1,      0,     0},  camera
-//						   {      1,       0,      1,      0,     1},  light
+//attr[i][]                {coords1, coords2, float1, float2, color, spec, reflect, img, bump, dirsupt}
+//	static int	a[6][5] = {{      0,       0,      1,      0,     1,    0,       0,   0,    0,       0},  ambient
+//						   {      1,       1,      1,      0,     0,    0,       0,   0,    0,       0},  camera
+//						   {      1,       0,      1,      0,     1,    0,       0,   0,    0,       0},  light
 //						   here bonus object
-//						   {      1,       0,      1,      0,     1},  sphere
+//						   {      1,       0,      1,      0,     1,    0,       0,   0,    0,       0},  sphere
 //						   {      1,       1,      0,      0,     1},  plane
 //						   {      1,       1,      1,      1,     1}}; cylinder
 
-typedef void	*(*t_g)(char *input, t_scene *scene);
+typedef void	*(*t_g)(char *input, t_scene *scene, int *error);
 
-void	set_attributes(t_obj *new_obj, char *line, int fd, t_scene *scene)
+void	set_attributes(t_obj *o, char *line, int fd, t_scene *scene)
 {
-	int			t[3];
+	int			t[4];
 	char		**split;
-	const int	a[7][5] = {{1, 0, 1, 0, 1}, {1, 1, 0, 0, 1}, {1, 1, 1, 1, 1},
-	{1, 1, 1, 1, 1}, {0, 0, 1, 0, 1}, {1, 1, 1, 0, 0}, {1, 0, 1, 0, 1}};
-	const t_g	get_val[5] = {get_coords, get_coords, float_ptr, float_ptr,
-		get_color};
-	const void	*ptrs[5] = {&new_obj->p, &new_obj->v, &new_obj->w, &new_obj->h,
-		&new_obj->color};
+	const int	a[7][10] = {{1, 0, 1, 0, 1, 1, 1, 1, 1, 1},
+	{1, 1, 0, 0, 1, 1, 1, 1, 1, 1}, {1, 1, 1, 1, 1, 1, 1, 1, 1, 1},
+	{1, 1, 1, 1, 1, 1, 1, 1, 1, 1}, {0, 0, 1, 0, 1, 0, 0, 0, 0, 0},
+	{1, 1, 1, 0, 0, 0, 0, 0, 0, 0}, {1, 0, 1, 0, 1, 0, 0, 0, 0, 0}};
+	const t_g	get_val[10] = {get_coords, get_coords, float_ptr, float_ptr,
+		get_color, float_ptr, float_ptr, get_img, get_img, int_ptr};
+	const void	*ptrs[10] = {&o->p, &o->v, &o->w, &o->h, &o->color, &o->specular,
+		&o->reflect, &o->i, &o->b, &o->distrupt};
 
-	split = NULL;
-	if (match_t(line, &t[0], new_obj) == -1 || do_split(line, &split, a[t[0]]))
-	{
-		free(line);
-		close(fd);
-		ft_error(1, "Invalid scene element\n", 0, scene);
-	}
+	t[0] = 0;
 	t[1] = -1;
 	t[2] = 0;
-	while (++(t[1]) < 5)
+	split = NULL;
+	t[3] = (match_t(line, &t[0], o) == -1 || do_split(line, &split, a[t[0]]));
+	while (++(t[1]) < 10 && !t[3])
 		if (a[t[0]][t[1]])
-			*(void **)ptrs[t[1]] = get_val[t[1]](split[++(t[2])], scene);
+			*(void **)ptrs[t[1]] = get_val[t[1]](split[++(t[2])], scene, &t[3]);
 	free(line);
-	ft_free_str_tab(split);
+	close(fd);
+	split = ft_free_str_tab(split);
+	ft_error(t[3], "Error while loading scene element\n", 0, scene);
 }
 
 int	get_one_obj(t_scene *scene, int fd, char *line, t_obj *new_obj)
@@ -114,38 +119,10 @@ int	get_one_obj(t_scene *scene, int fd, char *line, t_obj *new_obj)
 	else
 		add_back(&scene->objects, new_obj);
 	set_attributes(new_obj, line, fd, scene);
+	printf("every attributes of object %d:\npos: %p\nvector: %p\nwidth: %p\nheight: %p\ncolor: %p\nspec: %p\nreflect: %p\nimg: %p\nbump: %p\ndisruption: %p\n",
+			*new_obj->type, new_obj->p, new_obj->v, new_obj->w, new_obj->h, new_obj->color, new_obj->specular, new_obj->reflect, new_obj->i, new_obj->b, new_obj->distrupt);
 	return (1);
 }
-
-// static void	print_scene(t_obj *obj)
-// {
-// 	if (obj->type == AMBIENT)
-// 		printf("Ambient\n");
-// 	else if (obj->type == CAMERA)
-// 		printf("Camera\n");
-// 	else if (obj->type == LIGHT)
-// 		printf("Light\n");
-// 	else if (obj->type == SPHERE)
-// 		printf("Sphere\n");
-// 	else if (obj->type == PLANE)
-// 		printf("Plane\n");
-// 	else if (obj->type == CYLINDER)
-// 		printf("Cylinder\n");
-// 	else
-// 		printf("Unknown type\n");
-// 	printf("type: %d\n", obj->type);
-// 	if (obj->p)
-// 		printf("pos: %f, %f, %f\n", obj->p->x, obj->p->y,
-// 			obj->p->z);
-// 	if (obj->v)
-// 		printf("v: %f, %f, %f\n", obj->v->x, obj->v->y,
-// 			obj->v->z);
-// 	printf("w: %f\n", obj->w);
-// 	printf("h: %f\n", obj->h);
-// 	printf("color: r = %d, g = %d, b = %d\n", (obj->color >> 16) & 0xFF,
-// 		(obj->color >> 8) & 0xFF, obj->color & 0xFF);
-// 	printf("\n\n");
-// }
 
 void	get_objs(t_scene *scene, int fd)
 {
@@ -171,21 +148,3 @@ void	get_objs(t_scene *scene, int fd)
 	if (!scene->camera || !scene->ambient || !scene->lights)
 		ft_error(1, "Missing scene element\n", 0, scene);
 }
-
-
-
-// void	get_objs(t_scene *scene, int fd)
-// {
-// 	while (get_one_obj(scene, fd))
-// 		continue ;
-// 	printf("ambient type is %d\n", scene->ambient->type);
-// 	print_scene(scene->ambient);
-// 	print_scene(scene->camera);
-// 	print_scene(scene->lights);
-// 	t_obj *obj = scene->objects;
-// 	while (obj)
-// 	{
-// 		print_scene(obj);
-// 		obj = obj->next;
-// 	}
-// }
