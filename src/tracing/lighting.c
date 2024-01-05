@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lighting.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dvandenb <dvandenb@student.42.fr>          +#+  +:+       +#+        */
+/*   By: alde-oli <alde-oli@student.42lausanne.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/13 17:35:08 by dvandenb          #+#    #+#             */
-/*   Updated: 2024/01/04 17:11:30 by dvandenb         ###   ########.fr       */
+/*   Updated: 2024/01/05 13:43:30 by alde-oli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,8 +35,8 @@ t_p	diffuse_light(t_scene *s, t_p p, t_p n, t_obj *o)
 			continue ;
 		}
 		intensity = cls_add(intensity, cls_intensity((*l->color), (dot(n, vs[0]) > 0) * (*l->w * dot(n, vs[0]))));
-		if (o->specular && *o->specular)
-			i += (dot(*sub(*mult(*mult(n, 2, &(vs[1])), dot(n, vs[0]), &(vs[1])), vs[0], &(vs[1])), *sub(*s->camera->p, p, &(vs[2]))) > 0) * *l->w * powf(dot(vs[1], vs[2]) / mag(vs[1]) / mag(vs[2]), *o->specular);
+		if (o->spec && *o->spec)
+			i += (dot(*sub(*mult(*mult(n, 2, &(vs[1])), dot(n, vs[0]), &(vs[1])), vs[0], &(vs[1])), *sub(*s->camera->p, p, &(vs[2]))) > 0) * *l->w * powf(dot(vs[1], vs[2]) / mag(vs[1]) / mag(vs[2]), *o->spec);
 		l = l->next;
 	}
 	return (intensity);
@@ -106,7 +106,7 @@ t_p	lighting(t_scene *s, t_obj o, t_p d, int depth)
 		bump(o, v[0], &v[1], m_imgs[*o.type]);
 	if (o.i)
 		m_imgs[*o.type](o, o.i, v[0], &col[0]);
-	if (o.distrupt && *o.distrupt == CHECKERBOARD)
+	if (o.dis && *o.dis == CHECKERBOARD)
 		checks[*o.type](o, v[0], v[1], &col[0]);
 	col[0] = (cl_mix((col[0]), diffuse_light(s, v[0], v[1], &o)));
 	if (!depth || !o.reflect)

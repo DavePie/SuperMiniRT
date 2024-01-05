@@ -6,7 +6,7 @@
 /*   By: alde-oli <alde-oli@student.42lausanne.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/13 13:11:59 by alde-oli          #+#    #+#             */
-/*   Updated: 2024/01/05 13:37:31 by alde-oli         ###   ########.fr       */
+/*   Updated: 2024/01/05 13:43:30 by alde-oli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,8 +85,8 @@ void	set_attributes(t_obj *o, char *line, int fd, t_scene *scene)
 	{1, 1, 1, 0, 0, 0, 0, 0, 0, 0}, {1, 0, 1, 0, 1, 0, 0, 0, 0, 0}};
 	const t_g	get_val[10] = {get_coords, get_coords, float_ptr, float_ptr,
 		get_color, float_ptr, float_ptr, get_img, get_img, int_ptr};
-	const void	*ptrs[10] = {&o->p, &o->v, &o->w, &o->h, &o->color, &o->specular,
-		&o->reflect, &o->i, &o->b, &o->distrupt};
+	const void	*ptrs[10] = {&o->p, &o->v, &o->w, &o->h, &o->color, &o->spec,
+		&o->reflect, &o->i, &o->b, &o->dis};
 
 	t[0] = 0;
 	t[1] = -1;
@@ -120,7 +120,7 @@ int	get_one_obj(t_scene *scene, int fd, char *line, t_obj *new_obj)
 		add_back(&scene->objects, new_obj);
 	set_attributes(new_obj, line, fd, scene);
 	printf("every attributes of object %d:\npos: %p\nvector: %p\nwidth: %p\nheight: %p\ncolor: %p\nspec: %p\nreflect: %p\nimg: %p\nbump: %p\ndisruption: %p\n",
-			*new_obj->type, new_obj->p, new_obj->v, new_obj->w, new_obj->h, new_obj->color, new_obj->specular, new_obj->reflect, new_obj->i, new_obj->b, new_obj->distrupt);
+			*new_obj->type, new_obj->p, new_obj->v, new_obj->w, new_obj->h, new_obj->color, new_obj->spec, new_obj->reflect, new_obj->i, new_obj->b, new_obj->dis);
 	return (1);
 }
 
