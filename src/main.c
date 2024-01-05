@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alde-oli <alde-oli@student.42lausanne.c    +#+  +:+       +#+        */
+/*   By: dvandenb <dvandenb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/12 16:07:57 by dvandenb          #+#    #+#             */
-/*   Updated: 2023/12/22 15:48:05 by alde-oli         ###   ########.fr       */
+/*   Updated: 2024/01/04 14:29:09 by dvandenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,8 +45,8 @@ int	main(int ac, char *av[])
 	ft_error(ac != 2, "invalid number of parameters", 0, &scene);
 	fd = open(av[1], O_RDONLY);
 	ft_error(fd == -1, "invalid file name: ", av[1], &scene);
-	get_objs(&scene, fd);
 	init_mlx(&scene);
+	get_objs(&scene, fd);
 	mlx_hook(scene.mlx->win, B_EXIT, 0, exit_scene, &scene);
 	mlx_hook(scene.mlx->win, 2, 1L << 0, key_event, &scene);
 	mlx_loop_hook(scene.mlx->mlx, update_window, &scene);

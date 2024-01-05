@@ -6,7 +6,7 @@
 /*   By: dvandenb <dvandenb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/13 14:44:04 by dvandenb          #+#    #+#             */
-/*   Updated: 2024/01/04 13:12:39 by dvandenb         ###   ########.fr       */
+/*   Updated: 2024/01/04 16:42:43 by dvandenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -149,18 +149,16 @@ t_obj	*calculate_ray(t_scene *s, t_p p, t_p r, t_p *range)
 	return (min_o);
 }
 
-unsigned int	trace_ray(t_scene *s, t_p r, t_p range, int depth)
+t_p	trace_ray(t_scene *s, t_p r, t_p range, int depth)
 {
 	float			min_l;
 	const t_obj		*min_o = calculate_ray(s, *s->camera->p, r, &range);
-	const t_LIGHT	light[4] = {lighting_sphere, lighting_plane,
-		lighting_cylinder, lighting_cone};
 
 	min_l = range.z;
 	mult(r, min_l, &r);
 	if (!min_o)
-		return (0);
-	return (light[*(min_o->type)](s, *min_o, r, depth));
+		return ((t_p){0, 0, 0});
+	return (lighting(s, *min_o, r, depth));
 }
 
 void	loop_line(t_scene *s, float x_w)

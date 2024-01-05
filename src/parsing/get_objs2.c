@@ -6,7 +6,7 @@
 /*   By: alde-oli <alde-oli@student.42lausanne.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/14 15:05:22 by alde-oli          #+#    #+#             */
-/*   Updated: 2024/01/05 13:21:51 by alde-oli         ###   ########.fr       */
+/*   Updated: 2024/01/05 13:36:28 by alde-oli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,10 +37,10 @@ int	count_words(char *str)
 
 void	*get_color(char *line, t_scene *scene , int *error)
 {
-	char			**split;
-	int				color[3];
-	int				i;
-	unsigned int	*ans;
+	char	**split;
+	int		color[3];
+	int		i;
+	t_p		*ans;
 
 	(void)scene;
 	split = ft_split(line, ',');
@@ -55,11 +55,11 @@ void	*get_color(char *line, t_scene *scene , int *error)
 	}
 	if (split)
 		ft_free_str_tab(split);
-	ans = malloc(sizeof(unsigned int));
+	ans = malloc(sizeof(t_p));
 	if (!ans)
 		*error = 1;
 	if (ans && !*error)
-		*ans = cl(color[0], color[1], color[2]);
+		*ans = (t_p){.x = color[0], .y = color[1], .z = color[2]};
 	return (ans);
 }
 

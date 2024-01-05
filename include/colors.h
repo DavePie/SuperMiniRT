@@ -3,28 +3,26 @@
 /*                                                        :::      ::::::::   */
 /*   colors.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alde-oli <alde-oli@student.42lausanne.c    +#+  +:+       +#+        */
+/*   By: dvandenb <dvandenb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/13 14:25:07 by dvandenb          #+#    #+#             */
-/*   Updated: 2023/12/22 15:40:11 by alde-oli         ###   ########.fr       */
+/*   Updated: 2024/01/04 16:56:45 by dvandenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef COLORS_H
 # define COLORS_H
 
-void			put_pixel(t_scene *s, int x, int y, unsigned int color);
+void			put_pixel(t_scene *s, int x, int y, t_p color);
 
-unsigned int	cl(int r, int g, int b);
+t_p				color_mult(t_p color, float x);
 
-unsigned int	color_mult(unsigned int color, float x);
-
-t_c				cl_split(unsigned int color);
-
-unsigned int	cl_mix(unsigned int color1, t_p color2);
+t_p				cl_mix(t_p color1, t_p color2);
 
 t_p				cls_add(t_p color1, t_p color2);
 
-t_p				cls_intensity(t_c color, float intensity);
+t_p				cls_intensity(t_p color, float intensity);
+
+float			c_n(int color);
 
 #endif

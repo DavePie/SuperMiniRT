@@ -3,29 +3,29 @@
 /*                                                        :::      ::::::::   */
 /*   colors.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alde-oli <alde-oli@student.42lausanne.c    +#+  +:+       +#+        */
+/*   By: dvandenb <dvandenb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/13 14:16:27 by dvandenb          #+#    #+#             */
-/*   Updated: 2023/12/22 15:40:20 by alde-oli         ###   ########.fr       */
+/*   Updated: 2024/01/04 16:57:05 by dvandenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "structs.h"
 #include "minirt.h"
 
-void	put_pixel(t_scene *s, int x, int y, unsigned int color)
+void	put_pixel(t_scene *s, int x, int y, t_p color)
 {
 	char		*pix;
 	const int	w = s->mlx->width;
 
 	pix = s->mlx->pix;
-	pix[(x + y * w) * 4 + 0] = color & 0xFF;
-	pix[(x + y * w) * 4 + 1] = color >> 8 & 0xFF;
-	pix[(x + y * w) * 4 + 2] = color >> 16 & 0xFF;
-	pix[(x + y * w) * 4 + 3] = color >> 24 & 0xFF;
+	pix[(x + y * w) * 4 + 0] = (int)color.z;
+	pix[(x + y * w) * 4 + 1] = (int)color.y;
+	pix[(x + y * w) * 4 + 2] = (int)color.x;
+	//pix[(x + y * w) * 4 + 3] = color >> 24 & 0xFF;
 }
 
-void	whiten(unsigned int *a, unsigned int *b, unsigned int *c)
+void	whiten(float *a, float *b, float *c)
 {
 	if (*a >= 256)
 	{
@@ -39,49 +39,32 @@ void	whiten(unsigned int *a, unsigned int *b, unsigned int *c)
 	}
 }
 
-unsigned int	cl(int r, int g, int b)
+t_p	color_mult(t_p color, float x)
 {
-	if (r < 0)
-		r += 255;
-	if (g < 0)
-		g += 255;
-	if (b < 0)
-		b += 255;
-	return ((r << 16) | (g << 8) | (b));
+	t_p	ans;
+
+	ans.x = color.x * x;
+	ans.y = color.y * x;
+	ans.z = color.z * x;
+	whiten(&ans.x, &ans.y, &ans.z);
+	whiten(&ans.y, &ans.x, &ans.z);
+	whiten(&ans.z, &ans.y, &ans.x);
+	return (ans);
 }
 
-unsigned int	color_mult(unsigned int color, float x)
+t_p	cl_split(unsigned int color)
 {
-	unsigned int	r;
-	unsigned int	g;
-	unsigned int	b;
-
-	r = (color >> 16) * x;
-	g = (color >> 8) % 256 * x;
-	b = (color) % 256 * x;
-	whiten(&r, &g, &b);
-	whiten(&g, &r, &b);
-	whiten(&b, &g, &r);
-	return ((r << 16) + (g << 8) + (b));
-}
-
-t_c	cl_split(unsigned int color)
-{
-	return ((t_c){.x = (color >> 16) & 0xFF,
+	return ((t_p){.x = (color >> 16) & 0xFF,
 		.y = (color >> 8) & 0xFF, .z = color & 0xFF});
 }
 
-unsigned int	cl_mix(unsigned int obj, t_p intensity)
+t_p	cl_mix(t_p obj, t_p intensity)
 {
-	t_c	int1;
-
-	int1 = cl_split(obj);
-
-	return (cl(fmin((int1.x * intensity.x), int1.x), fmin((int1.y * intensity.y), int1.y),
-			fmin((int1.z * intensity.z), int1.z)));
+	return ((t_p){.x = fmin((obj.x * intensity.x), obj.x), .y = fmin((obj.y * intensity.y), obj.y),
+			.z = fmin((obj.z * intensity.z), obj.z)});
 }
 
-t_p	cls_intensity(t_c color, float intensity)
+t_p	cls_intensity(t_p color, float intensity)
 {
 	t_p	result;
 
@@ -96,4 +79,11 @@ t_p	cls_add(t_p color1, t_p color2)
 	return ((t_p){.x = fmin((color1.x + color2.x), 255),
 		.y = fmin((color1.y + color2.y), 255),
 		.z = fmin((color1.z + color2.z), 255)});
+}
+
+float	c_n(int color)
+{
+	if (color < 0)
+		color += 255;
+	return ((float)color / 255 - 0.5);
 }

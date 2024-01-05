@@ -6,24 +6,20 @@
 /*   By: dvandenb <dvandenb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/03 16:46:22 by dvandenb          #+#    #+#             */
-/*   Updated: 2024/01/03 17:40:36 by dvandenb         ###   ########.fr       */
+/*   Updated: 2024/01/04 17:41:30 by dvandenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-# include "lighting.h"
-
-typedef void	(*t_NORM)(t_obj, t_p, t_p*);
-typedef void	(*t_M_IMG)(t_obj, t_p, t_c*);
-typedef void	(*t_BMP)(t_obj, t_p, t_p*);
+#include "lighting.h"
 
 void	sp_norm(t_obj o, t_p p, t_p *n)
 {
 	norm(sub(p, *o.p, n));
 }
 
-void	sp_map_img(t_obj o, t_img *i, t_p p, t_p *c)
+void	sp_img(t_obj o, t_img *i, t_p p, t_p *c)
 {
-	t_p	vec;
+	t_p		vec;
 	float	angle;
 	int		x;
 	int		y;
@@ -41,9 +37,25 @@ void	sp_map_img(t_obj o, t_img *i, t_p p, t_p *c)
 		.z = i->pix[(x + y * i->w) * 4]};
 }
 
-void	sp_img(t_obj o, t_p p, t_p *c)
+void	sp_check(t_obj o, t_p p, t_p n, t_p *color)
 {
-	sp_map_img(o, o.i, p, c);
-}
+	float		angle;
+	float		angle2;
+	int			x;
+	int			y;
+	const t_p	temp = (t_p){.x = n.x, .z = n.z};
 
-//void	sp_
+	(void) p, (void) o;
+	angle = atanf(n.z / n.x) + (n.x < 0) * (M_PI);
+	if (angle < 0)
+		angle += M_PI * 2;
+	angle2 = atanf((mag(temp) / n.y)) + (n.y < 0) * (M_PI);
+	if (angle2 < 0)
+		angle2 += M_PI * 2;
+	x = (int)(angle / M_PI / 2 * 1000);
+	y = (int)(angle2 / M_PI / 2 * 1000);
+	if ((x % 100 > 50 && y % 100 > 50) || (x % 100 < 50 && y % 100 < 50))
+		*color = (color_mult((*color), 1.2));
+	else
+		*color = (color_mult((*color), 0.8));
+}
