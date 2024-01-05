@@ -10,6 +10,7 @@
 		"complex": "c",
 		"events.h": "c",
 		"minirt.h": "c",
-		"iterator": "c"
+		"iterator": "c",
+		"get_next_line.h": "c"
 	}
 }

@@ -6,7 +6,7 @@
 /*   By: dvandenb <dvandenb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/14 15:05:22 by alde-oli          #+#    #+#             */
-/*   Updated: 2024/01/05 15:12:51 by dvandenb         ###   ########.fr       */
+/*   Updated: 2024/01/05 15:47:57 by dvandenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -119,7 +119,8 @@ void	*int_ptr(char *str, t_scene *scene, int *error)
 
 	(void)scene;
 	ans = malloc(sizeof(int));
-	if (!ans)
+	if (!ans || !ft_is_number(str, 0) || ft_strlen(str) > 2
+		|| ft_atoi(str) < 0)
 	{
 		*error = 1;
 		return (NULL);
