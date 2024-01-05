@@ -6,7 +6,7 @@
 /*   By: dvandenb <dvandenb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/12 16:09:39 by dvandenb          #+#    #+#             */
-/*   Updated: 2023/12/18 17:10:23 by dvandenb         ###   ########.fr       */
+/*   Updated: 2024/01/05 15:43:25 by dvandenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ void	ft_free(void *ptr)
 
 void	free_objects(t_obj *o, t_scene *s)
 {
-	t_obj	*cur;
+	t_obj		*cur;
 
 	while (o)
 	{
@@ -28,6 +28,13 @@ void	free_objects(t_obj *o, t_scene *s)
 		o = o->next;
 		ft_free(cur->p);
 		ft_free(cur->v);
+		ft_free(cur->type);
+		ft_free(cur->reflect);
+		ft_free(cur->color);
+		ft_free(cur->spec);
+		ft_free(cur->dis);
+		ft_free(cur->w);
+		ft_free(cur->h);
 		if (cur->i)
 			mlx_destroy_image(s->mlx->mlx, cur->i->img);
 		ft_free(cur->i);

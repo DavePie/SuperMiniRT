@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_objs.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alde-oli <alde-oli@student.42lausanne.c    +#+  +:+       +#+        */
+/*   By: dvandenb <dvandenb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/13 13:11:59 by alde-oli          #+#    #+#             */
-/*   Updated: 2024/01/05 13:43:30 by alde-oli         ###   ########.fr       */
+/*   Updated: 2024/01/05 15:13:24 by dvandenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@
 //type[]{AMBIENT, CAMERA, LIGHT, SPHERE, PLANE, CYLINDER}
 int	match_t(char *line, int *i, t_obj *new_obj)
 {
-	static char	*type[] = {"sp", "pl", "cy", "co", "A", "C", "L"};
+	const char	*type[] = {"sp", "pl", "cy", "co", "A", "C", "L"};
 
 	//printf("line: %s\n", line);
 	*i = 0;
@@ -108,6 +108,7 @@ int	get_one_obj(t_scene *scene, int fd, char *line, t_obj *new_obj)
 		|| (line[0] == 'L' && scene->lights))
 	{
 		free(line);
+		free(new_obj);
 		ft_error(1, "Multiple definition of a scene element\n", 0, scene);
 	}
 	else if (line[0] == 'A')
@@ -119,8 +120,8 @@ int	get_one_obj(t_scene *scene, int fd, char *line, t_obj *new_obj)
 	else
 		add_back(&scene->objects, new_obj);
 	set_attributes(new_obj, line, fd, scene);
-	printf("every attributes of object %d:\npos: %p\nvector: %p\nwidth: %p\nheight: %p\ncolor: %p\nspec: %p\nreflect: %p\nimg: %p\nbump: %p\ndisruption: %p\n",
-			*new_obj->type, new_obj->p, new_obj->v, new_obj->w, new_obj->h, new_obj->color, new_obj->spec, new_obj->reflect, new_obj->i, new_obj->b, new_obj->dis);
+	// printf("every attributes of object %d:\npos: %p\nvector: %p\nwidth: %p\nheight: %p\ncolor: %p\nspec: %p\nreflect: %p\nimg: %p\nbump: %p\ndisruption: %p\n",
+	// 		*new_obj->type, new_obj->p, new_obj->v, new_obj->w, new_obj->h, new_obj->color, new_obj->spec, new_obj->reflect, new_obj->i, new_obj->b, new_obj->dis);
 	return (1);
 }
 
@@ -136,12 +137,16 @@ void	get_objs(t_scene *scene, int fd)
 		line = get_next_line(fd);
 		if (!line || *line == '\0')
 		{
+			free(new_obj);
 			if (line)
 				free(line);
 			break ;
 		}
 		if (*line == '\n')
+		{
 			free(line);
+			free(new_obj);
+		}
 		else
 			get_one_obj(scene, fd, line, new_obj);
 	}

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_objs2.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alde-oli <alde-oli@student.42lausanne.c    +#+  +:+       +#+        */
+/*   By: dvandenb <dvandenb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/14 15:05:22 by alde-oli          #+#    #+#             */
-/*   Updated: 2024/01/05 13:36:28 by alde-oli         ###   ########.fr       */
+/*   Updated: 2024/01/05 15:12:51 by dvandenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,7 +81,7 @@ void	*get_coords(char *line, t_scene *scene, int *error)
 	coords->x = ft_atof(split[0]);
 	coords->y = ft_atof(split[1]);
 	coords->z = ft_atof(split[2]);
-	free(split);
+	ft_free_str_tab(split);
 	return (coords);
 }
 
