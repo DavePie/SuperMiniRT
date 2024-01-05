@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_objs.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dvandenb <dvandenb@student.42.fr>          +#+  +:+       +#+        */
+/*   By: alde-oli <alde-oli@student.42lausanne.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/13 13:11:59 by alde-oli          #+#    #+#             */
-/*   Updated: 2024/01/05 15:49:33 by dvandenb         ###   ########.fr       */
+/*   Updated: 2024/01/05 16:18:46 by alde-oli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,13 +20,14 @@ int	match_t(char *line, int *i, t_obj *new_obj)
 {
 	const char	*type[] = {"sp", "pl", "cy", "co", "A", "C", "L"};
 
-	while(line && *line == ' ')
+	while (line && *line == ' ')
 		line++;
 	*i = 0;
 	while (line[*i] && type[*i])
 	{
 		if (*line == *type[*i] && line[ft_strlen(type[*i]) - 1]
-			== type[*i][ft_strlen(type[*i]) - 1])
+			== type[*i][ft_strlen(type[*i]) - 1]
+			&& line[ft_strlen(type[*i])] == ' ')
 		{
 			new_obj->type = malloc(sizeof(int));
 			if (!new_obj->type)
@@ -41,7 +42,8 @@ int	match_t(char *line, int *i, t_obj *new_obj)
 
 int	do_split(char *line, char ***split, const int *atr)
 {
-	if (count_words(line) != (atr[0] + atr[1] + atr[2] + atr[3] + atr[4] + atr[5] + atr[6] + atr[7] + atr[8] + atr[9] + 1))
+	if (count_words(line) != (atr[0] + atr[1] + atr[2] + atr[3]
+			+ atr[4] + atr[5] + atr[6] + atr[7] + atr[8] + atr[9] + 1))
 		return (1);
 	*split = ft_split(line, ' ');
 	if (*split)
@@ -105,9 +107,9 @@ void	set_attributes(t_obj *o, char *line, int fd, t_scene *scene)
 	if (o->v)
 		norm(o->v);
 	free(line);
-	close(fd);
 	split = ft_free_str_tab(split);
-	ft_error(t[3], "Error while loading scene element\n", 0, scene);
+	if (t[3] && (close(fd) || 1))
+		ft_error(t[3], "Error while loading scene element\n", 0, scene);
 }
 
 int	get_one_obj(t_scene *scene, int fd, char *line, t_obj *new_obj)

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_objs2.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dvandenb <dvandenb@student.42.fr>          +#+  +:+       +#+        */
+/*   By: alde-oli <alde-oli@student.42lausanne.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/14 15:05:22 by alde-oli          #+#    #+#             */
-/*   Updated: 2024/01/05 15:47:57 by dvandenb         ###   ########.fr       */
+/*   Updated: 2024/01/05 16:45:43 by alde-oli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ int	count_words(char *str)
 	return (words);
 }
 
-void	*get_color(char *line, t_scene *scene , int *error)
+void	*get_color(char *line, t_scene *scene, int *error)
 {
 	char	**split;
 	int		color[3];
@@ -93,22 +93,22 @@ void	*get_img(char *line, t_scene *scene, int *error)
 
 	if (line[0] == '0' && ft_strlen(line) == 1)
 		return (NULL);
+	if ((len < 5 || ft_strncmp(line + len - 4, ".xpm", 4)))
+		return (((void *)(long long) !(*error = 1)));
 	img = malloc(sizeof(t_img));
-	if (!img || len < 5 || ft_strncmp(line + len - 4, ".xpm", 4))
-	{
-		*error = 1;
-		return (NULL);
-	}
+	if (!img)
+		return ((void *)(long long) !(*error = 1));
 	i = 0;
-	if (!*error)
-		img->img = mlx_xpm_file_to_image(scene->mlx->mlx,
-				line, &img->w, &img->h);
+	img->img = mlx_xpm_file_to_image(scene->mlx->mlx,
+			line, &img->w, &img->h);
 	if (img->img)
 		img->pix = mlx_get_data_addr(img->img, &i, &i, &i);
 	if (!img->img || !img->pix)
 	{
-		*error = 1;
-		return (NULL);
+		free(img);
+		if (img && img->img)
+			mlx_destroy_image(scene->mlx->mlx, img->img);
+		return ((void *)(long long) !(*error = 1));
 	}
 	return (img);
 }
@@ -122,6 +122,8 @@ void	*int_ptr(char *str, t_scene *scene, int *error)
 	if (!ans || !ft_is_number(str, 0) || ft_strlen(str) > 2
 		|| ft_atoi(str) < 0)
 	{
+		if (ans)
+			free(ans);
 		*error = 1;
 		return (NULL);
 	}
