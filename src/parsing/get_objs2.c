@@ -6,7 +6,7 @@
 /*   By: alde-oli <alde-oli@student.42lausanne.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/14 15:05:22 by alde-oli          #+#    #+#             */
-/*   Updated: 2024/01/05 13:36:28 by alde-oli         ###   ########.fr       */
+/*   Updated: 2024/01/05 14:18:54 by alde-oli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -119,7 +119,8 @@ void	*int_ptr(char *str, t_scene *scene, int *error)
 
 	(void)scene;
 	ans = malloc(sizeof(int));
-	if (!ans)
+	if (!ans || !ft_is_number(str, 0) || ft_strlen(str) > 2
+		|| ft_atoi(str) < 0)
 	{
 		*error = 1;
 		return (NULL);

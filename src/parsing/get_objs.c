@@ -6,7 +6,7 @@
 /*   By: alde-oli <alde-oli@student.42lausanne.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/13 13:11:59 by alde-oli          #+#    #+#             */
-/*   Updated: 2024/01/05 13:43:30 by alde-oli         ###   ########.fr       */
+/*   Updated: 2024/01/05 14:20:19 by alde-oli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,8 @@ int	match_t(char *line, int *i, t_obj *new_obj)
 {
 	static char	*type[] = {"sp", "pl", "cy", "co", "A", "C", "L"};
 
-	//printf("line: %s\n", line);
+	while(line && *line == ' ')
+		line++;
 	*i = 0;
 	while (line[*i] && type[*i])
 	{
@@ -54,6 +55,11 @@ void	*float_ptr(char *str, t_scene *scene, int *error)
 	const float	a = ft_atof(str);
 
 	(void)scene;
+	if (!ft_is_number(str, 1) || a < 0)
+	{
+		*error = 1;
+		return (NULL);
+	}
 	ans = malloc(sizeof(float));
 	if (!ans)
 	{
@@ -96,6 +102,8 @@ void	set_attributes(t_obj *o, char *line, int fd, t_scene *scene)
 	while (++(t[1]) < 10 && !t[3])
 		if (a[t[0]][t[1]])
 			*(void **)ptrs[t[1]] = get_val[t[1]](split[++(t[2])], scene, &t[3]);
+	if (o->v)
+		o->v = norm(o->v);
 	free(line);
 	close(fd);
 	split = ft_free_str_tab(split);
@@ -104,17 +112,22 @@ void	set_attributes(t_obj *o, char *line, int fd, t_scene *scene)
 
 int	get_one_obj(t_scene *scene, int fd, char *line, t_obj *new_obj)
 {
-	if ((line[0] == 'A' && scene->ambient) || (line[0] == 'C' && scene->camera)
-		|| (line[0] == 'L' && scene->lights))
+	int		i;
+
+	i = 0;
+	while (line && line[i] == ' ')
+		i++;
+	if ((line[i] == 'A' && scene->ambient) || (line[i] == 'C' && scene->camera)
+		|| (line[i] == 'L' && scene->lights))
 	{
 		free(line);
 		ft_error(1, "Multiple definition of a scene element\n", 0, scene);
 	}
-	else if (line[0] == 'A')
+	else if (line[i] == 'A')
 		add_back(&scene->ambient, new_obj);
-	else if (line[0] == 'C')
+	else if (line[i] == 'C')
 		add_back(&scene->camera, new_obj);
-	else if (line[0] == 'L')
+	else if (line[i] == 'L')
 		add_back(&scene->lights, new_obj);
 	else
 		add_back(&scene->objects, new_obj);
