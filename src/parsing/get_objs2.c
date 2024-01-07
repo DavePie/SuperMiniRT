@@ -105,7 +105,6 @@ void	*get_img(char *line, t_scene *scene, int *error)
 		img->pix = mlx_get_data_addr(img->img, &i, &i, &i);
 	if (!img->img || !img->pix)
 	{
-		free(img);
 		if (img && img->img)
 			mlx_destroy_image(scene->mlx->mlx, img->img);
 		return ((void *)(long long) !(*error = 1));
