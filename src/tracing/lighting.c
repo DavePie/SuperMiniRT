@@ -6,7 +6,7 @@
 /*   By: dvandenb <dvandenb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/13 17:35:08 by dvandenb          #+#    #+#             */
-/*   Updated: 2024/01/08 16:56:26 by dvandenb         ###   ########.fr       */
+/*   Updated: 2024/01/08 17:40:06 by dvandenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,12 +102,12 @@ t_p	lighting(t_scene *s, t_obj o, t_p d, t_p p, int depth)
 	if (*o.type == PLANE && dot(*o.v, d) > 0)
 		norm(mult(v[1], -1, &v[1]));
 	col[0] = *o.color;
-	if (o.b)
-		bump(o, v[0], &v[1], m_imgs[*o.type]);
 	if (o.i)
 		m_imgs[*o.type](o, o.i, v[0], &col[0]);
 	if (o.dis && *o.dis == CHECKERBOARD)
 		checks[*o.type](o, v[0], v[1], &col[0]);
+	if (o.b)
+		bump(o, v[0], &v[1], m_imgs[*o.type]);
 	col[0] = (cl_mix((col[0]), diffuse_light(s, v[0], v[1], &o)));
 	if (!depth || !o.reflect)
 		return ((col[0]));

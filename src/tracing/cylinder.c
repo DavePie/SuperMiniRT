@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cylinder.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alde-oli <alde-oli@student.42lausanne.c    +#+  +:+       +#+        */
+/*   By: dvandenb <dvandenb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/04 15:56:01 by dvandenb          #+#    #+#             */
-/*   Updated: 2024/01/08 09:38:21 by alde-oli         ###   ########.fr       */
+/*   Updated: 2024/01/08 17:49:54 by dvandenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,8 +28,8 @@ void	cy_norm(t_obj o, t_p p, t_p *n)
 		proj = (t_p){proj_l * o.v->x,
 			proj_l * o.v->y, proj_l * o.v->z};
 		*n = (t_p){cp.x - proj.x, cp.y - proj.y, cp.z - proj.z};
+		norm(n);
 	}
-	norm(n);
 }
 
 void	coords_body(t_obj o, t_p cp, float *x, float *y)
@@ -114,45 +114,17 @@ void	cy_check(t_obj o, t_p p, t_p n, t_p *color)
 
 	(void) n;
 	cp = (t_p){p.x - o.p->x, p.y - o.p->y, p.z - o.p->z};
-	coords_body(o, cp, &x, &y);
-	if (fabs(y - 0) < 0.01 || fabs(y - 1) < 0.01)
+	if ((n.x == o.v->x && n.y == o.v->y && n.z == o.v->z)
+		|| (n.x == -o.v->x && n.y == -o.v->y && n.z == -o.v->z))
 	{
 		pl_check(o, p, n, color);
 		return ;
 	}
-	check = ((int)(x * 10) % 2 == 0) ^ ((int)(y * 10) % 2 == 0);
+	coords_body(o, cp, &x, &y);
+	check = ((int)(x * *o.w) % 2 == 0) ^ ((int)(y * *o.h / M_PI) % 2 == 0);
 	if (check)
 		*color = (color_mult((*color), 1.2));
 	else
 		*color = (color_mult((*color), 0.8));
 
 }
-
-// void	apply_checker_board_cyl(t_obj o, t_p p, t_p n, unsigned int *color)
-// {
-// 	t_p		temp;
-// 	t_p		vec;
-// 	float	angle;
-// 	int		x;
-// 	int		y;
-
-// 	if (dot(n, *o.v))
-// 	{
-// 		//pl_check(o, p, color);
-// 		return ;
-// 	}
-// 	temp = (t_p){.x = o.v->z, .z = -o.v->x};
-// 	if (!o.v->z && !o.v->x)
-// 		temp = (t_p){.x = o.v->y, .y = -o.v->x};
-// 	norm(sub(p, *o.p, &vec));
-// 	norm(&temp);
-// 	angle = acosf(dot(n, temp));
-// 	if (angle < 0)
-// 		angle += M_PI * 2;
-// 	x = (int)(angle / M_PI / 2 * 1000);
-// 	y = 0;
-// 	if ((x % 100 > 50 && y % 100 > 50) || (x % 100 < 50 && y % 100 < 50))
-// 		*color = cll(color_mult(cl_split(*color), 1.2));
-// 	else
-// 		*color = cll(color_mult(cl_split(*color), 0.8));
-// }
