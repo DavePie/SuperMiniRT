@@ -6,7 +6,7 @@
 /*   By: alde-oli <alde-oli@student.42lausanne.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/13 13:11:59 by alde-oli          #+#    #+#             */
-/*   Updated: 2024/01/05 16:18:46 by alde-oli         ###   ########.fr       */
+/*   Updated: 2024/01/08 15:19:11 by alde-oli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ int	match_t(char *line, int *i, t_obj *new_obj)
 	while (line && *line == ' ')
 		line++;
 	*i = 0;
-	while (line[*i] && type[*i])
+	while (*i < 7)
 	{
 		if (*line == *type[*i] && line[ft_strlen(type[*i]) - 1]
 			== type[*i][ft_strlen(type[*i]) - 1]

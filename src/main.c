@@ -3,14 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dvandenb <dvandenb@student.42.fr>          +#+  +:+       +#+        */
+/*   By: alde-oli <alde-oli@student.42lausanne.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/12 16:07:57 by dvandenb          #+#    #+#             */
-/*   Updated: 2024/01/05 15:42:39 by dvandenb         ###   ########.fr       */
+/*   Updated: 2024/01/08 15:13:13 by alde-oli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minirt.h"
+#include "libft.h"
 
 void	init_mlx(t_scene *s)
 {
@@ -34,6 +35,9 @@ int	main(int ac, char *av[])
 
 	scene = (t_scene){};
 	ft_error(ac != 2, "invalid number of parameters", 0, &scene);
+	fd = 1;
+	ft_error((ft_strlen(av[1]) < 4 || ft_strncmp(av[1] + ft_strlen(av[1]) - 3,
+				".rt", 3)), "invalid file extension: ", av[1], &scene);
 	fd = open(av[1], O_RDONLY);
 	ft_error(fd == -1, "invalid file name: ", av[1], &scene);
 	scene.mlx = ft_malloc(sizeof(t_mlx), &scene);

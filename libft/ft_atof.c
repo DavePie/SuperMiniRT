@@ -6,7 +6,7 @@
 /*   By: alde-oli <alde-oli@student.42lausanne.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/14 14:52:17 by alde-oli          #+#    #+#             */
-/*   Updated: 2023/12/21 09:07:20 by alde-oli         ###   ########.fr       */
+/*   Updated: 2024/01/08 15:40:54 by alde-oli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,10 +66,7 @@ float	ft_atof(char *str)
 	float	fractional_part;
 
 	if (!ft_is_number(str, 1))
-	{
-		printf("%s: value not valid: set to 0\n", str);
 		return (0);
-	}
 	sign = skip_spaces(&str);
 	integer_part = convert_integer_part(&str);
 	if (*str == '.')
