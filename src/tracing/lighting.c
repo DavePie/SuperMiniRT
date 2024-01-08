@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lighting.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alde-oli <alde-oli@student.42lausanne.c    +#+  +:+       +#+        */
+/*   By: dvandenb <dvandenb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/13 17:35:08 by dvandenb          #+#    #+#             */
-/*   Updated: 2024/01/05 13:43:30 by alde-oli         ###   ########.fr       */
+/*   Updated: 2024/01/08 16:56:26 by dvandenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,14 +47,14 @@ void	reflect_ray(t_p r, t_p n, t_p *ans)
 	sub(*mult(*mult(n, 2, ans), dot(n, r), ans), r, ans);
 }
 
-t_p	get_reflect(t_scene *s, t_p n, t_p d, int depth)
+t_p	get_reflect(t_scene *s, t_p p, t_p n, t_p d, int depth)
 {
 	t_p			r;
 	const t_p	range = (t_p){.x = 0.001, .y = FLT_MAX};
 
 	mult(d, -1, &d);
 	reflect_ray(d, n, &r);
-	return (trace_ray(s, r, range, depth - 1));
+	return (trace_ray(s, r, p, range, depth - 1));
 }
 
 // o_p, o_p2, per, n
@@ -88,7 +88,7 @@ void	bump(t_obj o, t_p p, t_p *n, t_M_IMG get_c)
 // p, n
 // color, reflected
 
-t_p	lighting(t_scene *s, t_obj o, t_p d, int depth)
+t_p	lighting(t_scene *s, t_obj o, t_p d, t_p p, int depth)
 {
 	t_p				v[2];
 	t_p				col[2];
@@ -96,7 +96,7 @@ t_p	lighting(t_scene *s, t_obj o, t_p d, int depth)
 	const t_CHECK	checks[4]= {&sp_check, &pl_check, &cy_check, &co_check};
 	const t_M_IMG	m_imgs[4] = {&sp_img, &pl_img, &cy_img, &co_img};
 
-	add(*s->camera->p, d, &v[0]);
+	add(p, d, &v[0]);
 	norm(&d);
 	norms[*o.type](o, v[0], &v[1]);
 	if (*o.type == PLANE && dot(*o.v, d) > 0)
@@ -111,7 +111,7 @@ t_p	lighting(t_scene *s, t_obj o, t_p d, int depth)
 	col[0] = (cl_mix((col[0]), diffuse_light(s, v[0], v[1], &o)));
 	if (!depth || !o.reflect)
 		return ((col[0]));
-	col[1] = get_reflect(s, v[1], d, depth - 1);
+	col[1] = get_reflect(s, v[0], v[1], d, depth - 1);
 	return (cls_add(color_mult((col[0]), (1 - *o.reflect)),
 			color_mult((col[1]), *o.reflect)));
 }

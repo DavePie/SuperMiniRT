@@ -6,7 +6,7 @@
 /*   By: dvandenb <dvandenb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/13 17:57:09 by dvandenb          #+#    #+#             */
-/*   Updated: 2024/01/04 17:13:36 by dvandenb         ###   ########.fr       */
+/*   Updated: 2024/01/08 16:48:20 by dvandenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 # include "structs.h"
 # include "minirt.h"
 
-t_p		lighting(t_scene *s, t_obj o, t_p d, int depth);
+t_p		lighting(t_scene *s, t_obj o, t_p d, t_p p, int depth);
 
 void	sp_norm(t_obj o, t_p p, t_p *n);
 void	sp_img(t_obj o, t_img *i, t_p p, t_p *c);
