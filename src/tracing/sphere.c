@@ -6,7 +6,7 @@
 /*   By: dvandenb <dvandenb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/03 16:46:22 by dvandenb          #+#    #+#             */
-/*   Updated: 2024/01/08 13:44:52 by dvandenb         ###   ########.fr       */
+/*   Updated: 2024/01/08 18:23:28 by dvandenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,4 +56,24 @@ void	sp_check(t_obj o, t_p p, t_p n, t_p *color)
 		*color = (color_mult((*color), 1.2));
 	else
 		*color = (color_mult((*color), 0.8));
+}
+
+void	inter_ray_sphere(t_p p, t_p r, t_obj *sphere, t_p *ans)
+{
+	const t_p	n = (t_p){.x = p.x - sphere->p->x, .y = p.y - sphere->p->y,
+		.z = p.z - sphere->p->z};
+	const float	a = dot(r, r);
+	const float	b = 2 * dot(n, r);
+	const float	dis = (b * b) - (4 * a * (dot(n, n))
+			- (*sphere->w * *sphere->w));
+
+	ans->z = FLT_MAX;
+	if (dis < 0)
+	{
+		ans->x = FLT_MAX;
+		ans->y = FLT_MAX;
+		return ;
+	}
+	ans->x = (-b + sqrt(dis)) / (2 * a);
+	ans->y = (-b - sqrt(dis)) / (2 * a);
 }

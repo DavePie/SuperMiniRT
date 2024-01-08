@@ -6,7 +6,7 @@
 /*   By: dvandenb <dvandenb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/04 15:56:01 by dvandenb          #+#    #+#             */
-/*   Updated: 2024/01/08 17:49:54 by dvandenb         ###   ########.fr       */
+/*   Updated: 2024/01/08 18:22:02 by dvandenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,9 +99,7 @@ void	cy_img(t_obj o, t_img *i, t_p p, t_p *c)
 	if (fabs(y - 0) < 0.01 || fabs(y - 1) < 0.01
 		|| pix_x + pix_y * i->w >= i->w * i->h)
 		return ;
-	*c = (t_p){.x = i->pix[(pix_x + pix_y * i->w) * 4 + 2],
-		.y = i->pix[(pix_x + pix_y * i->w) * 4 + 1],
-		.z = i->pix[(pix_x + pix_y * i->w) * 4]};
+	*c = read_img(pix_x, pix_y, i);
 }
 
 //not working well for caps
@@ -126,5 +124,4 @@ void	cy_check(t_obj o, t_p p, t_p n, t_p *color)
 		*color = (color_mult((*color), 1.2));
 	else
 		*color = (color_mult((*color), 0.8));
-
 }

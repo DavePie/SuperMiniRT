@@ -6,7 +6,7 @@
 /*   By: dvandenb <dvandenb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/12 16:09:39 by dvandenb          #+#    #+#             */
-/*   Updated: 2024/01/05 15:43:25 by dvandenb         ###   ########.fr       */
+/*   Updated: 2024/01/08 18:27:11 by dvandenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,19 +90,4 @@ int	exit_scene(t_scene *s)
 	free(s->mlx);
 	exit(s->exit_code);
 	return (1);
-}
-
-void	ft_error(int condition, char *mess, char *val, t_scene *s)
-{
-	if (condition)
-	{
-		write(2, "error: ", 7);
-		while (*mess)
-			write(2, mess++, 1);
-		while (val && *val)
-			write(2, val++, 1);
-		write(2, "\n", 1);
-		s->exit_code = 1;
-		exit_scene(s);
-	}
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   events.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alde-oli <alde-oli@student.42lausanne.c    +#+  +:+       +#+        */
+/*   By: dvandenb <dvandenb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/13 14:21:28 by dvandenb          #+#    #+#             */
-/*   Updated: 2023/12/23 00:00:03 by alde-oli         ###   ########.fr       */
+/*   Updated: 2024/01/08 18:26:23 by dvandenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,6 @@ void	change_angle(t_p *v, int dir, t_scene *s)
 	const float	angle_increment = 2 * M_PI / 180.0;
 	t_p			right;
 	t_p			temp;
-
 
 	cross(*v, (t_p){0, 1, 0}, &right);
 	if (dir == RJ_UP || dir == K_UP)

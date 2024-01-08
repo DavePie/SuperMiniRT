@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   intersec_cylinder.c                                :+:      :+:    :+:   */
+/*   trace_ray2.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: dvandenb <dvandenb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/16 12:53:46 by alde-oli          #+#    #+#             */
-/*   Updated: 2024/01/03 15:25:20 by dvandenb         ###   ########.fr       */
+/*   Updated: 2024/01/08 18:46:25 by dvandenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,30 @@
 #include "utils.h"
 
 static int		is_point_inside_cyl_height(float t, t_p r, t_p co, t_obj *cyl);
- float	intersect_plane(t_p p, t_p r, t_p plane_p, t_p plane_normal);
+float			intersect_plane(t_p p, t_p r, t_p plane_p, t_p plane_normal);
+typedef void	(*t_INTER)(t_p, t_p, t_obj *, t_p *);
+
+int	calculate_shadow(t_scene *s, t_p p, t_p r, t_p *range)
+{
+	float			min_l;
+	t_obj			*cur;
+	t_p				t;
+	const t_INTER	intersect[4] = {&inter_ray_sphere, &inter_ray_plane,
+		&inter_ray_cylinder, &inter_ray_cone};
+
+	min_l = FLT_MAX;
+	cur = s->objects;
+	while (cur)
+	{
+		intersect[*(cur->type)](p, r, cur, &t);
+		if ((t.x >= range->x && t.x <= range->y && t.x < min_l)
+			|| (t.y >= range->x && t.y <= range->y && t.y < min_l))
+			return (1);
+		cur = cur->next;
+	}
+	range->z = min_l;
+	return (0);
+}
 
 //a,b,c are the coefficients of the quadratic equation
 //co is the distance from the ray origin to the intersection point
@@ -27,7 +50,8 @@ void	inter_ray_cylinder(t_p p, t_p r, t_obj *cyl, t_p *ans)
 		.y = p.y - cyl->p->y, .z = p.z - cyl->p->z};
 	const float	a = dot(r, r) - pow(dot(r, *cyl->v), 2);
 	const float	b = 2 * (dot(r, co) - dot(r, *cyl->v) * dot(co, *cyl->v));
-	const float	c = dot(co, co) - pow(dot(co, *cyl->v), 2) - pow(*cyl->w / 2, 2);
+	const float	c = dot(co, co) - pow(dot(co, *cyl->v), 2)
+		- pow(*cyl->w / 2, 2);
 	const t_p	t = (t_p){.x = (-b + sqrt(b * b - 4 * a * c)) / (2 * a),
 		.y = (-b - sqrt(b * b - 4 * a * c)) / (2 * a)};
 

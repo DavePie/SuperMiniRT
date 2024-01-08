@@ -6,7 +6,7 @@
 /*   By: dvandenb <dvandenb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/04 15:03:42 by dvandenb          #+#    #+#             */
-/*   Updated: 2024/01/08 17:19:57 by dvandenb         ###   ########.fr       */
+/*   Updated: 2024/01/08 18:25:38 by dvandenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,9 +41,7 @@ void	pl_img(t_obj o, t_img *i, t_p p, t_p *c)
 	axis[1] %= i->h;
 	if (vals.y < 0)
 		axis[1] = i->h - axis[1] - 1;
-	*c = (t_p){.x = i->pix[((int) axis[1] + (int) axis[0] * i->w) * 4 + 2],
-		.y = i->pix[((int)axis[1] + (int)axis[0] * i->w) * 4 + 1],
-		.z = i->pix[((int)axis[1] + (int)axis[0] * i->w) * 4]};
+	*c = read_img(axis[0], axis[1], i);
 }
 
 void	pl_check(t_obj o, t_p p, t_p n, t_p *color)
@@ -71,4 +69,16 @@ void	pl_check(t_obj o, t_p p, t_p n, t_p *color)
 		*color = (color_mult((*color), 0.8));
 	else
 		*color = (color_mult((*color), 1.2));
+}
+
+void	inter_ray_plane(t_p p, t_p r, t_obj *plane, t_p *ans)
+{
+	const float	denom = dot(*plane->v, r);
+	t_p			plane_p;
+
+	*ans = (t_p){.x = FLT_MAX, .y = FLT_MAX, .z = FLT_MAX};
+	plane_p = (t_p){.x = plane->p->x, .y = plane->p->y, .z = plane->p->z};
+	sub(plane_p, p, &plane_p);
+	if (fabs(denom) > 1e-6)
+		ans->x = dot(plane_p, *plane->v) / denom;
 }

@@ -3,15 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alde-oli <alde-oli@student.42lausanne.c    +#+  +:+       +#+        */
+/*   By: dvandenb <dvandenb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/12 16:07:57 by dvandenb          #+#    #+#             */
-/*   Updated: 2024/01/08 15:13:13 by alde-oli         ###   ########.fr       */
+/*   Updated: 2024/01/08 18:27:19 by dvandenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minirt.h"
 #include "libft.h"
+#include "get_next_line.h"
 
 void	init_mlx(t_scene *s)
 {
@@ -26,6 +27,50 @@ void	init_mlx(t_scene *s)
 	s->mlx->img = mlx_new_image(s->mlx->mlx, INIT_WIDTH, INIT_HEIGHT);
 	ft_error(!s->mlx->img, "failed to create image", 0, s);
 	s->mlx->pix = mlx_get_data_addr(s->mlx->img, &t, &t, &t);
+}
+
+void	get_objs(t_scene *scene, int fd)
+{
+	t_obj	*new_obj;
+	char	*line;
+
+	while (1)
+	{
+		new_obj = ft_malloc(sizeof(t_obj), scene);
+		*new_obj = (t_obj){};
+		line = get_next_line(fd);
+		if (!line || *line == '\0')
+		{
+			free(new_obj);
+			if (line)
+				free(line);
+			break ;
+		}
+		if (*line == '\n')
+		{
+			free(line);
+			free(new_obj);
+		}
+		else
+			get_one_obj(scene, fd, line, new_obj);
+	}
+	if (!scene->camera || !scene->ambient || !scene->lights)
+		ft_error(1, "Missing scene element\n", 0, scene);
+}
+
+void	ft_error(int condition, char *mess, char *val, t_scene *s)
+{
+	if (condition)
+	{
+		write(2, "error: ", 7);
+		while (*mess)
+			write(2, mess++, 1);
+		while (val && *val)
+			write(2, val++, 1);
+		write(2, "\n", 1);
+		s->exit_code = 1;
+		exit_scene(s);
+	}
 }
 
 int	main(int ac, char *av[])

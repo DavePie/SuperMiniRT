@@ -6,7 +6,7 @@
 /*   By: dvandenb <dvandenb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/13 14:16:27 by dvandenb          #+#    #+#             */
-/*   Updated: 2024/01/08 13:47:36 by dvandenb         ###   ########.fr       */
+/*   Updated: 2024/01/08 17:57:22 by dvandenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,43 +50,6 @@ t_p	color_mult(t_p color, float x)
 	whiten(&ans.y, &ans.x, &ans.z);
 	whiten(&ans.z, &ans.y, &ans.x);
 	return (ans);
-}
-
-t_p	cl_split(unsigned int color)
-{
-	return ((t_p){.x = (color >> 16) & 0xFF,
-		.y = (color >> 8) & 0xFF, .z = color & 0xFF});
-}
-
-t_p	cl_mix(t_p obj, t_p intensity)
-{
-	return ((t_p){.x = fmin((obj.x * intensity.x), obj.x),
-		.y = fmin((obj.y * intensity.y), obj.y),
-		.z = fmin((obj.z * intensity.z), obj.z)});
-}
-
-t_p	cls_intensity(t_p color, float intensity)
-{
-	t_p	result;
-
-	result.x = color.x / 255 * intensity;
-	result.y = color.y / 255 * intensity;
-	result.z = color.z / 255 * intensity;
-	return (result);
-}
-
-t_p	cls_add(t_p color1, t_p color2)
-{
-	return ((t_p){.x = fmin((color1.x + color2.x), 255),
-		.y = fmin((color1.y + color2.y), 255),
-		.z = fmin((color1.z + color2.z), 255)});
-}
-
-float	c_n(int color)
-{
-	if (color < 0)
-		color += 255;
-	return ((float)color / 255 - 0.5);
 }
 
 t_p	read_img(int x_p, int y_p, t_img *i)

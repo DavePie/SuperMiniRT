@@ -1,0 +1,11 @@
+//attr[i][]                {coords1, coords2, float1, float2, color, spec, reflect, img, bump, dirsupt}
+//	static int	a[6][5] = {{      0,       0,      1,      0,     1,    0,       0,   0,    0,       0},  ambient
+//						   {      1,       1,      1,      0,     0,    0,       0,   0,    0,       0},  camera
+//						   {      1,       0,      1,      0,     1,    0,       0,   0,    0,       0},  light
+//						   here bonus object
+//						   {      1,       0,      1,      0,     1,    0,       0,   0,    0,       0},  sphere
+//						   {      1,       1,      0,      0,     1},  plane
+//						   {      1,       1,      1,      1,     1}}; cylinder
+
+	// printf("every attributes of object %d:\npos: %p\nvector: %p\nwidth: %p\nheight: %p\ncolor: %p\nspec: %p\nreflect: %p\nimg: %p\nbump: %p\ndisruption: %p\n",
+	// 		*new_obj->type, new_obj->p, new_obj->v, new_obj->w, new_obj->h, new_obj->color, new_obj->spec, new_obj->reflect, new_obj->i, new_obj->b, new_obj->dis);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_objs.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alde-oli <alde-oli@student.42lausanne.c    +#+  +:+       +#+        */
+/*   By: dvandenb <dvandenb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/13 13:11:59 by alde-oli          #+#    #+#             */
-/*   Updated: 2024/01/08 15:19:11 by alde-oli         ###   ########.fr       */
+/*   Updated: 2024/01/08 18:30:47 by dvandenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,15 +72,6 @@ void	*float_ptr(char *str, t_scene *scene, int *error)
 	return (ans);
 }
 
-//attr[i][]                {coords1, coords2, float1, float2, color, spec, reflect, img, bump, dirsupt}
-//	static int	a[6][5] = {{      0,       0,      1,      0,     1,    0,       0,   0,    0,       0},  ambient
-//						   {      1,       1,      1,      0,     0,    0,       0,   0,    0,       0},  camera
-//						   {      1,       0,      1,      0,     1,    0,       0,   0,    0,       0},  light
-//						   here bonus object
-//						   {      1,       0,      1,      0,     1,    0,       0,   0,    0,       0},  sphere
-//						   {      1,       1,      0,      0,     1},  plane
-//						   {      1,       1,      1,      1,     1}}; cylinder
-
 typedef void	*(*t_g)(char *input, t_scene *scene, int *error);
 
 void	set_attributes(t_obj *o, char *line, int fd, t_scene *scene)
@@ -135,36 +126,5 @@ int	get_one_obj(t_scene *scene, int fd, char *line, t_obj *new_obj)
 	else
 		add_back(&scene->objects, new_obj);
 	set_attributes(new_obj, line, fd, scene);
-	// printf("every attributes of object %d:\npos: %p\nvector: %p\nwidth: %p\nheight: %p\ncolor: %p\nspec: %p\nreflect: %p\nimg: %p\nbump: %p\ndisruption: %p\n",
-	// 		*new_obj->type, new_obj->p, new_obj->v, new_obj->w, new_obj->h, new_obj->color, new_obj->spec, new_obj->reflect, new_obj->i, new_obj->b, new_obj->dis);
 	return (1);
-}
-
-void	get_objs(t_scene *scene, int fd)
-{
-	t_obj	*new_obj;
-	char	*line;
-
-	while (1)
-	{
-		new_obj = ft_malloc(sizeof(t_obj), scene);
-		*new_obj = (t_obj){};
-		line = get_next_line(fd);
-		if (!line || *line == '\0')
-		{
-			free(new_obj);
-			if (line)
-				free(line);
-			break ;
-		}
-		if (*line == '\n')
-		{
-			free(line);
-			free(new_obj);
-		}
-		else
-			get_one_obj(scene, fd, line, new_obj);
-	}
-	if (!scene->camera || !scene->ambient || !scene->lights)
-		ft_error(1, "Missing scene element\n", 0, scene);
 }
