@@ -6,7 +6,7 @@
 /*   By: dvandenb <dvandenb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/03 16:46:22 by dvandenb          #+#    #+#             */
-/*   Updated: 2024/01/04 17:41:30 by dvandenb         ###   ########.fr       */
+/*   Updated: 2024/01/08 13:44:52 by dvandenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,9 +32,7 @@ void	sp_img(t_obj o, t_img *i, t_p p, t_p *c)
 		angle -= M_PI * 2;
 	x = (int)(angle / M_PI / 2 * i->w);
 	y = (vec.y + (*o.w / 2)) / *o.w * i->h;
-	*c = (t_p){.x = i->pix[(x + y * i->w) * 4 + 2],
-		.y = i->pix[(x + y * i->w) * 4 + 1],
-		.z = i->pix[(x + y * i->w) * 4]};
+	*c = read_img(x, y, i);
 }
 
 void	sp_check(t_obj o, t_p p, t_p n, t_p *color)
