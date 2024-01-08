@@ -6,7 +6,7 @@
 /*   By: dvandenb <dvandenb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/13 14:44:04 by dvandenb          #+#    #+#             */
-/*   Updated: 2024/01/04 16:42:43 by dvandenb         ###   ########.fr       */
+/*   Updated: 2024/01/08 14:41:31 by dvandenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -178,7 +178,7 @@ void	loop_line(t_scene *s, float x_w)
 		x = x_w / s->mlx->width - 0.5f;
 		y = y_w / s->mlx->width - ((0.5f) * s->mlx->height / s->mlx->width);
 		v = (t_p){.x = s->camera->v->x + (x * s->o_x.x) + (y * s->o_y.x),
-			.y = s->camera->v->y + (y * s->o_y.y),
+			.y = s->camera->v->y + (x * s->o_x.y) + (y * s->o_y.y),
 			.z = s->camera->v->z + (x * s->o_x.z) + (y * s->o_y.z)};
 		norm(&v);
 		put_pixel(s, x_w, y_w, trace_ray(s, v, range, 100));
@@ -189,14 +189,9 @@ void	*thread_rays(void *ss)
 {
 	float		x;
 	t_scene		*s;
-	const t_p	c = *((t_scene *)ss)->camera->v;
 
 	s = (t_scene *)ss;
 	x = -1;
-	s->o_x = (t_p){.x = c.z, .y = 0, .z = -c.x};
-	norm(&s->o_x);
-	cross(c, s->o_x, &s->o_y);
-	norm(&s->o_y);
 	while (x < s->mlx->width)
 	{
 		loop_line(s, x);
@@ -211,6 +206,8 @@ void	*thread_rays(void *ss)
 void	trace_rays(t_scene *s)
 {
 	int			i;
+	const t_p	c = *s->camera->v;
+
 
 	s->multi_t = ft_malloc(sizeof(t_threads), s);
 	s->multi_t->cur_x = ft_malloc(sizeof(int), s);
@@ -219,6 +216,10 @@ void	trace_rays(t_scene *s)
 	s->multi_t->l = ft_malloc(sizeof(pthread_mutex_t), s);
 	pthread_mutex_init(s->multi_t->l, NULL);
 	i = -1;
+	s->o_x = (t_p){.x = c.z, .y = 0, .z = -c.x};
+	norm(&s->o_x);
+	cross(c, s->o_x, &s->o_y);
+	norm(&s->o_y);
 	while (++i < NUM_THREADS)
 		pthread_create(&(s->multi_t->pids[i]), NULL, &thread_rays, s);
 }

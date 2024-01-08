@@ -6,7 +6,7 @@
 /*   By: dvandenb <dvandenb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/12 16:14:19 by dvandenb          #+#    #+#             */
-/*   Updated: 2024/01/03 15:33:49 by dvandenb         ###   ########.fr       */
+/*   Updated: 2024/01/08 15:30:43 by dvandenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,4 +47,7 @@ t_p		*mult(t_p a, float b, t_p *ans);
 float	distance_squared(t_p a, t_p b);
 
 t_p		rotate_vector(t_p *v, t_p *axis, float angle);
+
+t_p		solve_vecs(t_p v1, t_p v2, t_p p);
+
 #endif
