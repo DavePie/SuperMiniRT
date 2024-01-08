@@ -6,7 +6,7 @@
 /*   By: alde-oli <alde-oli@student.42lausanne.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/14 15:05:22 by alde-oli          #+#    #+#             */
-/*   Updated: 2024/01/05 16:45:43 by alde-oli         ###   ########.fr       */
+/*   Updated: 2024/01/08 15:21:01 by alde-oli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -127,6 +127,5 @@ void	*int_ptr(char *str, t_scene *scene, int *error)
 		return (NULL);
 	}
 	*ans = ft_atoi(str);
-	printf("ans = %d\n", *ans);
 	return (ans);
 }

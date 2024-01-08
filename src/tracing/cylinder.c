@@ -6,7 +6,7 @@
 /*   By: alde-oli <alde-oli@student.42lausanne.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/04 15:56:01 by dvandenb          #+#    #+#             */
-/*   Updated: 2024/01/07 23:40:44 by alde-oli         ###   ########.fr       */
+/*   Updated: 2024/01/08 09:38:21 by alde-oli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,8 +117,8 @@ void	cy_check(t_obj o, t_p p, t_p n, t_p *color)
 	coords_body(o, cp, &x, &y);
 	if (fabs(y - 0) < 0.01 || fabs(y - 1) < 0.01)
 	{
-		x = cp.x;
-		y = cp.z;
+		pl_check(o, p, n, color);
+		return ;
 	}
 	check = ((int)(x * 10) % 2 == 0) ^ ((int)(y * 10) % 2 == 0);
 	if (check)
