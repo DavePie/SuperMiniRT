@@ -6,7 +6,7 @@
 /*   By: alde-oli <alde-oli@student.42lausanne.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/13 14:44:04 by dvandenb          #+#    #+#             */
-/*   Updated: 2024/01/09 08:56:37 by alde-oli         ###   ########.fr       */
+/*   Updated: 2024/01/09 17:04:04 by alde-oli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,21 +61,25 @@ void	loop_line(t_scene *s, float x_w)
 	float		y_w;
 	t_p			input[2];
 	t_p			range;
-	float		x;
-	float		y;
+	float		co[2];
+	float		fov;
 
 	y_w = 0;
 	range = (t_p){.x = 1, .y = FLT_MAX};
 	input[0] = *s->camera->p;
+	fov = tan(*s->camera->w * 0.5 * M_PI / 180);
+
 	while (++y_w < s->mlx->height && x_w != -1)
 	{
 		if (s->multi_t->do_exit)
 			pthread_exit(0);
-		x = x_w / s->mlx->width - 0.5f;
-		y = y_w / s->mlx->width - ((0.5f) * s->mlx->height / s->mlx->width);
-		input[1] = (t_p){.x = s->camera->v->x + (x * s->o_x.x) + (y * s->o_y.x),
-			.y = s->camera->v->y + (x * s->o_x.y) + (y * s->o_y.y),
-			.z = s->camera->v->z + (x * s->o_x.z) + (y * s->o_y.z)};
+		co[0] = (x_w / s->mlx->width - 0.5f) * fov;
+		co[1] = (y_w / s->mlx->width - ((0.5f)
+					* s->mlx->height / s->mlx->width)) * fov;
+		input[1] = (t_p){.x = s->camera->v->x + (co[0] * s->o_x.x)
+			+ (co[1] * s->o_y.x),
+			.y = s->camera->v->y + (co[0] * s->o_x.y) + (co[1] * s->o_y.y),
+			.z = s->camera->v->z + (co[0] * s->o_x.z) + (co[1] * s->o_y.z)};
 		norm(&input[1]);
 		put_pixel(s, x_w, y_w, trace_ray(s, input, range, 100));
 	}
