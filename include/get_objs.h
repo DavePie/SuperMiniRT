@@ -6,7 +6,7 @@
 /*   By: alde-oli <alde-oli@student.42lausanne.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/14 12:55:10 by alde-oli          #+#    #+#             */
-/*   Updated: 2024/01/04 17:06:19 by alde-oli         ###   ########.fr       */
+/*   Updated: 2024/01/09 09:27:18 by alde-oli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 
 # include "minirt.h"
 
-int		count_words(char *line);
+int		count_words(char *line, char split);
 int		do_split(char *line, char ***split, const int *atr);
 void	*get_color(char *line, t_scene *scene, int *error);
 void	*get_coords(char *line, t_scene *scene, int *error);

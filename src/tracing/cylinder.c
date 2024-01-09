@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cylinder.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dvandenb <dvandenb@student.42.fr>          +#+  +:+       +#+        */
+/*   By: alde-oli <alde-oli@student.42lausanne.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/04 15:56:01 by dvandenb          #+#    #+#             */
-/*   Updated: 2024/01/08 18:22:02 by dvandenb         ###   ########.fr       */
+/*   Updated: 2024/01/09 08:33:15 by alde-oli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,7 +102,6 @@ void	cy_img(t_obj o, t_img *i, t_p p, t_p *c)
 	*c = read_img(pix_x, pix_y, i);
 }
 
-//not working well for caps
 void	cy_check(t_obj o, t_p p, t_p n, t_p *color)
 {
 	t_p		cp;
@@ -110,7 +109,7 @@ void	cy_check(t_obj o, t_p p, t_p n, t_p *color)
 	float	y;
 	int		check;
 
-	(void) n;
+	(void)n;
 	cp = (t_p){p.x - o.p->x, p.y - o.p->y, p.z - o.p->z};
 	if ((n.x == o.v->x && n.y == o.v->y && n.z == o.v->z)
 		|| (n.x == -o.v->x && n.y == -o.v->y && n.z == -o.v->z))
@@ -119,9 +118,10 @@ void	cy_check(t_obj o, t_p p, t_p n, t_p *color)
 		return ;
 	}
 	coords_body(o, cp, &x, &y);
-	check = ((int)(x * *o.w) % 2 == 0) ^ ((int)(y * *o.h / M_PI) % 2 == 0);
+	check = ((int)(x * (*o.w * 2)) % 2 == 0)
+		^ ((int)(y * (*o.h / (M_PI / 4))) % 2 == 0);
 	if (check)
-		*color = (color_mult((*color), 1.2));
+		*color = color_mult((*color), 1.2);
 	else
-		*color = (color_mult((*color), 0.8));
+		*color = color_mult((*color), 0.8);
 }

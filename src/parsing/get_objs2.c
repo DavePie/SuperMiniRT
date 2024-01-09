@@ -6,7 +6,7 @@
 /*   By: alde-oli <alde-oli@student.42lausanne.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/14 15:05:22 by alde-oli          #+#    #+#             */
-/*   Updated: 2024/01/08 15:21:01 by alde-oli         ###   ########.fr       */
+/*   Updated: 2024/01/09 09:27:55 by alde-oli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,20 +15,20 @@
 #include "libft.h"
 #include "get_objs.h"
 
-int	count_words(char *str)
+int	count_words(char *str, char split)
 {
 	int	words;
 
 	words = 0;
 	while (*str && *str != '\n')
 	{
-		if (*str == ' ')
-			while (*str == ' ')
+		if (*str == split)
+			while (*str == split)
 				str++;
 		else
 		{
 			words++;
-			while (*str && *str != ' ')
+			while (*str && *str != split)
 				str++;
 		}
 	}
@@ -69,6 +69,8 @@ void	*get_coords(char *line, t_scene *scene, int *error)
 	t_p		*coords;
 
 	(void)scene;
+	if (count_words(line, ',') != 3)
+		return (((void *)(long long) !(*error = 1)));
 	split = ft_split(line, ',');
 	if (split)
 		coords = (t_p *) malloc(sizeof(t_p) * 1);

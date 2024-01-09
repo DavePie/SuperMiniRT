@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_objs.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dvandenb <dvandenb@student.42.fr>          +#+  +:+       +#+        */
+/*   By: alde-oli <alde-oli@student.42lausanne.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/13 13:11:59 by alde-oli          #+#    #+#             */
-/*   Updated: 2024/01/08 18:30:47 by dvandenb         ###   ########.fr       */
+/*   Updated: 2024/01/09 09:57:19 by alde-oli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,7 @@ int	match_t(char *line, int *i, t_obj *new_obj)
 			if (!new_obj->type)
 				return (-1);
 			*new_obj->type = *i;
+			printf("type: %d\n", *new_obj->type);
 			return (*i);
 		}
 		(*i)++;
@@ -42,7 +43,7 @@ int	match_t(char *line, int *i, t_obj *new_obj)
 
 int	do_split(char *line, char ***split, const int *atr)
 {
-	if (count_words(line) != (atr[0] + atr[1] + atr[2] + atr[3]
+	if (count_words(line, ' ') != (atr[0] + atr[1] + atr[2] + atr[3]
 			+ atr[4] + atr[5] + atr[6] + atr[7] + atr[8] + atr[9] + 1))
 		return (1);
 	*split = ft_split(line, ' ');
@@ -110,8 +111,7 @@ int	get_one_obj(t_scene *scene, int fd, char *line, t_obj *new_obj)
 	i = 0;
 	while (line && line[i] == ' ')
 		i++;
-	if ((line[i] == 'A' && scene->ambient) || (line[i] == 'C' && scene->camera)
-		|| (line[i] == 'L' && scene->lights))
+	if ((line[i] == 'A' && scene->ambient) || (line[i] == 'C' && scene->camera))
 	{
 		free(line);
 		free(new_obj);

@@ -6,7 +6,7 @@
 /*   By: alde-oli <alde-oli@student.42lausanne.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/12 12:47:35 by dvandenb          #+#    #+#             */
-/*   Updated: 2024/01/05 13:43:30 by alde-oli         ###   ########.fr       */
+/*   Updated: 2024/01/09 11:35:26 by alde-oli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,8 +20,8 @@
 # define CAMERA 5
 # define LIGHT 6
 
-# define INIT_WIDTH 1600
-# define INIT_HEIGHT 1000
+# define INIT_WIDTH 1280
+# define INIT_HEIGHT 720
 
 # define Z_OFFSET 1
 
@@ -49,16 +49,16 @@
 # else
 #  define NUM_THREADS 12
 #  define LINUX 0
-#  define LJ_UP 0
-#  define LJ_DOWN 0
-#  define LJ_LEFT 0
-#  define LJ_RIGHT 0
+#  define LJ_UP 99999
+#  define LJ_DOWN 99999
+#  define LJ_LEFT 99999
+#  define LJ_RIGHT 99999
 #  define RJ_UP 65293
 #  define RJ_DOWN 65507
 #  define RJ_LEFT 97
 #  define RJ_RIGHT 115
-#  define LS 0
-#  define RS 0
+#  define LS 6
+#  define RS 7
 #  define K_LEFT 123
 #  define K_RIGHT 124
 #  define K_DOWN 125
