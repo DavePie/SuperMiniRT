@@ -6,7 +6,7 @@
 /*   By: dvandenb <dvandenb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/13 13:11:59 by alde-oli          #+#    #+#             */
-/*   Updated: 2024/01/10 10:56:46 by dvandenb         ###   ########.fr       */
+/*   Updated: 2024/01/10 14:55:05 by dvandenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,8 +99,8 @@ void	set_attributes(t_obj *o, char *line, int fd, t_scene *scene)
 		norm(o->v);
 	free(line);
 	split = ft_free_str_tab(split);
-	if (t[3] && (close(fd) || 1))
-		ft_error(t[3], "Error while loading scene element\n", 0, scene);
+	if ((t[3] || (o->v && !mag(*o->v))) && (close(fd) || 1))
+		ft_error(1, "Error while loading scene element\n", 0, scene);
 }
 
 int	get_one_obj(t_scene *scene, int fd, char *line, t_obj *new_obj)
