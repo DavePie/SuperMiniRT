@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   events.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alde-oli <alde-oli@student.42lausanne.c    +#+  +:+       +#+        */
+/*   By: dvandenb <dvandenb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/13 14:21:28 by dvandenb          #+#    #+#             */
-/*   Updated: 2024/01/09 11:35:56 by alde-oli         ###   ########.fr       */
+/*   Updated: 2024/01/10 10:56:58 by dvandenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,6 @@ int	update_window(t_scene *s)
 
 void	change_pos(t_p *pos, int key, t_p *orient, t_scene *s)
 {
-	printf("hello key: %d\n", key);
 	const t_p	up = {0, 1, 0};
 	t_p			right;
 	const t_p	dir[6] = {{.x = 1}, {.x = -1}, {.y = 1},
@@ -33,7 +32,6 @@ void	change_pos(t_p *pos, int key, t_p *orient, t_scene *s)
 		+ (4 * (key == LS))
 		+ (5 * (key == RS));
 
-	printf("i: %d\n", i);
 	cross(*orient, up, &right);
 	pos->x += dir[i].x * orient->x + dir[i].y * right.x;
 	pos->y += dir[i].x * orient->y + dir[i].y * right.y;
@@ -82,7 +80,6 @@ int	key_l_event(int key, t_scene *s)
 
 int	key_event(int key, t_scene *s)
 {
-	printf("key: %d\n", key);
 	if (LINUX)
 		return (key_l_event(key, s));
 	if (key == K_ESC)

@@ -6,7 +6,7 @@
 /*   By: dvandenb <dvandenb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/04 16:10:39 by dvandenb          #+#    #+#             */
-/*   Updated: 2024/01/08 18:24:29 by dvandenb         ###   ########.fr       */
+/*   Updated: 2024/01/10 14:12:33 by dvandenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,12 +29,12 @@ void	co_norm(t_obj o, t_p p, t_p *n)
 
 void	co_img(t_obj o, t_img *i, t_p p, t_p *c)
 {
-	(void)o, (void)i, (void)p, (void)c;
+	cy_img(o, i, p, c);
 }
 
 void	co_check(t_obj o, t_p p, t_p n, t_p *color)
 {
-	(void)o, (void)p, (void)color, (void)n;
+	cy_check(o, p, n, color);
 }
 
 void	check_cone_cap(t_p p, t_p r, t_obj *cyl, t_p *ans)
@@ -82,5 +82,6 @@ void	inter_ray_cone(t_p p, t_p r, t_obj *cone, t_p *ans)
 	sub(*add(*mult(r, ans->y, &check), p, &check), *cone->p, &check);
 	if (dot(check, *cone->v) < 0 || dot(check, *cone->v) > *cone->h)
 		ans->y = FLT_MAX;
-	check_cone_cap(p, r, cone, ans);
+	if ((ans->x != FLT_MAX) || (ans->y != FLT_MAX))
+		check_cone_cap(p, r, cone, ans);
 }

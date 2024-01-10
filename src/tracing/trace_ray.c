@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   trace_ray.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alde-oli <alde-oli@student.42lausanne.c    +#+  +:+       +#+        */
+/*   By: dvandenb <dvandenb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/13 14:44:04 by dvandenb          #+#    #+#             */
-/*   Updated: 2024/01/09 17:04:04 by alde-oli         ###   ########.fr       */
+/*   Updated: 2024/01/10 14:12:49 by dvandenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,6 @@ void	loop_line(t_scene *s, float x_w)
 	range = (t_p){.x = 1, .y = FLT_MAX};
 	input[0] = *s->camera->p;
 	fov = tan(*s->camera->w * 0.5 * M_PI / 180);
-
 	while (++y_w < s->mlx->height && x_w != -1)
 	{
 		if (s->multi_t->do_exit)

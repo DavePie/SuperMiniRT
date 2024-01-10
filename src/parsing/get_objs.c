@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_objs.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alde-oli <alde-oli@student.42lausanne.c    +#+  +:+       +#+        */
+/*   By: dvandenb <dvandenb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/13 13:11:59 by alde-oli          #+#    #+#             */
-/*   Updated: 2024/01/09 09:57:19 by alde-oli         ###   ########.fr       */
+/*   Updated: 2024/01/10 10:56:46 by dvandenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,6 @@ int	match_t(char *line, int *i, t_obj *new_obj)
 			if (!new_obj->type)
 				return (-1);
 			*new_obj->type = *i;
-			printf("type: %d\n", *new_obj->type);
 			return (*i);
 		}
 		(*i)++;

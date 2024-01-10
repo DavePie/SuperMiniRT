@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cylinder.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alde-oli <alde-oli@student.42lausanne.c    +#+  +:+       +#+        */
+/*   By: dvandenb <dvandenb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/04 15:56:01 by dvandenb          #+#    #+#             */
-/*   Updated: 2024/01/09 08:33:15 by alde-oli         ###   ########.fr       */
+/*   Updated: 2024/01/10 14:35:01 by dvandenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,9 +77,9 @@ void	coords_caps(t_obj o, t_p cp, float *x, float *y)
 	if (angle < 0)
 		angle += 2 * M_PI;
 	*x = sqrt((cp.x - proj.x) * (cp.x - proj.x) + (cp.z - proj.z)
-			* (cp.z - proj.z)) / *o.w * cos(angle) / 2 + 0.5;
+			* (cp.z - proj.z)) / *o.w * cos(angle) + 0.5;
 	*y = sqrt((cp.x - proj.x) * (cp.x - proj.x) + (cp.z - proj.z)
-			* (cp.z - proj.z)) / *o.w * sin(angle) / 2 + 0.5;
+			* (cp.z - proj.z)) / *o.w * sin(angle) + 0.5;
 }
 
 void	cy_img(t_obj o, t_img *i, t_p p, t_p *c)
@@ -92,12 +92,11 @@ void	cy_img(t_obj o, t_img *i, t_p p, t_p *c)
 
 	cp = (t_p){p.x - o.p->x, p.y - o.p->y, p.z - o.p->z};
 	coords_body(o, cp, &x, &y);
-	if (fabs(y - 0) < 0.01 || fabs(y - 1) < 0.01)
+	if (fabs(y - 0) < 0.0001 || fabs(y - 1) < 0.0001)
 		coords_caps(o, cp, &x, &y);
-	pix_x = x * (i->w - 1);
-	pix_y = (1 - y) * (i->h - 1);
-	if (fabs(y - 0) < 0.01 || fabs(y - 1) < 0.01
-		|| pix_x + pix_y * i->w >= i->w * i->h)
+	pix_x = x * (i->w);
+	pix_y = (1 - y) * (i->h);
+	if (pix_x + pix_y * i->w >= i->w * i->h)
 		return ;
 	*c = read_img(pix_x, pix_y, i);
 }
@@ -109,7 +108,6 @@ void	cy_check(t_obj o, t_p p, t_p n, t_p *color)
 	float	y;
 	int		check;
 
-	(void)n;
 	cp = (t_p){p.x - o.p->x, p.y - o.p->y, p.z - o.p->z};
 	if ((n.x == o.v->x && n.y == o.v->y && n.z == o.v->z)
 		|| (n.x == -o.v->x && n.y == -o.v->y && n.z == -o.v->z))
