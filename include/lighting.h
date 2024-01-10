@@ -6,7 +6,7 @@
 /*   By: dvandenb <dvandenb@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/13 17:57:09 by dvandenb          #+#    #+#             */
-/*   Updated: 2024/01/08 18:35:57 by dvandenb         ###   ########.fr       */
+/*   Updated: 2024/01/10 16:02:46 by dvandenb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,5 @@ void	cy_check(t_obj o, t_p p, t_p n, t_p *color);
 void	co_norm(t_obj o, t_p p, t_p *n);
 void	co_img(t_obj o, t_img *i, t_p p, t_p *c);
 void	co_check(t_obj o, t_p p, t_p n, t_p *color);
-
 
 #endif
