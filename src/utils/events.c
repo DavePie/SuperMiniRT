@@ -80,7 +80,7 @@ int	key_l_event(int key, t_scene *s)
 
 int	key_event(int key, t_scene *s)
 {
-	if (LINUX)
+	if (CONTROLLER)
 		return (key_l_event(key, s));
 	if (key == K_ESC)
 		exit_scene(s);

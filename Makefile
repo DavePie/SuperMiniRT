@@ -7,6 +7,7 @@ INCDIR	:= -I ./include -I mlx -I libft
 LIB		:= libmlx.a
 LIBFT	:= libft.a
 LIBDIR	:= mlx/$(LIB)
+LINUX_LIBDIR := mlx_linux/$(LIB)
 LIBFTDIR	:= libft
 LIBFTPATH	:= $(LIBFTDIR)/$(LIBFT)
 CFLAGS	:= -Wall -Wextra -Werror $(INCDIR) #-fsanitize=address 
@@ -25,13 +26,16 @@ $(NAME): $(CFILES) $(LIBDIR) $(LIBFTPATH)
 	@clear
 	@echo -e "$(BLUE)$(BOLD)[ ok ] $(NAME): created$(NC)"
 
-linux: $(CFILES) $(LIBFTPATH)
-	@$(CC) $(CFLAGS) $(CFILES) -o $(NAME) -L mlx -lmlx -L $(LIBFTDIR) -lft -lXext -lX11 -lm -D LINUX=1
+linux: $(CFILES) $(LIBFTPATH) $(LINUX_LIBDIR)
+	@$(CC) $(CFLAGS) $(CFILES) -o $(NAME) -L mlx_linux -lmlx -L $(LIBFTDIR) -lft -lXext -lX11 -lm -D LINUX=1
 	@clear
 	@echo -e "$(BLUE)$(BOLD)[ ok ] $(NAME): created$(NC)"
 
 $(LIBDIR):
 	@make -C mlx
+
+$(LINUX_LIBDIR):
+	@make -C mlx_linux
 
 $(LIBFTPATH):
 	@make -C $(LIBFTDIR)
@@ -56,6 +60,8 @@ run: all
 	./$(NAME) $(FILE)
 
 re: fclean all
+
+relinux: fclean linux
 
 rerun: re run
 

@@ -25,6 +25,8 @@
 
 # define Z_OFFSET 1
 
+#define CONTROLLER 0
+
 # ifdef LINUX
 #  define NUM_THREADS 50
 #  define LJ_UP 111
