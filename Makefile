@@ -7,7 +7,7 @@ INCDIR	:= -I ./include -I mlx -I libft
 LIB		:= libmlx.a
 LIBFT	:= libft.a
 LIBDIR	:= mlx/$(LIB)
-LINUX_LIBDIR := mlx_linux/$(LIB)
+LINUX_LIBDIR := linux_mlx/$(LIB)
 LIBFTDIR	:= libft
 LIBFTPATH	:= $(LIBFTDIR)/$(LIBFT)
 CFLAGS	:= -Wall -Wextra -Werror $(INCDIR) #-fsanitize=address 
@@ -27,7 +27,7 @@ $(NAME): $(CFILES) $(LIBDIR) $(LIBFTPATH)
 	@echo -e "$(BLUE)$(BOLD)[ ok ] $(NAME): created$(NC)"
 
 linux: $(CFILES) $(LIBFTPATH) $(LINUX_LIBDIR)
-	@$(CC) $(CFLAGS) $(CFILES) -o $(NAME) -L mlx_linux -lmlx -L $(LIBFTDIR) -lft -lXext -lX11 -lm -D LINUX=1
+	@$(CC) $(CFLAGS) $(CFILES) -o $(NAME) -L linux_mlx -lmlx -L $(LIBFTDIR) -lft -lXext -lX11 -lm -D LINUX=1
 	@clear
 	@echo -e "$(BLUE)$(BOLD)[ ok ] $(NAME): created$(NC)"
 
@@ -35,7 +35,7 @@ $(LIBDIR):
 	@make -C mlx
 
 $(LINUX_LIBDIR):
-	@make -C mlx_linux
+	@make -C linux_mlx
 
 $(LIBFTPATH):
 	@make -C $(LIBFTDIR)
